@@ -10,8 +10,10 @@ import { useAuth } from '../lib/auth'
 
 const ALL_OFFERINGS = [...programs, bundlePackage]
 
-const formatMoney = (amount, currency) =>
-  currency === 'AED' ? 'AED ' + amount.toLocaleString('en-AE') : '₹' + amount.toLocaleString('en-IN')
+const formatMoney = (amount, currency) => {
+  const num = Number(amount) || 0
+  return currency === 'AED' ? 'AED ' + num.toLocaleString('en-AE') : '₹' + num.toLocaleString('en-IN')
+}
 
 // Result dialog header: a strip of board tiles, as if the order ticket came back from the desk.
 function ResultStrip({ text, tone }) {
@@ -37,11 +39,14 @@ export default function Checkout() {
   const [alreadyEnrolled, setAlreadyEnrolled] = useState(false)
 
   useEffect(() => {
-    getEnrollments(user.id).then((list) => setAlreadyEnrolled(list.some((e) => e.programId === programId)))
-  }, [user.id, programId])
+    if (user?.id) {
+      getEnrollments(user.id).then((list) => setAlreadyEnrolled(list.some((e) => e.programId === programId)))
+    }
+  }, [user?.id, programId])
 
+  if (!user) return <Navigate to="/login" replace />
   if (!program) return <Navigate to="/programs" replace />
-  const amount = currency === 'AED' ? program.priceAed : program.price
+  const amount = currency === 'AED' ? (program.priceAed || 2500) : (program.price || 55000)
   const walletLabel = currency === 'INR' ? 'UPI' : 'Apple Pay'
 
   async function pay(e) {
@@ -147,7 +152,7 @@ export default function Checkout() {
               )}
             </div>
             <h2 className="mt-2 font-display text-xl sm:text-2xl font-extrabold text-white leading-tight">{program.title}</h2>
-            <p className="mt-1 text-xs text-white/60">{program.duration}, {(user.mode || 'Online') === 'Online' ? 'Online Cohort' : `In-Person (${user.mode})`}</p>
+            <p className="mt-1 text-xs text-white/60">{program.duration || 'All Tracks'}, {(user?.mode || 'Online') === 'Online' ? 'Online Cohort' : `In-Person (${user?.mode})`}</p>
             <dl className="mt-4 space-y-2 border-t border-white/15 pt-4 text-xs sm:text-sm">
               <div className="flex justify-between">
                 <dt className="text-white/60">Program fee</dt>

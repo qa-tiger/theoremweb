@@ -34,7 +34,7 @@ const CAMPUSES = [
       'Live interactive screen-sharing & chart markups',
       'Ask questions directly to mentors in real time',
       '24/7 session recordings in your student portal',
-      'Weekly 1-on-1 mentor trade reviews',
+      'Weekly 1-on-1 mentor assignment reviews',
     ],
     status: 'Online Batch Enrolling',
   },

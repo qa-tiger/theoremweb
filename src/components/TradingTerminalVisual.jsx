@@ -176,15 +176,15 @@ export default function TradingTerminalVisual() {
                 </span>
               </div>
 
-              {/* Take Profit Target Line */}
+              {/* Target Invalidation Level */}
               <div className="absolute inset-x-3 top-[18%] flex items-center justify-between border-t border-dashed border-bull/70 pt-0.5">
-                <span className="text-[0.6rem] font-bold text-bull font-mono bg-[#000000]/80 px-1 rounded">🎯 Take Profit: +4.8R Hit</span>
+                <span className="text-[0.6rem] font-bold text-bull font-mono bg-[#000000]/80 px-1 rounded">🎯 Technical Target: 1:3 R:R Ratio</span>
                 <span className="text-[0.6rem] font-mono text-bull/80">Target 2,674.00</span>
               </div>
 
               {/* Stop Loss Line */}
               <div className="absolute inset-x-3 bottom-[16%] flex items-center justify-between border-t border-dashed border-bear/70 pt-0.5">
-                <span className="text-[0.6rem] font-bold text-bear font-mono bg-[#000000]/80 px-1 rounded">🛡️ Protected Stop Loss: 1% Risk Max</span>
+                <span className="text-[0.6rem] font-bold text-bear font-mono bg-[#000000]/80 px-1 rounded">🛡️ Protected Invalidation: 1% Max Risk</span>
                 <span className="text-[0.6rem] font-mono text-bear/80">2,632.00</span>
               </div>
 
@@ -239,14 +239,14 @@ export default function TradingTerminalVisual() {
                 })}
               </svg>
 
-              {/* Live Pulsing Price Tag Indicator */}
+              {/* Live Price Tag Indicator */}
               <div className="absolute right-3 top-[22%] flex items-center gap-1.5 rounded-full bg-bull px-2 py-0.5 text-[0.65rem] font-bold text-white shadow-lg animate-pulse">
                 <span className="size-1.5 rounded-full bg-white animate-ping" />
-                <span>LIVE {market.price}</span>
+                <span>INDEX {market.price}</span>
               </div>
             </div>
 
-            {/* Mentor Trade Review Bar */}
+            {/* Mentor Assignment Review Bar */}
             <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs">
               <div className="flex items-center gap-2">
                 <div className="size-6 rounded-full bg-signal text-ink grid place-items-center font-bold text-xs">
@@ -254,7 +254,7 @@ export default function TradingTerminalVisual() {
                 </div>
                 <div>
                   <span className="text-xs font-bold text-white block leading-tight">Reviewed by Farhan (Lead Mentor)</span>
-                  <span className="text-xs text-signal font-medium">Dubai Trading Floor • 1:4.8 Risk-Reward Confirmed</span>
+                  <span className="text-xs text-signal font-medium">Classroom Exercise • Risk-Reward Structure Verified</span>
                 </div>
               </div>
               <span className="rounded bg-bull/20 px-2.5 py-0.5 text-xs font-bold text-bull">

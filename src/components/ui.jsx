@@ -120,14 +120,13 @@ export function Ticket({ children, className = '' }) {
   hybrid delivery badges, outcome checklists, and compact clean height.
 */
 export function ProgramCards({ programs = allPrograms }) {
-  const [currency, setCurrency] = useState('INR')
   const [filter, setFilter] = useState('all')
 
   const filtered = filter === 'all' ? programs : programs.filter((p) => p.market.toLowerCase() === filter.toLowerCase())
 
   return (
     <div className="space-y-4">
-      {/* Controls Bar: Filter by Market + Currency Switcher */}
+      {/* Controls Bar: Filter by Market */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
         <div className="flex flex-wrap gap-1.5">
           {[
@@ -151,34 +150,17 @@ export function ProgramCards({ programs = allPrograms }) {
           ))}
         </div>
 
-        <div className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#1e1e26] p-1">
-          <span className="px-2 text-[0.7rem] font-bold text-white/60">Fee:</span>
-          <button
-            type="button"
-            onClick={() => setCurrency('INR')}
-            className={`rounded-md px-2.5 py-0.5 text-xs font-bold transition-all ${
-              currency === 'INR' ? 'bg-signal text-black shadow-sm font-extrabold' : 'text-white/60 hover:text-white'
-            }`}
-          >
-            ₹ INR (India)
-          </button>
-          <button
-            type="button"
-            onClick={() => setCurrency('AED')}
-            className={`rounded-md px-2.5 py-0.5 text-xs font-bold transition-all ${
-              currency === 'AED' ? 'bg-signal text-black shadow-sm font-extrabold' : 'text-white/60 hover:text-white'
-            }`}
-          >
-            AED (Dubai)
-          </button>
+        <div className="flex items-center gap-2">
+          <span className="badge-signal text-xs py-1 px-3">
+            <span className="size-1.5 rounded-full bg-signal animate-pulse" />
+            Admissions Open: India • Dubai • Online
+          </span>
         </div>
       </div>
 
       {/* Grid of Compact Course Cards */}
       <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
         {filtered.map((p) => {
-          const priceDisplay = currency === 'AED' ? `AED ${p.priceAed?.toLocaleString('en-AE')}` : formatINR(p.price)
-
           return (
             <article
               key={p.id}
@@ -197,10 +179,14 @@ export function ProgramCards({ programs = allPrograms }) {
                       {p.level} • {p.duration}
                     </span>
                   </div>
-                  {p.featured && (
+                  {p.featured ? (
                     <span className="badge-signal text-xs py-0.5 px-2.5">
                       <span className="size-1.5 rounded-full bg-brand animate-pulse" />
                       Popular
+                    </span>
+                  ) : (
+                    <span className="text-[0.7rem] font-semibold text-white/50">
+                      Cohort Enrolling
                     </span>
                   )}
                 </div>
@@ -224,12 +210,12 @@ export function ProgramCards({ programs = allPrograms }) {
                 </div>
               </div>
 
-              {/* Pricing & Actions Footer */}
+              {/* Inquire & Actions Footer */}
               <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
                 <div>
-                  <span className="text-xs font-semibold text-white/60 block leading-none">Total Fee ({currency})</span>
-                  <span className="font-display text-xl sm:text-2xl font-extrabold gold-foil-text tabular-nums leading-tight mt-1 inline-block">
-                    {priceDisplay}
+                  <span className="text-xs font-semibold text-white/60 block leading-none">Format</span>
+                  <span className="text-xs sm:text-sm font-bold text-signal leading-tight mt-1 inline-block">
+                    Classroom & Online
                   </span>
                 </div>
 
@@ -237,8 +223,8 @@ export function ProgramCards({ programs = allPrograms }) {
                   <Link to={`/programs/${p.id}`} className="btn-ghost py-2 px-3 text-xs sm:text-sm font-semibold">
                     Syllabus →
                   </Link>
-                  <Link to={`/register?program=${p.id}`} className="btn-brand py-2 px-4 text-xs sm:text-sm font-bold shadow-sm">
-                    Apply
+                  <Link to={`/contact?program=${p.id}`} className="btn-brand py-2 px-4 text-xs sm:text-sm font-bold shadow-sm">
+                    Contact Us
                   </Link>
                 </div>
               </div>
@@ -257,25 +243,27 @@ export function ProgramCards({ programs = allPrograms }) {
 export function ProgramBoard({ programs = allPrograms, detailed = false }) {
   return (
     <div role="table" aria-label="Programs" className="border-t-2 border-ink">
-      <div role="row" className="hidden grid-cols-[minmax(0,1fr)_7rem_7rem_6rem_7rem] gap-4 border-b border-line py-2 text-xs text-ink-soft lg:grid">
-        <span role="columnheader">Program</span>
-        <span role="columnheader">Market</span>
-        <span role="columnheader">Level</span>
-        <span role="columnheader">Duration</span>
-        <span role="columnheader" className="text-right">Fee in India</span>
+      <div role="row" className="flex items-center justify-between lg:grid lg:grid-cols-[minmax(0,1fr)_7rem_7rem_6rem_8rem] gap-4 border-b border-line py-2.5 text-xs text-ink-soft">
+        <div role="columnheader" className="flex items-center gap-2">
+          <span className="font-bold text-white/90">Program</span>
+          <span className="rounded bg-signal px-2 py-0.5 text-[0.65rem] font-bold text-black shadow-sm">Start here</span>
+        </div>
+        <span role="columnheader" className="hidden lg:block">Market</span>
+        <span role="columnheader" className="hidden lg:block">Level</span>
+        <span role="columnheader" className="hidden lg:block">Duration</span>
+        <span role="columnheader" className="text-right font-medium">Admissions</span>
       </div>
       {programs.map((p) => (
         <Link
           key={p.id}
           to={`/programs/${p.id}`}
           role="row"
-          className="group relative grid gap-x-4 gap-y-1.5 border-b border-line py-4 transition-colors hover:bg-signal/[0.06] lg:grid-cols-[minmax(0,1fr)_7rem_7rem_6rem_7rem] lg:items-baseline"
+          className="group relative grid gap-x-4 gap-y-1.5 border-b border-line py-4 transition-colors hover:bg-signal/[0.06] lg:grid-cols-[minmax(0,1fr)_7rem_7rem_6rem_8rem] lg:items-baseline"
         >
           <span aria-hidden="true" className="absolute inset-y-0 -left-5 w-1 origin-top scale-y-0 bg-signal transition-transform duration-200 group-hover:scale-y-100 sm:-left-8 lg:-left-12" />
           <span role="cell" className="min-w-0">
             <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
               <span className="font-display text-xl leading-none font-bold transition-transform duration-200 ease-out group-hover:translate-x-1 sm:text-2xl">{p.title}</span>
-              {p.featured && <span className="rounded bg-signal px-1.5 py-0.5 text-[0.65rem] font-bold text-ink">Start here</span>}
             </span>
             {detailed && <span className="mt-1.5 block max-w-[40rem] text-xs text-ink-soft">{p.summary}</span>}
           </span>
@@ -285,7 +273,7 @@ export function ProgramBoard({ programs = allPrograms, detailed = false }) {
           </span>
           <span role="cell" className="hidden text-xs lg:block">{p.level}</span>
           <span role="cell" className="hidden text-xs lg:block">{p.duration}</span>
-          <span role="cell" className="text-xs font-semibold tabular-nums lg:text-right lg:text-sm">{formatINR(p.price)}</span>
+          <span role="cell" className="text-xs font-semibold text-signal lg:text-right lg:text-sm">Contact Us →</span>
         </Link>
       ))}
     </div>
@@ -296,7 +284,7 @@ export function ProgramBoard({ programs = allPrograms, detailed = false }) {
 export const STAGES = [
   ['01. Theory & Live Charts', 'Interactive classes dissecting market structure, liquidity zones, and broker spreads.'],
   ['02. Simulated Demo Lab', 'Practice execution and position sizing on demo accounts until rules become routine.'],
-  ['03. Small Live Trades + Review', 'Trade real micro-lots. Your mentor personally reviews the trades you log during the course.'],
+  ['03. Execution Lab & Review', 'Practice simulated execution. Your mentor personally reviews the assignments and chart setups you submit during the course.'],
   ['04. Custom Plan & Certificate', 'Graduate with a personalized written trading plan and official academy certificate.'],
 ]
 

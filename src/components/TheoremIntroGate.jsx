@@ -73,14 +73,15 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
     resize()
     window.addEventListener('resize', resize)
 
-    // Floating Real Financial Coins with Responsive Orbit Radii
+    // Floating Real Financial Coins with Responsive Orbit Radii & Learning Badges (Exactly 3 topic badges, rest icon-only)
     const scaleFactor = isMobile ? 0.52 : 1.0
     const ORBIT_ASSETS = [
-      { symbol: '₿', name: 'BTC', color: '#f7931a', radiusX: 300 * scaleFactor, radiusY: 100 * scaleFactor, speed: -0.65, offset: 1.2, size: isMobile ? 22 : 28 },
-      { symbol: '₮', name: 'USDT', color: '#26a17b', radiusX: 250 * scaleFactor, radiusY: 80 * scaleFactor, speed: 0.75, offset: 3.8, size: isMobile ? 21 : 27 },
-      { symbol: '€', name: 'EUR', color: '#60a5fa', radiusX: 220 * scaleFactor, radiusY: 72 * scaleFactor, speed: 0.9, offset: 5.2, size: isMobile ? 18 : 24 },
-      { symbol: 'AED', name: 'AED', color: '#10b981', radiusX: 330 * scaleFactor, radiusY: 108 * scaleFactor, speed: -0.5, offset: 2.6, size: isMobile ? 18 : 22 },
-      { symbol: '£', name: 'GBP', color: '#c084fc', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.65, offset: 0.4, size: isMobile ? 18 : 24 },
+      { symbol: 'Ξ', name: 'ETH', badge: 'Learn Crypto', color: '#627eea', radiusX: 310 * scaleFactor, radiusY: 98 * scaleFactor, speed: -0.62, offset: 0.7, size: isMobile ? 22 : 28 },
+      { symbol: '£', name: 'GBP', badge: 'Learn Forex', color: '#c084fc', radiusX: 250 * scaleFactor, radiusY: 82 * scaleFactor, speed: 0.72, offset: 2.3, size: isMobile ? 20 : 26 },
+      { symbol: '📈', name: 'EQ', badge: 'Learn Equity', color: '#10b981', radiusX: 345 * scaleFactor, radiusY: 110 * scaleFactor, speed: -0.5, offset: 3.8, size: isMobile ? 21 : 27 },
+      { symbol: '€', name: 'EUR', badge: null, color: '#3b82f6', radiusX: 215 * scaleFactor, radiusY: 70 * scaleFactor, speed: 0.86, offset: 5.0, size: isMobile ? 18 : 24 },
+      { symbol: '₿', name: 'BTC', badge: null, color: '#f7931a', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.58, offset: 6.1, size: isMobile ? 22 : 28 },
+      { symbol: '₮', name: 'USDT', badge: null, color: '#26a17b', radiusX: 185 * scaleFactor, radiusY: 62 * scaleFactor, speed: -0.85, offset: 1.7, size: isMobile ? 17 : 22 },
     ]
 
     // Floating Golden Dust Sparkles (optimized: 16 on mobile, 32 on desktop, zero heavy shadowBlur)
@@ -129,7 +130,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         ctx.fill()
       })
 
-      // 3. Draw Orbiting Coin Medallions
+      // 3. Draw Orbiting Coin Medallions with Badges
       const renderAsset = (asset, isFront) => {
         const angle = time * asset.speed + asset.offset
         const z = Math.sin(angle)
@@ -178,23 +179,57 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         ctx.textBaseline = 'middle'
         ctx.fillText(asset.symbol, 0, 0.5)
 
+        // Floating Topic Badge (e.g. "Learn Crypto", "Learn Forex", "Learn Equity")
+        if (asset.badge) {
+          const badgeText = asset.badge
+          const fontSize = mob ? 9.5 : 11
+          ctx.font = `bold ${fontSize}px "Plus Jakarta Sans", sans-serif`
+          const tw = ctx.measureText(badgeText).width
+          const pw = tw + (mob ? 12 : 16)
+          const ph = mob ? 18 : 22
+          const py = r + (mob ? 7 : 10)
+
+          // Badge pill background
+          ctx.fillStyle = 'rgba(14, 14, 20, 0.92)'
+          ctx.beginPath()
+          if (ctx.roundRect) {
+            ctx.roundRect(-pw / 2, py, pw, ph, 999)
+          } else {
+            ctx.rect(-pw / 2, py, pw, ph)
+          }
+          ctx.fill()
+          ctx.strokeStyle = `${asset.color}aa`
+          ctx.lineWidth = 1
+          ctx.stroke()
+
+          // Badge text
+          ctx.fillStyle = '#ffffff'
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'middle'
+          ctx.fillText(badgeText, 0, py + ph / 2)
+        }
+
         ctx.restore()
       }
 
-      // Draw Coins behind the center dollar coin (z < 0)
+      // Draw Coins behind the center coin (z < 0)
       ORBIT_ASSETS.forEach((a) => renderAsset(a, false))
 
-      // 4. 3D Rotating Golden Coin Medallion in Center (steady rotation, zero mouse reaction)
+      // 4. 3D Rotating Golden Coin Medallion in Center (Dual-Sided: Bitcoin ₿ on one side, Dollar $ on other)
       const coinRadius = mob ? 68 : 90
       const coinAngle = time * 1.4
       const cosAngle = Math.cos(coinAngle)
       const sinAngle = Math.sin(coinAngle)
       const coinThickness = (mob ? 11 : 16) * Math.abs(sinAngle)
 
+      // Determine face side: Bitcoin ₿ on front (cosAngle >= 0), Dollar $ on back (cosAngle < 0)
+      const isBitcoinFace = cosAngle >= 0
+      const centerSymbol = isBitcoinFace ? '₿' : '$'
+
       ctx.save()
       ctx.translate(cx, cy)
 
-      // 3D Coin Edge Extrusion (zero shadowBlur inside loop for 60fps smoothness)
+      // 3D Coin Edge Extrusion
       const edgeSteps = mob ? 4 : 8
       for (let e = 0; e < edgeSteps; e++) {
         const edgeOffset = (e / edgeSteps) * coinThickness * (sinAngle > 0 ? 1 : -1)
@@ -214,7 +249,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       ctx.ellipse(0, 0, coinRadius * Math.abs(cosAngle), coinRadius, 0, 0, Math.PI * 2)
 
       // Dynamic Shifting Metallic Gold Gradient
-      const goldGrad = ctx.createLinearGradient(-coinRadius * cosAngle, -coinRadius, coinRadius * cosAngle, coinRadius)
+      const goldGrad = ctx.createLinearGradient(-coinRadius * Math.abs(cosAngle), -coinRadius, coinRadius * Math.abs(cosAngle), coinRadius)
       goldGrad.addColorStop(0, '#ffe599')
       goldGrad.addColorStop(0.3, '#f2b134')
       goldGrad.addColorStop(0.6, '#d49015')
@@ -235,28 +270,29 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       ctx.lineWidth = 1.5
       ctx.stroke()
 
-      // Center Embossed Dollar ($) Symbol on Coin
-      if (Math.abs(cosAngle) > 0.15) {
+      // Center Embossed Dual-Sided Symbol on Coin (₿ on one side, $ on other side, facing forwards)
+      if (Math.abs(cosAngle) > 0.12) {
         ctx.save()
-        ctx.scale(cosAngle, 1)
+        // Scaling by Math.abs(cosAngle) ensures the icon always renders horizontally scaled without being backward/mirrored
+        ctx.scale(Math.abs(cosAngle), 1)
 
         // Emboss Shadow
-        ctx.fillStyle = 'rgba(80, 48, 0, 0.7)'
+        ctx.fillStyle = 'rgba(80, 48, 0, 0.75)'
         ctx.font = `900 ${mob ? 50 : 68}px "Plus Jakarta Sans", sans-serif`
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillText('$', 1.5, 3)
+        ctx.fillText(centerSymbol, 1.5, 3)
 
         // Emboss Highlight
         ctx.fillStyle = '#ffffff'
-        ctx.fillText('$', 0, 0)
+        ctx.fillText(centerSymbol, 0, 0)
 
         ctx.restore()
       }
 
       ctx.restore()
 
-      // 5. Draw Assets in Front of the Coin (z >= 0)
+      // 5. Draw Assets in Front of the Center Coin (z >= 0)
       ORBIT_ASSETS.forEach((a) => renderAsset(a, true))
 
       animId = requestAnimationFrame(render)

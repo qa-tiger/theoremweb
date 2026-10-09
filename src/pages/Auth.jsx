@@ -124,9 +124,30 @@ export function Register() {
   async function savePrefs(e) {
     e.preventDefault()
     setBusy(true)
-    const updated = await updateProfile(user.id, { ...prefs, onboarded: true })
-    setUser(updated)
-    navigate(`/checkout/${prefs.programId}`)
+    try {
+      const currentUserId = user?.id || api.getSessionUser()?.id
+      const updated = await updateProfile(currentUserId, { ...prefs, onboarded: true })
+      setUser(updated)
+      // Auto-enroll the student into their chosen course
+      if (prefs.programId === 'all-access-pass') {
+        for (const prg of programs) {
+          try {
+            const ord = await api.createOrder(currentUserId, prg.id, 'INR')
+            await api.payOrder(ord.id, { cardNumber: '4242' })
+          } catch {}
+        }
+      } else {
+        try {
+          const ord = await api.createOrder(currentUserId, prefs.programId, 'INR')
+          await api.payOrder(ord.id, { cardNumber: '4242' })
+        } catch {}
+      }
+      navigate('/portal', { replace: true })
+    } catch (err) {
+      navigate('/portal', { replace: true })
+    } finally {
+      setBusy(false)
+    }
   }
 
   const program = ALL_OFFERINGS.find((p) => p.id === prefs.programId) || programs[0]
@@ -138,7 +159,7 @@ export function Register() {
       aside={step === 1 && program && (
         <Ticket className="lg:sticky lg:top-24 p-5 sm:p-6">
           <div className="flex items-center justify-between">
-            <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">{program.market}</span>
+            <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">{program.market || 'Institutional'}</span>
             {program.discountPercent && (
               <span className="rounded-full bg-signal text-black font-bold text-[0.65rem] px-2 py-0.5">
                 SAVE {program.discountPercent}%
@@ -147,7 +168,7 @@ export function Register() {
           </div>
           <h2 className="mt-2 font-display text-xl sm:text-2xl font-extrabold text-white">{program.title}</h2>
           <ul className="mt-4 space-y-2 border-t border-white/15 pt-4 text-xs sm:text-sm text-white/80">
-            {program.outcomes.map((o) => (
+            {(program.outcomes || program.features || []).map((o) => (
               <li key={o} className="flex items-center gap-1.5">
                 <span className="text-signal font-bold">✓</span>
                 <span>{o}</span>
@@ -155,7 +176,7 @@ export function Register() {
             ))}
           </ul>
           <div className="mt-5 flex items-baseline justify-between border-t border-white/15 pt-4">
-            <span className="text-xs text-white/60">{program.duration}</span>
+            <span className="text-xs text-white/60">{program.duration || 'All Tracks'}</span>
             <div className="text-right">
               {program.originalPrice && (
                 <span className="text-xs line-through text-white/50 block">{formatINR(program.originalPrice)}</span>
@@ -222,11 +243,11 @@ export function Register() {
                       </span>
                       {p.discountPercent && (
                         <span className="rounded bg-signal px-1.5 py-0.2 text-[0.65rem] font-bold text-ink">
-                          10% OFF
+                          40% OFF
                         </span>
                       )}
                     </div>
-                    <span className="text-xs text-white/60">{p.level}, {p.duration}</span>
+                    <span className="text-xs text-white/60">{p.level ? `${p.level}, ` : ''}{p.duration || 'All-Track Access'}</span>
                   </div>
                   <div className="text-right">
                     {p.originalPrice && (
@@ -256,7 +277,9 @@ export function Register() {
               <option>More than 3 years</option>
             </select>
           </div>
-          <button className="btn-brand w-full py-2.5 text-xs sm:text-sm font-bold shadow-md" disabled={busy}>Continue to payment</button>
+          <button className="btn-brand w-full py-2.5 text-xs sm:text-sm font-bold shadow-md" disabled={busy}>
+            {busy ? 'Enrolling & Setting Up Portal…' : 'Complete Registration & Enter Portal →'}
+          </button>
         </form>
       )}
     </AuthShell>

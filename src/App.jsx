@@ -37,9 +37,12 @@ export default function App() {
             <Route path="programs/:programId" element={<ProgramDetail />} />
             <Route path="technology" element={<Technology />} />
             <Route path="technology/tools" element={<Technology />} />
+            <Route path="knowledge-toolkit" element={<Technology />} />
+            <Route path="ebooks" element={<Technology />} />
             <Route path="tools" element={<Technology />} />
             <Route path="about" element={<About />} />
             <Route path="mentors" element={<Mentors />} />
+            <Route path="team" element={<Mentors />} />
             <Route path="contact" element={<Contact />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />

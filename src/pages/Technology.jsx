@@ -1,63 +1,10 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { FinalCta, PageHeader, usePageTitle } from '../components/sections'
-import { Section, Ticket } from '../components/ui'
+import { Section } from '../components/ui'
 import TradingTerminalVisual from '../components/TradingTerminalVisual'
+import { freeEbooks, site } from '../config/site'
 
-const ALGO_TOOLS = [
-  {
-    id: 'risk-engine',
-    title: 'Automated Risk Allocation & Lot Calculator',
-    tag: 'Capital Protection',
-    icon: '🛡️',
-    desc: 'Proprietary sizing algorithm that calculates exact lot and contract sizes before every execution. Ensures no trade ever risks more than your pre-set 1% limit, removing emotional math under live market pressure.',
-    capabilities: [
-      'Automatic lot-sizing based on precise account balance',
-      'Dynamic pip & point distance calibration',
-      'Hard maximum daily loss kill-switch protection',
-      'Automated leverage ceiling checks',
-    ],
-  },
-  {
-    id: 'execution-engine',
-    title: 'Rule-Based Algorithmic Execution Engine',
-    tag: 'Automated Precision',
-    icon: '⚡',
-    desc: 'Institutional trade management algorithm that locks profits and protects downside. Automatically moves stops to break-even at key liquidity targets, manages scale-outs, and trails runners without manual micromanagement.',
-    capabilities: [
-      'Multi-tier partial take-profit automation',
-      'Smart break-even triggers at structural targets',
-      'Dynamic volatility-based trailing stop algorithms',
-      'Zero-latency market order bracket routing',
-    ],
-  },
-  {
-    id: 'backtest-engine',
-    title: 'Quantitative Strategy Backtesting Engine',
-    tag: 'Empirical Verification',
-    icon: '📊',
-    desc: 'Test your personal trading plan over 5+ years of institutional tick data before risking real funds. Validate win-rate, maximum drawdown, profit factor, and Sharpe ratio across Forex, Crypto, and Global Equities.',
-    capabilities: [
-      'Sub-minute and tick-level historical data playback',
-      'Realistic slippage, spread, and commission modeling',
-      'Automated Monte Carlo risk simulations',
-      'Exportable audit reports for mentor review',
-    ],
-  },
-  {
-    id: 'scanner-suite',
-    title: 'Multi-Asset Institutional Market Scanner',
-    tag: 'Real-Time Alerts',
-    icon: '🛰️',
-    desc: 'Continuous algorithmic scanner monitoring 40+ major FX pairs, crypto perps, and global indices. Detects key institutional levels, volume anomalies, and liquidity sweeps across Asian, London, and New York sessions.',
-    capabilities: [
-      'Liquidity sweep & false-breakout detection',
-      'Session high/low boundary alerts in real time',
-      'Volume breakout filter to eliminate chop',
-      'Instant notifications sent directly to student dashboards',
-    ],
-  },
-]
 
 const ANALYSIS_TOOLS = [
   {
@@ -65,7 +12,7 @@ const ANALYSIS_TOOLS = [
     title: 'Order Flow & DOM (Depth of Market) Heatmaps',
     tag: 'Institutional Liquidity',
     icon: '🔥',
-    desc: 'See exactly where commercial banks and market makers have placed passive limit buy and sell orders. Trade with institutional order flow rather than guessing from retail candlestick patterns alone.',
+    desc: 'Inspect where commercial banks and market makers position passive limit orders on the orderbook. Study institutional auction dynamics and liquidity depth rather than guessing from candlestick patterns alone.',
     capabilities: [
       'Live visual liquidity depth heatmaps',
       'Iceberg order and resting limit detection',
@@ -116,25 +63,35 @@ const ANALYSIS_TOOLS = [
 
 export default function Technology() {
   const { pathname } = useLocation()
-  const isToolsRoute = pathname.includes('/tools')
-  usePageTitle(isToolsRoute ? 'Trading Tools & Software' : 'Technology & Tools')
+  usePageTitle('Knowledge Toolkit & Trading Technology')
 
-  const [activeTab, setActiveTab] = useState(isToolsRoute ? 'algo' : 'all')
+  const [downloadingBook, setDownloadingBook] = useState(null)
+  const [downloadSuccess, setDownloadSuccess] = useState(null)
+  const [emailInput, setEmailInput] = useState('')
+
+  const handleDownloadSubmit = (e, book) => {
+    e.preventDefault()
+    if (!emailInput) return
+    setDownloadSuccess(book.title)
+    setDownloadingBook(null)
+    setEmailInput('')
+    setTimeout(() => setDownloadSuccess(null), 6000)
+  }
 
   return (
     <>
       <PageHeader
         back={{ to: '/', label: 'Home' }}
-        title="Institutional Trading Technology & Tools"
-        intro="Explore the proprietary algorithmic software, order flow heatmaps, and institutional execution terminals used daily in our Dubai and India trading labs."
+        title="Knowledge Toolkit & Institutional Technology"
+        intro="Explore institutional market analysis tools, order flow heatmaps, and downloadable trading e-books developed by Theorem Institute."
       />
 
       {/* Overview Highlights Strip */}
       <section className="border-b border-white/10 bg-[#0d0d12] py-8 text-white">
         <div className="wrap grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div className="p-3">
-            <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">Multi-Monitor</div>
-            <div className="mt-1 text-xs text-white/70">Classroom Trading Stations</div>
+            <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">4 E-Books</div>
+            <div className="mt-1 text-xs text-white/70">Free E-Books & Guides</div>
           </div>
           <div className="p-3">
             <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">Tick-Level</div>
@@ -142,14 +99,135 @@ export default function Technology() {
           </div>
           <div className="p-3">
             <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">1% Hard Stop</div>
-            <div className="mt-1 text-xs text-white/70">Algorithmic Risk Allocation</div>
+            <div className="mt-1 text-xs text-white/70">Risk Control & Sizing Rules</div>
           </div>
           <div className="p-3">
-            <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">CME & FX</div>
-            <div className="mt-1 text-xs text-white/70">Institutional Direct Feeds</div>
+            <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">Multi-Screen</div>
+            <div className="mt-1 text-xs text-white/70">Classroom Trading Desks</div>
           </div>
         </div>
       </section>
+
+      {/* Free E-Books Section (Requirement 1) */}
+      <Section
+        id="ebooks"
+        tight
+        title="Free Institutional E-Books & Guides"
+        intro="Download our comprehensive e-books on price action, order flow mechanics, crypto risk management, and global macro frameworks."
+        className="bg-[#09090c] border-b border-white/10"
+      >
+        {downloadSuccess && (
+          <div className="mb-8 rounded-2xl border border-signal/40 bg-signal/15 p-5 text-white flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">📥</span>
+              <div>
+                <h4 className="font-bold text-signal text-sm">Download link dispatched!</h4>
+                <p className="text-xs text-white/80 mt-0.5">We sent <strong>{downloadSuccess}</strong> to your inbox. You can also view it instantly in your student resources.</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setDownloadSuccess(null)}
+              className="text-xs text-white/60 hover:text-white font-bold"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {freeEbooks.map((book) => (
+            <article
+              key={book.id}
+              className="card-hover-glow group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#14141c] text-white p-5 shadow-xl transition-all"
+            >
+              <div>
+                {/* Book Header Thumbnail / Image */}
+                <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/40">
+                  <img
+                    src={book.coverImage}
+                    alt={book.title}
+                    className="h-full w-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#14141c] via-transparent to-transparent" />
+                  <span className="badge-signal absolute top-2.5 left-2.5 text-[0.65rem] font-bold py-0.5 px-2">
+                    {book.tag}
+                  </span>
+                  <span className="absolute bottom-2.5 right-2.5 rounded bg-black/70 px-2 py-0.5 text-[0.68rem] font-mono font-bold text-white/90 backdrop-blur-sm">
+                    {book.pages}
+                  </span>
+                </div>
+
+                <div className="mt-4">
+                  <span className="text-[0.7rem] font-semibold text-signal uppercase tracking-wider block">
+                    {book.category}
+                  </span>
+                  <h3 className="mt-1 font-display text-lg font-extrabold text-white group-hover:text-signal transition-colors leading-snug">
+                    {book.title}
+                  </h3>
+                  <p className="mt-2 text-xs text-white/70 leading-relaxed line-clamp-3">
+                    {book.summary}
+                  </p>
+                </div>
+
+                {/* Highlights */}
+                <ul className="mt-4 space-y-1.5 border-t border-white/5 pt-3 text-[0.75rem] text-white/85">
+                  {book.highlights.slice(0, 2).map((h) => (
+                    <li key={h} className="flex items-start gap-1.5">
+                      <span className="text-signal font-bold shrink-0">✓</span>
+                      <span className="truncate">{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="mt-5 border-t border-white/10 pt-4">
+                {downloadingBook === book.id ? (
+                  <form onSubmit={(e) => handleDownloadSubmit(e, book)} className="space-y-2">
+                    <input
+                      type="email"
+                      required
+                      placeholder="Enter your email"
+                      value={emailInput}
+                      onChange={(e) => setEmailInput(e.target.value)}
+                      className="field w-full py-1.5 px-3 text-xs bg-black/60 border border-white/20 rounded-lg text-white"
+                      autoFocus
+                    />
+                    <div className="flex gap-2">
+                      <button
+                        type="submit"
+                        className="btn-brand flex-1 py-1.5 text-xs font-bold text-center"
+                      >
+                        Send PDF →
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDownloadingBook(null)}
+                        className="btn-ghost py-1.5 px-2 text-xs text-white/60"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[0.7rem] text-white/50">
+                      {book.downloads} downloads
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setDownloadingBook(book.id)}
+                      className="btn-brand py-2 px-3.5 text-xs font-bold shadow-sm inline-flex items-center gap-1.5"
+                    >
+                      <span>📥 Free Download</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </Section>
 
       {/* Interactive Pro Terminal Showcase */}
       <Section
@@ -163,55 +241,10 @@ export default function Technology() {
         </div>
       </Section>
 
-      {/* Section 1: Algorithmic Software ("Algo Software") */}
-      <Section
-        id="algo-software"
-        tight
-        title="Algorithmic Trading Software"
-        intro="Rule-based automation built to eliminate emotional errors, strictly enforce risk limits, and backtest setups across millions of historical ticks."
-      >
-        <div className="grid gap-6 md:grid-cols-2">
-          {ALGO_TOOLS.map((tool) => (
-            <article
-              key={tool.id}
-              className="card-hover-glow p-6 sm:p-7 rounded-2xl border border-white/10 bg-[#14141b] text-white flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between border-b border-white/10 pb-3.5">
-                  <span className="text-2xl">{tool.icon}</span>
-                  <span className="badge-signal text-xs font-bold uppercase py-0.5 px-2.5">
-                    {tool.tag}
-                  </span>
-                </div>
-                <h3 className="mt-4 font-display text-xl sm:text-2xl font-bold text-white">
-                  {tool.title}
-                </h3>
-                <p className="mt-2 text-xs sm:text-sm text-white/75 leading-relaxed">
-                  {tool.desc}
-                </p>
-
-                <div className="mt-5 space-y-2 border-t border-white/5 pt-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-white/50">Key Capabilities</h4>
-                  <ul className="space-y-1.5 text-xs text-white/90">
-                    {tool.capabilities.map((c) => (
-                      <li key={c} className="flex items-center gap-2">
-                        <span className="text-signal font-bold">✓</span>
-                        <span>{c}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      {/* Section 2: Market Analysis Software */}
+      {/* Market Analysis & Order Flow Software */}
       <Section
         id="analysis-software"
         tight
-        dark
         title="Market Analysis & Order Flow Software"
         intro="Look beneath standard retail candlestick charts. Our analysis software exposes real-time institutional liquidity, volume delta aggression, and value areas."
       >
@@ -255,6 +288,7 @@ export default function Technology() {
       {/* Classroom Hardware Infrastructure */}
       <Section
         tight
+        dark
         title="Classroom Hardware & Multi-Screen Labs"
         intro="How technology is deployed inside our Dubai Business Bay and India campus classrooms."
       >
@@ -285,7 +319,7 @@ export default function Technology() {
 
       {/* Closing Call to Action */}
       <FinalCta
-        title="See our algo & analysis tools in action."
+        title="See our market analysis tools in action."
         body="Visit our Dubai campus in Business Bay, drop into our India lab, or book a live 1-on-1 Zoom walkthrough with an advisor."
       />
     </>

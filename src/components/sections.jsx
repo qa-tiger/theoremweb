@@ -54,7 +54,7 @@ export function PageHeader({ back, title, intro, children }) {
 const TRUST = [
   ['Real physical classrooms', 'In Dubai (Business Bay) and India. Visit before enrolling.'],
   ['Every class recorded', 'Instant 24/7 access in your student portal.'],
-  ['1-on-1 Trade reviews', 'Personal feedback on your own chart executions, not signals.'],
+  ['1-on-1 Academic reviews', 'Personal feedback on your assignments, chart markups, and risk parameters.'],
   [`${offer.refundDays}-day refund guarantee`, '100% money-back if the program is not right for you.'],
 ]
 
@@ -84,15 +84,15 @@ const PATHS = [
   {
     badge: 'Beginner',
     situation: 'Zero Experience',
-    body: 'Learn chart mechanics, broker safety, pip/lot sizing, and strict 1% risk management from scratch.',
+    body: 'Learn chart mechanics, order execution, pip/lot sizing, and strict 1% risk management from scratch.',
     skills: ['Chart Mechanics', 'Position Sizing', 'Risk Rules', 'MT4 / MT5'],
     programs: ['forex-basic'],
   },
   {
     badge: 'Active Trader',
     situation: 'Seeking Consistency',
-    body: 'Move beyond signals. Master market structure, institutional liquidity, and prop-firm qualification.',
-    skills: ['Market Structure', 'Liquidity Zones', 'Trade Reviews', 'Prop-Firm Prep'],
+    body: 'Build authentic market competence. Master market structure, institutional liquidity, and systematic risk frameworks.',
+    skills: ['Market Structure', 'Liquidity Zones', 'Assignment Reviews', 'Execution Rules'],
     programs: ['forex-advanced'],
   },
   {
@@ -273,12 +273,12 @@ export function HybridExperience() {
     },
     {
       num: '02',
-      title: 'Personal Mentor Trade Reviews',
+      title: 'Personal Mentor Assignment Reviews',
       tag: 'Real Chart Feedback',
-      desc: 'Your lead mentor personally reviews the trades you log during the course. Understand why you entered, where you placed your stop, and how to improve.',
+      desc: 'Your lead mentor personally reviews the assignments and chart setups you submit during the course. Understand why you entered, where you placed your stop, and how to improve.',
       points: [
-        'Weekly 1-on-1 private chart execution reviews',
-        'Trade journal verification before scaling position size',
+        'Weekly 1-on-1 private chart assignment reviews',
+        'Journal and risk verification before scaling position size',
         'Pinpoint entry, stop-loss and risk optimization',
       ],
     },
@@ -318,62 +318,56 @@ export function HybridExperience() {
   )
 }
 
-// The All-Access 4-Course Bundle Offer: displays all 4 courses in one unified package with 10% bundle discount.
+// The All-Access Multi-Track Bundle Offer: "Learn all programs and save 40%" promotional banner.
 export function Offer({ className = 'bg-card/40' }) {
-  const [currency, setCurrency] = useState('INR')
-
-  const isAed = currency === 'AED'
-  const totalDisplay = isAed ? `AED ${bundlePackage.totalAed.toLocaleString('en-AE')}` : formatINR(bundlePackage.totalInr)
-  const discountedDisplay = isAed ? `AED ${bundlePackage.discountedAed.toLocaleString('en-AE')}` : formatINR(bundlePackage.discountedInr)
-  const savingsDisplay = isAed ? `AED ${bundlePackage.savingsAed.toLocaleString('en-AE')}` : formatINR(bundlePackage.savingsInr)
-
   return (
     <Section tight className={`${className} border-t border-line`}>
       <div className="grid-12 gap-y-8 lg:gap-x-12 lg:items-center">
-        {/* Left Column: 4-Course Package Breakdown & Inclusions */}
+        {/* Left Column: All-Access Package Breakdown & Inclusions */}
         <div className="col-span-4 sm:col-span-8 lg:col-span-7 space-y-5">
           <div>
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
                 All-Access Master Pass
               </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-bull/15 px-2.5 py-0.5 text-[0.65rem] font-bold text-bull">
-                <span>🔥 10% Bundle Discount Included</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-signal/15 border border-signal/30 px-2.5 py-0.5 text-[0.65rem] font-bold text-signal">
+                <span>🔥 Limited Cohort Promotional Pass</span>
               </span>
             </div>
             <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
-              All 4 Flagship Programs. <span className="gold-foil-text">Everything in One Fee.</span>
+              Learn all programs and <span className="gold-foil-text">save 40%.</span>
             </h2>
-            <p className="mt-2 text-xs sm:text-sm text-white/65 leading-relaxed max-w-xl">
-              Gain complete multi-asset mastery across Forex, Crypto, and Global Equities. Enrol in the full curriculum with dedicated mentorship, private mentor reviews, and verified certifications.
+            <p className="mt-2 text-xs sm:text-sm text-white/75 leading-relaxed max-w-xl">
+              Gain complete multi-asset mastery across Forex, Crypto, and Global Equities. Enrol in our comprehensive multi-track pass with dedicated mentor guidance, weekly assignment reviews, and verified institutional certifications.
             </p>
           </div>
 
-          {/* Mention 4 Courses Included as Clean Badges */}
+          {/* Asset Categories Badges */}
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            {programs.map((p) => (
-              <Link
-                key={p.id}
-                to={`/programs/${p.id}`}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#22222a] px-3 py-1.5 text-xs font-bold text-white shadow-sm transition-all hover:border-signal hover:text-signal hover:bg-signal/10"
-              >
-                <span className="text-signal font-bold">✓</span>
-                <span>{p.title}</span>
-                <span className="text-[0.7rem] font-medium text-white/50">({p.duration})</span>
-              </Link>
-            ))}
+            <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#22222a] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
+              <span className="text-signal font-bold">✓</span>
+              <span>Forex (Basic to Advanced)</span>
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#22222a] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
+              <span className="text-signal font-bold">✓</span>
+              <span>Crypto (Basic to Advanced)</span>
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#22222a] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
+              <span className="text-signal font-bold">✓</span>
+              <span>Equity (Basic to Advanced)</span>
+            </span>
           </div>
 
-          {/* Package Inclusions Checklist: 4 clean highlights */}
+          {/* Package Inclusions Checklist */}
           <div className="card-rich p-4.5 sm:p-5">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white/60 mb-3">
-              Included with Your All-Access Pass:
+              Included with Your All-Access Master Pass:
             </h4>
             <ul className="grid sm:grid-cols-2 gap-3 text-xs sm:text-[0.82rem]">
               {[
-                'Full 4 flagship curriculums (26 weeks total)',
-                '4 official verified graduation certificates',
-                'Weekly 1-on-1 private trade reviews',
+                'Full multi-track access across all asset classes',
+                'Official verified graduation certificates',
+                'Weekly 1-on-1 private assignment & chart reviews',
                 'Dubai & India trading floors + 24/7 recordings',
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2">
@@ -387,92 +381,60 @@ export function Offer({ className = 'bg-card/40' }) {
           </div>
         </div>
 
-        {/* Right Column: Executive Gold & Obsidian Package Ticket */}
+        {/* Right Column: Promotional Pass Ticket */}
         <div className="col-span-4 sm:col-span-8 lg:col-span-5">
           <Ticket className="relative p-5 sm:p-7 overflow-hidden rounded-2xl">
-            {/* Top Tag & Currency Toggle */}
+            {/* Top Tag */}
             <div className="flex items-center justify-between border-b border-white/15 pb-4">
               <div>
                 <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
-                  4-Course Master Pass
+                  Institutional Multi-Track Pass
                 </span>
                 <p className="mt-1 text-[0.7rem] text-white/60 font-medium">Dubai • India • Live Online</p>
               </div>
 
-              {/* Currency Toggle */}
-              <div className="flex items-center rounded-lg border border-white/20 bg-black/40 p-0.5">
-                <button
-                  type="button"
-                  onClick={() => setCurrency('INR')}
-                  className={`rounded-md px-2.5 py-1 text-xs font-bold transition-all ${
-                    currency === 'INR' ? 'bg-signal text-black font-extrabold shadow-sm' : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  ₹ INR
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setCurrency('AED')}
-                  className={`rounded-md px-2.5 py-1 text-xs font-bold transition-all ${
-                    currency === 'AED' ? 'bg-signal text-black font-extrabold shadow-sm' : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  AED
-                </button>
-              </div>
+              <span className="rounded-full bg-signal text-black px-2.5 py-1 text-xs font-extrabold shadow-sm">
+                40% OFF
+              </span>
             </div>
 
-            {/* Price Calculation Display with 10% Discount */}
-            <div className="mt-5 space-y-1">
-              <div className="flex items-center justify-between text-xs text-white/65">
-                <span>Total Individual Value (4 Courses):</span>
-                <span className="line-through text-white/50 tabular-nums text-sm">{totalDisplay}</span>
-              </div>
-              <div className="flex items-center justify-between text-xs font-semibold text-signal">
-                <span>Bundle Discount (10% OFF):</span>
-                <span className="tabular-nums">- {savingsDisplay}</span>
-              </div>
-              <div className="pt-2 border-t border-white/15 flex items-baseline justify-between">
-                <div>
-                  <span className="text-[0.65rem] font-bold uppercase tracking-wider text-white/60 block">
-                    All-Inclusive Bundle Fee
-                  </span>
-                  <div className="font-display text-3xl sm:text-4xl lg:text-[2.6rem] font-extrabold gold-foil-text tabular-nums leading-none mt-1">
-                    {discountedDisplay}
-                  </div>
-                </div>
-                <span className="rounded-full bg-signal/20 border border-signal/40 px-2.5 py-1 text-xs font-bold text-signal">
-                  SAVE 10%
+            {/* Discount Banner Highlights */}
+            <div className="mt-5 space-y-3">
+              <div className="rounded-xl border border-signal/30 bg-signal/10 p-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-signal block">
+                  Promotional Opportunity
                 </span>
+                <div className="font-display text-2xl sm:text-3xl font-extrabold text-white mt-1 leading-tight">
+                  Learn All Programs & Save 40%
+                </div>
+                <p className="mt-1.5 text-xs text-white/80 leading-relaxed">
+                  Lock in institutional tuition savings when enrolling across multiple tracks together in this month's cohort.
+                </p>
               </div>
             </div>
-
-            <p className="mt-4 text-xs text-white/75 leading-relaxed">
-              Complete enrollment for all 4 courses. Pay securely via Credit Card, Debit Card, UPI, or Apple Pay with zero hidden fees.
-            </p>
 
             {/* Actions */}
             <div className="mt-5 flex flex-col gap-2.5">
               <Link
-                to="/register?program=all-programs-bundle"
+                to="/contact?package=all-programs-40-off"
                 className="btn-brand shimmer-button w-full py-3 text-xs sm:text-sm font-bold text-center block shadow-[0_0_20px_rgba(242,177,52,0.4)]"
               >
-                Enrol in All 4 Courses (Save 10%) →
+                Claim 40% Bundle Pass (Contact Us) →
               </Link>
-              <Link
-                to="/contact?package=all-4-courses"
+              <a
+                href={site.whatsappLink}
                 className="btn-outline-light w-full py-2.5 text-xs sm:text-sm font-semibold text-center block"
               >
-                Speak with Admissions Advisor
-              </Link>
+                Inquire on WhatsApp
+              </a>
             </div>
 
-            {/* Refund terms & Guarantee */}
+            {/* Guarantee */}
             <div className="mt-5 border-t border-white/15 pt-3.5 flex items-center justify-between text-[0.7rem] text-white/65">
               <span className="flex items-center gap-1 text-signal font-semibold">
-                <span>🛡️</span> 100% {offer.refundDays}-Day Refund Guarantee
+                <span>🛡️</span> 100% {offer.refundDays}-Day Guarantee
               </span>
-              <span>4 Verified Certifications</span>
+              <span>Verified Certifications</span>
             </div>
           </Ticket>
         </div>
@@ -514,7 +476,7 @@ export function Approach({ action, dark = false, className = '' }) {
     <Section
       tight
       title="The 4-stage learning method."
-      intro="Nobody learns to trade profitably from videos alone. Every program moves through four practical stages with dedicated mentor guidance."
+      intro="Nobody develops genuine market discipline from passive videos alone. Every program moves through four practical stages with dedicated mentor guidance."
       action={action}
       dark={dark}
       className={className}
@@ -532,7 +494,7 @@ export function ApproachCondensed({ action }) {
       tight
       dark
       title="A four-stage method."
-      intro="Learn it, practise it, trade it small with review, then journal it. Your mentor decides when you move on."
+      intro="Learn it, practise it, execute in simulation with mentor review, then journal it. Your mentor decides when you move on."
       action={action}
     >
       <ol className="grid gap-4 sm:grid-cols-2">
@@ -569,7 +531,7 @@ export function Story() {
               {[
                 ['Classroom / Zoom', 'Two live mentor-led sessions with live chart analysis.'],
                 ['Simulation Lab', 'One structured practice session on demo micro-lots.'],
-                ['Weekly Trade Review', '1-on-1 mentor review of the trades logged in your journal.'],
+                ['Weekly Assignment Review', '1-on-1 mentor review of the chart assignments and trade logs in your journal.'],
               ].map(([tag, d]) => (
                 <li key={tag} className="border-b border-white/10 pb-2 last:border-b-0 last:pb-0">
                   <span className="font-bold text-white block">{tag}</span>
@@ -614,7 +576,7 @@ export function Experience() {
 
 const OUTCOMES = [
   ['A written trading plan', 'Your markets, your setups, how much you risk per trade, and the rules for when you stop. Written by you, checked by your mentor.'],
-  ['A reviewed trade journal', 'Every trade you logged during the program, with your reasoning and your mentor’s notes beside it.'],
+  ['A reviewed chart journal', 'Every practical assignment and chart setup you submitted during the program, with your reasoning and your mentor’s notes beside it.'],
   ['Notes and recordings', 'Module notes and class recordings stay in your student portal, so you can go back to any lesson anytime.'],
   ['Verified Certificate', 'Issued when you complete every lesson, pass every module quiz, and defend your final trading plan.'],
 ]

@@ -8,11 +8,10 @@ import {
   Faq,
   FinalCta,
   HybridExperience,
-  Stories,
   usePageTitle,
 } from '../components/sections'
 import { ImageBlock, Section } from '../components/ui'
-import { site, teachers } from '../config/site'
+import { site, stories, teachers } from '../config/site'
 
 const SCENE_ROTATION = ['dubai', 'online', 'india']
 
@@ -41,11 +40,11 @@ function Hero() {
           {/* Left Column: Authoritative Value Proposition & Direct CTAs */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-6 self-start">
             
-            {/* Campus Presence Badge */}
+            {/* Simplified Campus Presence Badge (Requirement 2: India, Dubai, Online) */}
             <div className="flex flex-wrap items-center gap-2">
               <div className="inline-flex items-center gap-2 rounded-full border border-signal/40 bg-[#121218]/90 px-3.5 py-1.5 text-xs font-semibold text-white/95 backdrop-blur-md shadow-sm">
                 <span className="size-2 rounded-full bg-signal animate-pulse" />
-                <span>🇦🇪 Dubai Campus • 🇮🇳 India Hub • 🌐 Live Online</span>
+                <span>🇮🇳 India • 🇦🇪 Dubai • 🌐 Online</span>
               </div>
             </div>
 
@@ -81,17 +80,24 @@ function Hero() {
               </Link>
             </div>
 
-            {/* Clean Trust & Metric Strip */}
+            {/* Clean Trust & Metric Strip with direct Google Review rating link */}
             <div className="pt-4 border-t border-white/10">
               <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-lg">
-                <div>
-                  <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text tabular-nums leading-none">
+                <a
+                  href={site.googleReviewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block transition-all hover:opacity-95"
+                  title="View Theorem Institute Verified Google Reviews"
+                >
+                  <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text tabular-nums leading-none flex items-center gap-1">
                     4.9 <span className="text-sm font-sans text-signal">★</span>
+                    <span className="text-[0.65rem] font-sans text-white/50 group-hover:text-signal transition-colors">↗</span>
                   </div>
-                  <div className="mt-1.5 text-xs text-white/70 font-medium leading-tight">
-                    Verified Rating
+                  <div className="mt-1.5 text-xs text-white/80 font-medium leading-tight group-hover:text-signal transition-colors underline decoration-dotted">
+                    Google Reviews
                   </div>
-                </div>
+                </a>
                 <div>
                   <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text tabular-nums leading-none">
                     1,850+
@@ -124,13 +130,13 @@ function Hero() {
   )
 }
 
-// Compact mentor preview cards for the homepage
-function MentorsPreview() {
+// Team Preview Cards (Requirement 3: Renamed to "Our Team")
+function TeamPreview() {
   return (
     <Section
       tight
-      title="The mentors who guide your trades."
-      intro="Each cohort is led by one dedicated mentor from day one to graduation. No recorded bots or revolving instructors."
+      title="Our Team"
+      intro="Institutional mentors who guide your market education directly. You meet them in your first class, and they review your assignments until your last."
       action={<Link to="/mentors" className="link-line">Meet full faculty →</Link>}
     >
       <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
@@ -157,6 +163,71 @@ function MentorsPreview() {
   )
 }
 
+// Dedicated Student Testimonials Section (Requirement 3)
+function StudentTestimonialsSection() {
+  return (
+    <Section
+      tight
+      title="Student Testimonials"
+      intro="Real experiences from traders who completed our Dubai, India, and online cohorts."
+      action={
+        <a
+          href={site.googleReviewUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="link-line text-signal"
+        >
+          Read Google Reviews ↗
+        </a>
+      }
+      className="bg-[#09090d] border-t border-white/10"
+    >
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {stories.map((story) => (
+          <article
+            key={story.name}
+            className="card-hover-glow flex flex-col justify-between rounded-2xl border border-white/10 bg-[#13131b] p-6 text-white shadow-xl"
+          >
+            <div>
+              {/* Star Rating & Outcome */}
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <div className="flex text-signal text-sm tracking-tighter">
+                  {'★'.repeat(story.rating || 5)}
+                </div>
+                {story.outcome && (
+                  <span className="badge-signal text-[0.65rem] font-bold py-0.5 px-2">
+                    {story.outcome}
+                  </span>
+                )}
+              </div>
+
+              {/* Quote */}
+              <blockquote className="mt-4 text-xs sm:text-sm text-white/85 leading-relaxed italic">
+                “{story.quote}”
+              </blockquote>
+            </div>
+
+            {/* Author details */}
+            <div className="mt-6 flex items-center gap-3 border-t border-white/10 pt-4">
+              <div className="size-9 rounded-full bg-signal/20 border border-signal/40 flex items-center justify-center font-bold text-signal text-xs">
+                {story.name.charAt(0)}
+              </div>
+              <div>
+                <div className="text-xs sm:text-sm font-bold text-white leading-tight">
+                  {story.name}
+                </div>
+                <div className="text-[0.7rem] text-white/55">
+                  {story.program} • {story.location}
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </Section>
+  )
+}
+
 export default function Home() {
   usePageTitle(null)
   return (
@@ -167,7 +238,7 @@ export default function Home() {
       {/* 2. Core Trust Stats Bar */}
       <FactsStrip />
 
-      {/* 3. Why Theorem Institute: 3 Clear Pillars (Clean Fundfloat-style simplicity) */}
+      {/* 3. Why Theorem Institute: 3 Clear Pillars */}
       <HybridExperience />
 
       {/* 4. The 4-Stage Teaching Method */}
@@ -176,16 +247,16 @@ export default function Home() {
         action={<Link to="/about" className="link-line text-white">Our teaching philosophy →</Link>}
       />
 
-      {/* 6. Lead Mentors Spotlight */}
-      <MentorsPreview />
+      {/* 5. Our Team Spotlight */}
+      <TeamPreview />
 
-      {/* 7. Verified Student Stories */}
-      <Stories limit={1} />
+      {/* 6. Dedicated Student Testimonials Section */}
+      <StudentTestimonialsSection />
 
-      {/* 8. Frequently Asked Questions */}
+      {/* 7. Frequently Asked Questions */}
       <Faq className="bg-card" />
 
-      {/* 9. Closing Conversion Banner */}
+      {/* 8. Closing Conversion Banner */}
       <FinalCta
         title="Start trading with a proven, reviewed plan."
         body="Tell us what you trade now, or start from scratch. Join our next cohort in Dubai, India, or live online."
