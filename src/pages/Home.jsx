@@ -45,16 +45,9 @@ function Hero() {
           {/* Left Column: Authoritative Value Proposition & Direct CTAs */}
           <div className="lg:col-span-7 space-y-5 sm:space-y-6 self-start">
             
-            {/* Campus Presence Badge */}
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="inline-flex items-center gap-2 rounded-full border border-signal/40 bg-[#121218]/90 px-3.5 py-1.5 text-xs font-semibold text-white/95 backdrop-blur-md shadow-sm">
-                <span className="size-2 rounded-full bg-signal animate-pulse" />
-                <span>🇮🇳 India Hub • 🇦🇪 Dubai Campus • 🌐 Live Online</span>
-              </div>
-            </div>
-
             {/* Main Headline */}
             <div className="space-y-3 sm:space-y-3.5">
+              <p className="text-sm font-medium text-white/55">Campuses in Dubai and India, plus live cohorts worldwide.</p>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-[4rem] font-extrabold tracking-tight leading-[1.02]">
                 <span className="text-white">Master </span>
                 <span className="gold-bright-text">Institutional Trading.</span>

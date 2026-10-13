@@ -86,7 +86,7 @@ function MobileCtaBar() {
 }
 
 /*
-  Desktop Concierge Pill: A discreet floating badge for instant Dubai & India admissions chat.
+  Desktop Concierge Pill: a discreet floating link to WhatsApp admissions.
 */
 function DesktopConciergePill() {
   const { pathname } = useLocation()
@@ -99,14 +99,10 @@ function DesktopConciergePill() {
         href={site.whatsappLink}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex items-center gap-2.5 rounded-full border border-signal/40 bg-[#0d0d12]/90 px-4 py-2 text-xs font-bold text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-signal"
+        className="flex items-center gap-2 rounded-full border border-signal/40 bg-[#0d0d12]/90 px-4 py-2 text-xs font-bold text-white shadow-xl backdrop-blur-md transition-all duration-300 hover:scale-105 hover:border-signal"
       >
-        <span className="relative flex size-2.5">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-75" />
-          <span className="relative inline-flex size-2.5 rounded-full bg-signal" />
-        </span>
-        <span>Admissions Desk • Dubai & India</span>
-        <span className="rounded bg-signal/20 px-1.5 py-0.5 text-[0.65rem] font-bold text-signal">Online</span>
+        <span className="size-2 rounded-full bg-signal" />
+        Chat with admissions on WhatsApp
       </a>
     </aside>
   )

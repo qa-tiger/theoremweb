@@ -63,10 +63,7 @@ export function FactsStrip() {
       <dl className="wrap grid grid-cols-2 lg:grid-cols-4 py-5 sm:py-6 gap-y-4">
         {TRUST.map(([k, v], i) => (
           <div key={k} className={`border-board-line px-3 sm:px-6 ${i % 2 ? 'border-l' : ''} ${i >= 2 ? 'lg:border-l' : ''}`}>
-            <dt className="font-cond text-xs sm:text-sm font-bold text-signal flex items-center gap-1.5">
-              <span>✓</span>
-              <span>{k}</span>
-            </dt>
+            <dt className="font-cond text-xs sm:text-sm font-bold text-signal">{k}</dt>
             <dd className="mt-1 text-xs text-white/70 leading-relaxed">{v}</dd>
           </div>
         ))}
