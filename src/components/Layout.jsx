@@ -9,7 +9,7 @@ import { ScrollProgressBar } from './ui'
 export function Wordmark({ className = '', onClick }) {
   return (
     <Link to="/" onClick={onClick} className={`flex items-center ${className}`}>
-      <img src="/theorem-logo.png" alt={site.name} className="mark-in h-9 w-auto object-contain" />
+      <img src="/theorem-logo.png" alt={site.name} className="mark-in h-12 w-auto object-contain" />
     </Link>
   )
 }
