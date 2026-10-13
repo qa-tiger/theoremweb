@@ -29,6 +29,47 @@ function ErrorText({ children }) {
   return <p role="alert" className="border-l-4 border-bear bg-bear/10 px-4 py-3 text-xs sm:text-sm text-bear rounded-r-lg">{children}</p>
 }
 
+// Password input with a show/hide toggle, so people can check what they typed before submitting.
+function PasswordField({ id, label, value, onChange, autoComplete, minLength, hint }) {
+  const [visible, setVisible] = useState(false)
+  return (
+    <div>
+      <label className="label text-xs font-bold text-white/90" htmlFor={id}>{label}</label>
+      <div className="relative">
+        <input
+          id={id}
+          type={visible ? 'text' : 'password'}
+          required
+          minLength={minLength}
+          autoComplete={autoComplete}
+          className="field py-2 pr-10 text-xs sm:text-sm"
+          value={value}
+          onChange={onChange}
+        />
+        <button
+          type="button"
+          onClick={() => setVisible((v) => !v)}
+          aria-label={visible ? 'Hide password' : 'Show password'}
+          aria-pressed={visible}
+          className="absolute right-0 top-0 flex h-full w-9 items-center justify-center text-white/50 hover:text-signal"
+        >
+          {visible ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <path d="M3 3l18 18M10.6 10.6a3 3 0 0 0 4.24 4.24M6.6 6.6C4.3 8.1 2.7 10 2 12c1.6 4.2 5.6 7 10 7 1.7 0 3.3-.4 4.7-1.1M12 5c4.4 0 8.4 2.8 10 7-.5 1.3-1.3 2.6-2.3 3.6" />
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <path d="M2 12c1.6-4.2 5.6-7 10-7s8.4 2.8 10 7c-1.6 4.2-5.6 7-10 7s-8.4-2.8-10-7Z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          )}
+        </button>
+      </div>
+      {hint && <p className="mt-1 text-[0.7rem] text-white/50">{hint}</p>}
+    </div>
+  )
+}
+
 // ---------- Login ----------
 
 export function Login() {
@@ -61,10 +102,16 @@ export function Login() {
           <label className="label text-xs font-bold text-white/90" htmlFor="email">Email</label>
           <input id="email" type="email" required autoComplete="email" className="field py-2 text-xs sm:text-sm" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
         </div>
-        <div>
-          <label className="label text-xs font-bold text-white/90" htmlFor="password">Password</label>
-          <input id="password" type="password" required autoComplete="current-password" className="field py-2 text-xs sm:text-sm" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
-        </div>
+        <PasswordField
+          id="password"
+          label="Password"
+          autoComplete="current-password"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+        />
+        <p className="text-xs text-white/60 -mt-2">
+          <Link to="/contact" className="link-line text-signal">Forgot your password?</Link>
+        </p>
         <ErrorText>{error}</ErrorText>
         <button className="btn-brand w-full py-2.5 text-xs sm:text-sm font-bold shadow-md" disabled={busy}>{busy ? 'Logging in…' : 'Log in'}</button>
         <p className="text-xs text-white/60 text-center pt-2">New here? <Link to="/register" className="link-line text-signal font-bold">Create an account</Link></p>
@@ -100,6 +147,7 @@ export function Register() {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [account, setAccount] = useState({ name: '', email: '', phone: '', password: '' })
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [prefs, setPrefs] = useState({
     programId: params.get('program') || user?.programId || 'forex-basic',
     mode: user?.mode || 'Online',
@@ -109,6 +157,7 @@ export function Register() {
   async function createAccount(e) {
     e.preventDefault()
     if (account.password.length < 8) return setError('Use at least 8 characters for your password.')
+    if (account.password !== confirmPassword) return setError('Those passwords don’t match.')
     setBusy(true)
     setError('')
     try {
@@ -187,10 +236,24 @@ export function Register() {
               <input id="phone" type="tel" required autoComplete="tel" placeholder="+91 or +971" className="field py-2 text-xs sm:text-sm" value={account.phone} onChange={(e) => setAccount({ ...account, phone: e.target.value })} />
             </div>
           </div>
-          <div>
-            <label className="label text-xs font-bold text-white/90" htmlFor="password">Password</label>
-            <input id="password" type="password" required minLength={8} autoComplete="new-password" className="field py-2 text-xs sm:text-sm" value={account.password} onChange={(e) => setAccount({ ...account, password: e.target.value })} />
-            <p className="mt-1 text-[0.7rem] text-white/50">At least 8 characters.</p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <PasswordField
+              id="password"
+              label="Password"
+              autoComplete="new-password"
+              minLength={8}
+              value={account.password}
+              onChange={(e) => setAccount({ ...account, password: e.target.value })}
+              hint="At least 8 characters."
+            />
+            <PasswordField
+              id="confirm-password"
+              label="Confirm password"
+              autoComplete="new-password"
+              minLength={8}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
           </div>
           <ErrorText>{error}</ErrorText>
           <button className="btn-brand w-full py-2.5 text-xs sm:text-sm font-bold shadow-md" disabled={busy}>{busy ? 'Creating account…' : 'Create account'}</button>
