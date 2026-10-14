@@ -60,11 +60,11 @@ export function FactsStrip() {
   const ref = useReveal()
   return (
     <div ref={ref} className="reveal-up border-b border-board-line bg-[#08080a] text-white">
-      <dl className="wrap grid grid-cols-2 lg:grid-cols-4 py-5 sm:py-6 gap-y-4">
-        {TRUST.map(([k, v], i) => (
-          <div key={k} className={`border-board-line px-3 sm:px-6 ${i % 2 ? 'border-l' : ''} ${i >= 2 ? 'lg:border-l' : ''}`}>
-            <dt className="font-cond text-xs sm:text-sm font-bold text-signal">{k}</dt>
-            <dd className="mt-1 text-xs text-white/70 leading-relaxed">{v}</dd>
+      <dl className="wrap grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6 py-7 sm:py-8">
+        {TRUST.map(([k, v]) => (
+          <div key={k} className="border-l-2 border-signal/50 pl-4">
+            <dt className="text-sm sm:text-base font-bold text-white leading-snug">{k}</dt>
+            <dd className="mt-1.5 text-xs text-white/55 leading-relaxed">{v}</dd>
           </div>
         ))}
       </dl>

@@ -11,7 +11,6 @@ const CAMPUSES = [
   {
     id: 'india',
     title: 'India Trading & Technology Lab',
-    location: 'Metro Financial Hub, India',
     image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=1200&q=85',
     hours: 'Mon – Sat, 10:00 – 19:00 IST',
     perks: [
@@ -20,12 +19,10 @@ const CAMPUSES = [
       'Dedicated mentor workstations',
       'Peer trading circles & group review sessions',
     ],
-    status: 'Classroom Lab Enrolling',
   },
   {
     id: 'dubai',
     title: 'Dubai Business Bay Campus',
-    location: 'Business Bay, Dubai, UAE',
     image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=85',
     hours: 'Sat – Thu, 10:00 – 19:00 GST',
     perks: [
@@ -34,12 +31,10 @@ const CAMPUSES = [
       'Small cohorts capped at 15 traders',
       'Student trading lounge & peer networking',
     ],
-    status: 'Next Cohort Enrolling',
   },
   {
     id: 'online',
     title: 'Live Interactive Online Cohort',
-    location: 'Available Globally (Dubai & India Timings)',
     image: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=1200&q=85',
     hours: 'Evening & Weekend Batches (GST / IST)',
     perks: [
@@ -48,7 +43,6 @@ const CAMPUSES = [
       '24/7 session recordings in your student portal',
       'Weekly 1-on-1 mentor trade reviews',
     ],
-    status: 'Online Batch Enrolling',
   },
 ]
 
@@ -99,14 +93,6 @@ export default function DubaiCampusShowcase({ activeId = 'india', onSelect }) {
           />
           {/* Subtle Contrast Gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#101016] via-[#101016]/30 to-black/40" />
-
-          {/* Top Overlays: Location & Enrolling Status */}
-          <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 text-xs font-semibold">
-            <span className="rounded-full bg-black/70 px-3 py-1 text-white/95 backdrop-blur-md">
-              {activeCampus.location}
-            </span>
-            <span className="text-bull drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">{activeCampus.status}</span>
-          </div>
 
           {/* Bottom Title on Image */}
           <div className="absolute bottom-3 left-4 right-4">
