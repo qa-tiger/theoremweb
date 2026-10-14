@@ -508,6 +508,14 @@ header .badge-signal,
   animation: rise 0.7s var(--ease-out) both;
 }
 
+@keyframes photo-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.photo-fade {
+  animation: photo-fade-in 0.5s ease-out both;
+}
+
 @keyframes sweep {
   from { transform: translateX(-100%); opacity: 0; }
   20% { opacity: 1; }
@@ -647,7 +655,7 @@ header .badge-signal,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-rise, .page-enter, .line-in, .mark-in, .flap.is-flipping, .board-sweep::before {
+  .hero-rise, .page-enter, .line-in, .mark-in, .flap.is-flipping, .board-sweep::before, .photo-fade {
     animation: none;
   }
   .reveal, .stagger > *, .cta-bar {

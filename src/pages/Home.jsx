@@ -46,7 +46,7 @@ function Hero() {
           <div className="lg:col-span-7 space-y-5 sm:space-y-6 self-start">
             
             {/* Main Headline */}
-            <div className="space-y-3 sm:space-y-3.5">
+            <div className="hero-rise space-y-3 sm:space-y-3.5">
               <p className="text-sm font-medium text-white/55">Campuses in Dubai and India, plus live cohorts worldwide.</p>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-[4rem] font-extrabold tracking-tight leading-[1.02]">
                 <span className="text-white">Master </span>
@@ -63,7 +63,7 @@ function Hero() {
             </div>
 
             {/* Direct Action CTAs */}
-            <div className="flex flex-wrap items-center gap-3.5 pt-1">
+            <div className="hero-rise flex flex-wrap items-center gap-3.5 pt-1" style={{ animationDelay: '120ms' }}>
               <Link
                 to="/programs"
                 className="btn-brand shimmer-button px-7 py-3.5 text-xs sm:text-sm font-bold"
@@ -79,7 +79,7 @@ function Hero() {
             </div>
 
             {/* Clean Trust & Metric Strip */}
-            <div className="pt-4 border-t border-white/10">
+            <div className="hero-rise pt-4 border-t border-white/10" style={{ animationDelay: '240ms' }}>
               <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-lg">
                 <a
                   href={site.googleReviewLink}
@@ -116,7 +116,7 @@ function Hero() {
           </div>
 
           {/* Right Column: Interactive Campus Showcase Card */}
-          <div className="lg:col-span-5 relative self-start">
+          <div className="hero-rise lg:col-span-5 relative self-start" style={{ animationDelay: '160ms' }}>
             <DubaiCampusShowcase activeId={activeScene} onSelect={setActiveScene} />
           </div>
 

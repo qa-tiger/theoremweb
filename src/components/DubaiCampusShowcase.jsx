@@ -86,9 +86,10 @@ export default function DubaiCampusShowcase({ activeId = 'india', onSelect }) {
         {/* High-Definition Photographic Showcase Window */}
         <div className="relative h-52 sm:h-60 w-full overflow-hidden">
           <img
+            key={activeCampus.id}
             src={activeCampus.image}
             alt={activeCampus.title}
-            className="h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-105"
+            className="photo-fade h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-105"
             loading="eager"
           />
           {/* Subtle Contrast Gradient */}
