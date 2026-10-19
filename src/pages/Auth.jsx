@@ -591,7 +591,7 @@ export function Register() {
             </div>
             <div>
               <label className="label text-xs font-bold text-white/90" htmlFor="phone">WhatsApp number</label>
-              <input id="phone" type="tel" required autoComplete="tel" placeholder="+91 or +971" className="field py-2 text-xs sm:text-sm" value={account.phone} onChange={(e) => setAccount({ ...account, phone: e.target.value })} />
+              <input id="phone" type="tel" required autoComplete="tel" placeholder="Phone number" className="field py-2 text-xs sm:text-sm" value={account.phone} onChange={(e) => setAccount({ ...account, phone: e.target.value })} />
             </div>
           </div>
 

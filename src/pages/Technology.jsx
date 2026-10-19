@@ -488,7 +488,7 @@ export default function Technology() {
                     id="lead-phone"
                     type="tel"
                     required
-                    placeholder="e.g. +91 98765 43210 / +971 50 123 4567"
+                    placeholder="Phone number"
                     className="field py-2 text-xs sm:text-sm mt-1"
                     value={leadForm.phone}
                     onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
