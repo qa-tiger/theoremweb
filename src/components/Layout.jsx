@@ -6,9 +6,21 @@ import TheoremIntroGate from './TheoremIntroGate'
 import { ScrollProgressBar } from './ui'
 
 // Wordmark: the full Theorem logo lockup (mark + name + tagline) as one image.
+// When inside My Portal, clicking the logo refreshes the page instead of leaving the portal.
 export function Wordmark({ className = '', onClick }) {
+  const { pathname } = useLocation()
+  const isPortal = pathname.startsWith('/portal')
+
+  const handleClick = (e) => {
+    if (onClick) onClick(e)
+    if (isPortal) {
+      e.preventDefault()
+      window.location.reload()
+    }
+  }
+
   return (
-    <Link to="/" onClick={onClick} className={`flex items-center ${className}`}>
+    <Link to={isPortal ? '/portal' : '/'} onClick={handleClick} className={`flex items-center ${className}`}>
       <img src="/theorem-logo.png" alt={site.name} className="mark-in h-12 w-auto object-contain" />
     </Link>
   )

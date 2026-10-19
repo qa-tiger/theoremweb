@@ -13,8 +13,12 @@ export function useMyCourses() {
   useEffect(() => {
     let live = true
     getEnrollments(user.id).then(async (list) => {
+      let rawList = list || []
+      if (rawList.length === 0 && user?.programId) {
+        rawList = [{ id: 'auto-' + user.programId, userId: user.id, programId: user.programId, enrolledAt: Date.now() }]
+      }
       const withProgress = await Promise.all(
-        list.map(async (e) => ({
+        rawList.map(async (e) => ({
           ...e,
           program: programs.find((p) => p.id === e.programId) || {
             title: 'Enrolled Program',
@@ -28,7 +32,7 @@ export function useMyCourses() {
       if (live) setCourses(withProgress)
     })
     return () => { live = false }
-  }, [user.id])
+  }, [user.id, user?.programId])
   return courses
 }
 

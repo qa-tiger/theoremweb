@@ -259,7 +259,7 @@ export function Login() {
 
 // ---------- Registration + onboarding ----------
 
-const STEPS = ['Your account', 'Your program', 'Payment']
+const STEPS = ['Your account', 'Your program', 'My Portal']
 
 // The three steps really happen in order, so they are numbered on board tiles.
 function Stepper({ current }) {
@@ -456,11 +456,8 @@ export function Register() {
       console.warn('Lead capture update error on savePrefs:', leadErr)
     }
 
-    if (showPrice) {
-      navigate(`/checkout/${prefs.programId}`)
-    } else {
-      navigate(`/contact?program=${prefs.programId}`)
-    }
+    // As there is no payment gateway yet, navigate user directly to My Portal (My courses)
+    navigate('/portal')
   }
 
   return (
@@ -924,13 +921,11 @@ export function Register() {
 
           <div>
             <button className="btn-brand w-full py-2.5 text-xs sm:text-sm font-bold shadow-md" disabled={busy}>
-              {showPrice ? 'Continue to payment' : 'Save Selection & Contact Admissions'}
+              {busy ? 'Saving selection…' : 'Continue to My Courses →'}
             </button>
-            {!showPrice && (
-              <p className="text-[0.7rem] text-white/50 text-center mt-2">
-                No upfront payment required. Admissions will contact you with batch dates and current fees.
-              </p>
-            )}
+            <p className="text-[0.7rem] text-white/50 text-center mt-2">
+              No upfront payment required. Your program selection is saved to your student portal.
+            </p>
           </div>
         </form>
       )}
