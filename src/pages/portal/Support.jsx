@@ -5,7 +5,6 @@ import { createTicket, getTickets } from '../../lib/api'
 import { useAuth } from '../../lib/auth'
 
 const FAQ = [
-  ['I missed a live class. Can I watch it later?', 'Yes. Recordings appear in your course within 24 hours of each class.'],
   ['Can I switch from online to in-person classes?', 'Yes, if there is a seat in the Dubai or India batch. Send a ticket below with your preferred batch.'],
   ['How do I get my certificate?', 'Complete every lesson and pass every module quiz. The certificate then appears under Certificates, ready to download.'],
   ['What is your refund policy?', 'Full refund if you cancel within 7 days of enrolling and before attending more than two classes.'],

@@ -1,8 +1,8 @@
 // Page sections shared by more than one page. Each page composes these in its own order.
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { bundlePackage, faqs, formatAED, formatINR, offer, programs, site, stories } from '../config/site'
-import { ImageBlock, MethodTrack, Section, STAGES, Testimonial, Ticket, useReveal } from './ui'
+import { bundlePackage, faqs, offer, programs, site, stories } from '../config/site'
+import { ImageBlock, MethodTrack, Section, STAGES, Testimonial, Ticket, useReveal, VideoBlock } from './ui'
 
 export function usePageTitle(title) {
   useEffect(() => {
@@ -10,16 +10,14 @@ export function usePageTitle(title) {
   }, [title])
 }
 
-// Opening band for every inner page: luxury executive dark header with gold typography.
+// Opening band for every inner page: luxury executive dark header with silver typography.
 export function PageHeader({ back, title, intro, children }) {
   return (
     <header className="border-b border-board-line bg-[#050505] text-white relative overflow-hidden">
-      {/* Subtle Ambient Radial Gold Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(255,215,0,0.15),transparent_70%)] pointer-events-none" />
       <div
         className="absolute inset-0 opacity-10 pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(rgba(255,215,0,0.25) 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(rgba(199,205,214,0.25) 1px, transparent 1px)`,
           backgroundSize: '32px 32px',
         }}
       />
@@ -53,8 +51,8 @@ export function PageHeader({ back, title, intro, children }) {
 // Reasons to trust the academy, stated plainly. No numbers until real ones exist.
 const TRUST = [
   ['Real physical classrooms', 'In Dubai (Business Bay) and India. Visit before enrolling.'],
-  ['Every class recorded', 'Instant 24/7 access in your student portal.'],
-  ['1-on-1 Academic reviews', 'Personal feedback on your assignments, chart markups, and risk parameters.'],
+  ['Direct mentor access', 'Real-time guidance and personal feedback throughout the curriculum.'],
+  ['1-on-1 Assignment reviews', 'Personal feedback on your course assignments and chart executions to build independent reasoning.'],
   [`${offer.refundDays}-day refund guarantee`, '100% money-back if the program is not right for you.'],
 ]
 
@@ -62,14 +60,11 @@ export function FactsStrip() {
   const ref = useReveal()
   return (
     <div ref={ref} className="reveal-up border-b border-board-line bg-[#08080a] text-white">
-      <dl className="wrap grid grid-cols-2 lg:grid-cols-4 py-5 sm:py-6 gap-y-4">
-        {TRUST.map(([k, v], i) => (
-          <div key={k} className={`border-board-line px-3 sm:px-6 ${i % 2 ? 'border-l' : ''} ${i >= 2 ? 'lg:border-l' : ''}`}>
-            <dt className="font-cond text-xs sm:text-sm font-bold text-signal flex items-center gap-1.5">
-              <span>✓</span>
-              <span>{k}</span>
-            </dt>
-            <dd className="mt-1 text-xs text-white/70 leading-relaxed">{v}</dd>
+      <dl className="wrap grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-6 py-7 sm:py-8">
+        {TRUST.map(([k, v]) => (
+          <div key={k} className="border-l-2 border-signal/50 pl-4">
+            <dt className="text-sm sm:text-base font-bold text-white leading-snug">{k}</dt>
+            <dd className="mt-1.5 text-xs text-white/55 leading-relaxed">{v}</dd>
           </div>
         ))}
       </dl>
@@ -84,15 +79,15 @@ const PATHS = [
   {
     badge: 'Beginner',
     situation: 'Zero Experience',
-    body: 'Learn chart mechanics, order execution, pip/lot sizing, and strict 1% risk management from scratch.',
+    body: 'Learn chart mechanics, broker safety, pip/lot sizing, and strict 1% risk management from scratch.',
     skills: ['Chart Mechanics', 'Position Sizing', 'Risk Rules', 'MT4 / MT5'],
     programs: ['forex-basic'],
   },
   {
     badge: 'Active Trader',
     situation: 'Seeking Consistency',
-    body: 'Build authentic market competence. Master market structure, institutional liquidity, and systematic risk frameworks.',
-    skills: ['Market Structure', 'Liquidity Zones', 'Assignment Reviews', 'Execution Rules'],
+    body: 'Build genuine market competency. Master market structure, institutional liquidity, and structured risk frameworks.',
+    skills: ['Market Structure', 'Liquidity Zones', 'Assignment Reviews', 'Prop-Firm Prep'],
     programs: ['forex-advanced'],
   },
   {
@@ -100,7 +95,7 @@ const PATHS = [
     situation: 'Crypto & Equities',
     body: 'Master self-custody and spot/futures cycles, or swing trade Indian (NSE/BSE) and US equities.',
     skills: ['Self-Custody', 'Spot & Futures', 'Stock Screeners', 'Swing Breakouts'],
-    programs: ['crypto', 'equity'],
+    programs: ['crypto-basic', 'equity-basic'],
   },
 ]
 
@@ -262,35 +257,35 @@ export function HybridExperience() {
   const pillars = [
     {
       num: '01',
-      title: 'Physical Classrooms & Live Zoom',
-      tag: 'Dubai & India Floors',
-      desc: 'Learn on multi-monitor trading stations in Business Bay Dubai and India, or join live interactive Zoom cohorts with 24/7 recordings.',
+      title: 'Physical Classrooms & Live Sessions',
+      tag: 'India & Dubai',
+      desc: 'Study on multi-monitor terminal workstations in Business Bay Dubai and India, or join live interactive cohorts led by experienced mentors.',
       points: [
-        'Dedicated multi-monitor student trading desks',
+        'Dedicated multi-monitor workstation terminals',
         'Direct face-to-face floor atmosphere & mentorship',
-        '24/7 full HD recordings in your private student portal',
+        'Comprehensive module study materials & student portal access',
       ],
     },
     {
       num: '02',
       title: 'Personal Mentor Assignment Reviews',
       tag: 'Real Chart Feedback',
-      desc: 'Your lead mentor personally reviews the assignments and chart setups you submit during the course. Understand why you entered, where you placed your stop, and how to improve.',
+      desc: 'Your lead mentor personally reviews the assignments and chart case studies you submit during the course. Understand your trade thesis, risk invalidation levels, and how to improve.',
       points: [
-        'Weekly 1-on-1 private chart assignment reviews',
-        'Journal and risk verification before scaling position size',
-        'Pinpoint entry, stop-loss and risk optimization',
+        'Weekly 1-on-1 private assignment reviews',
+        'Assignment and case study verification before advancing',
+        'Risk management boundaries and capital preservation',
       ],
     },
     {
       num: '03',
       title: 'Risk Management & Written Plan',
       tag: 'Capital Protection',
-      desc: 'Master strict position sizing and stop loss rules so one loss never hurts. Graduate with a personalized written trading plan and academy certificate.',
+      desc: 'Master strict position sizing and capital protection rules. Complete the course with a personalized written trading plan and official certificate of course completion.',
       points: [
         'Strict 1% maximum account risk rule strictly enforced',
         'Customized written trading playbook for your schedule',
-        'Official verified Certificate of Graduation',
+        'Official verified Certificate of Course Completion',
       ],
     },
   ]
@@ -302,10 +297,10 @@ export function HybridExperience() {
           Why Theorem Institute
         </span>
         <h2 className="mt-3.5 font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
-          Practical Trading Education Built Around You
+          An Institutional Standard in Market Education
         </h2>
         <p className="mt-2.5 text-sm sm:text-base text-white/75 leading-relaxed">
-          Physical trading labs in Dubai and India, paired with interactive live online cohorts and personalized mentor reviews.
+          In-person facilities in India and Dubai, paired with interactive live cohorts and direct one-on-one mentor guidance.
         </p>
       </div>
 
@@ -318,57 +313,56 @@ export function HybridExperience() {
   )
 }
 
-// The All-Access Multi-Track Bundle Offer: "Learn all programs and save 40%" promotional banner.
+// The All-Access 4-Course Bundle Offer: displays all 4 courses in one unified package with 10% bundle discount.
+// The 4-program bundle, without any figures: fees aren't published while the catalogue is
+// being finalised (see bundlePackage in config/site.js). Contact us is the one action here.
 export function Offer({ className = 'bg-card/40' }) {
   return (
     <Section tight className={`${className} border-t border-line`}>
       <div className="grid-12 gap-y-8 lg:gap-x-12 lg:items-center">
-        {/* Left Column: All-Access Package Breakdown & Inclusions */}
+        {/* Left Column: What's included */}
         <div className="col-span-4 sm:col-span-8 lg:col-span-7 space-y-5">
           <div>
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
-                All-Access Master Pass
-              </span>
-              <span className="inline-flex items-center gap-1 rounded-full bg-signal/15 border border-signal/30 px-2.5 py-0.5 text-[0.65rem] font-bold text-signal">
-                <span>🔥 Limited Cohort Promotional Pass</span>
-              </span>
-            </div>
-            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
-              Learn all programs and <span className="gold-foil-text">save 40%.</span>
+            <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
+              All 4 programs
+            </span>
+            <h2 className="mt-2 font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
+              Everything, in one enrollment.
             </h2>
-            <p className="mt-2 text-xs sm:text-sm text-white/75 leading-relaxed max-w-xl">
-              Gain complete multi-asset mastery across Forex, Crypto, and Global Equities. Enrol in our comprehensive multi-track pass with dedicated mentor guidance, weekly assignment reviews, and verified institutional certifications.
+            <p className="mt-2 text-xs sm:text-sm text-white/65 leading-relaxed max-w-xl">
+              Forex, Crypto and Equity, taken together with dedicated mentorship and private assignment reviews across the full curriculum.
             </p>
           </div>
 
-          {/* Asset Categories Badges */}
+          {/* Mention 4 Courses Included as Clean Badges */}
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#22222a] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
-              <span className="text-signal font-bold">✓</span>
-              <span>Forex (Basic to Advanced)</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#22222a] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
-              <span className="text-signal font-bold">✓</span>
-              <span>Crypto (Basic to Advanced)</span>
-            </span>
-            <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#22222a] px-3 py-1.5 text-xs font-bold text-white shadow-sm">
-              <span className="text-signal font-bold">✓</span>
-              <span>Equity (Basic to Advanced)</span>
-            </span>
+            {bundlePackage.programsIncluded.map((title) => {
+              const p = programs.find((pr) => pr.title === title)
+              return (
+                <Link
+                  key={title}
+                  to={p ? `/programs/${p.id}` : '/programs'}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-[#22222a] px-3 py-1.5 text-xs font-bold text-white shadow-sm transition-all hover:border-signal hover:text-signal hover:bg-signal/10"
+                >
+                  <span className="text-signal font-bold">✓</span>
+                  <span>{title}</span>
+                  {p && <span className="text-[0.7rem] font-medium text-white/50">({p.duration})</span>}
+                </Link>
+              )
+            })}
           </div>
 
-          {/* Package Inclusions Checklist */}
+          {/* Package Inclusions Checklist: 4 clean highlights */}
           <div className="card-rich p-4.5 sm:p-5">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white/60 mb-3">
-              Included with Your All-Access Master Pass:
+              Included with the bundle:
             </h4>
             <ul className="grid sm:grid-cols-2 gap-3 text-xs sm:text-[0.82rem]">
               {[
-                'Full multi-track access across all asset classes',
-                'Official verified graduation certificates',
-                'Weekly 1-on-1 private assignment & chart reviews',
-                'Dubai & India trading floors + 24/7 recordings',
+                `All 4 programs (${bundlePackage.totalWeeks})`,
+                `${bundlePackage.certificationsCount} verified certificates of course completion`,
+                'Weekly 1-on-1 private assignment reviews',
+                'India & Dubai locations + live cohorts',
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <span aria-hidden="true" className="grid size-4 shrink-0 place-items-center rounded bg-signal text-[0.65rem] font-bold text-black">
@@ -381,60 +375,37 @@ export function Offer({ className = 'bg-card/40' }) {
           </div>
         </div>
 
-        {/* Right Column: Promotional Pass Ticket */}
+        {/* Right Column: Bundle Ticket */}
         <div className="col-span-4 sm:col-span-8 lg:col-span-5">
           <Ticket className="relative p-5 sm:p-7 overflow-hidden rounded-2xl">
-            {/* Top Tag */}
-            <div className="flex items-center justify-between border-b border-white/15 pb-4">
-              <div>
-                <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
-                  Institutional Multi-Track Pass
-                </span>
-                <p className="mt-1 text-[0.7rem] text-white/60 font-medium">Dubai • India • Live Online</p>
-              </div>
+            <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
+              {bundlePackage.title}
+            </span>
+            <p className="mt-1 text-[0.7rem] text-white/60 font-medium">Dubai • India • Live Online</p>
 
-              <span className="rounded-full bg-signal text-black px-2.5 py-1 text-xs font-extrabold shadow-sm">
-                40% OFF
-              </span>
-            </div>
-
-            {/* Discount Banner Highlights */}
-            <div className="mt-5 space-y-3">
-              <div className="rounded-xl border border-signal/30 bg-signal/10 p-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-signal block">
-                  Promotional Opportunity
-                </span>
-                <div className="font-display text-2xl sm:text-3xl font-extrabold text-white mt-1 leading-tight">
-                  Learn All Programs & Save 40%
-                </div>
-                <p className="mt-1.5 text-xs text-white/80 leading-relaxed">
-                  Lock in institutional tuition savings when enrolling across multiple tracks together in this month's cohort.
-                </p>
-              </div>
-            </div>
+            <p className="mt-4 text-xl sm:text-2xl font-display font-extrabold text-white leading-snug">
+              Save {bundlePackage.discountPercent}% versus enrolling in each program separately.
+            </p>
+            <p className="mt-3 text-xs text-white/75 leading-relaxed">
+              Contact admissions for the current bundle fee and the next cohort dates. Pay by card, UPI or Apple Pay with no hidden fees.
+            </p>
 
             {/* Actions */}
             <div className="mt-5 flex flex-col gap-2.5">
               <Link
-                to="/contact?package=all-programs-40-off"
-                className="btn-brand shimmer-button w-full py-3 text-xs sm:text-sm font-bold text-center block shadow-[0_0_20px_rgba(242,177,52,0.4)]"
+                to={`/contact?package=${bundlePackage.id}`}
+                className="btn-brand shimmer-button w-full py-3 text-xs sm:text-sm font-bold text-center block"
               >
-                Claim 40% Bundle Pass (Contact Us) →
+                Contact us about the bundle
               </Link>
-              <a
-                href={site.whatsappLink}
-                className="btn-outline-light w-full py-2.5 text-xs sm:text-sm font-semibold text-center block"
-              >
-                Inquire on WhatsApp
-              </a>
             </div>
 
-            {/* Guarantee */}
+            {/* Refund terms & Guarantee */}
             <div className="mt-5 border-t border-white/15 pt-3.5 flex items-center justify-between text-[0.7rem] text-white/65">
-              <span className="flex items-center gap-1 text-signal font-semibold">
-                <span>🛡️</span> 100% {offer.refundDays}-Day Guarantee
+              <span className="font-semibold text-signal">
+                {offer.refundDays}-day refund guarantee
               </span>
-              <span>Verified Certifications</span>
+              <span>{bundlePackage.certificationsCount} verified certificates</span>
             </div>
           </Ticket>
         </div>
@@ -476,7 +447,7 @@ export function Approach({ action, dark = false, className = '' }) {
     <Section
       tight
       title="The 4-stage learning method."
-      intro="Nobody develops genuine market discipline from passive videos alone. Every program moves through four practical stages with dedicated mentor guidance."
+      intro="Nobody learns to trade profitably from videos alone. Every program moves through four practical stages with dedicated mentor guidance."
       action={action}
       dark={dark}
       className={className}
@@ -494,7 +465,7 @@ export function ApproachCondensed({ action }) {
       tight
       dark
       title="A four-stage method."
-      intro="Learn it, practise it, execute in simulation with mentor review, then journal it. Your mentor decides when you move on."
+      intro="Learn it, practise it, trade it small with review, then journal it. Your mentor decides when you move on."
       action={action}
     >
       <ol className="grid gap-4 sm:grid-cols-2">
@@ -513,15 +484,38 @@ export function ApproachCondensed({ action }) {
   )
 }
 
+export function MarketPhilosophy() {
+  return (
+    <section className="py-14 sm:py-20 border-b border-board-line bg-[#08080a] text-white">
+      <div className="wrap max-w-3xl">
+        <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-snug">
+          Understanding What Actually Moves Markets
+        </h2>
+        <div className="mt-6 space-y-4 text-sm sm:text-base text-white/75 leading-relaxed font-normal">
+          <p>
+            Most people encounter financial markets through fragmented tutorials, chart screenshots, and oversimplified patterns. The reality of modern capital markets is far deeper. Price movement does not happen in a vacuum, and it rarely answers to lines drawn on a screen alone.
+          </p>
+          <p>
+            We are committed to providing genuine, high-caliber education across diverse global markets. For us, real comprehension demands learning that reaches far beyond mechanical technicalities—exploring the essential data flows that drive market change, from macroeconomic developments and central bank liquidity to institutional order imbalances.
+          </p>
+          <p>
+            When you join our classrooms or sit in our live cohorts, you are not memorizing rigid formulas. You are learning how to think analytically, interpret real-world economic context, and build a calm, disciplined methodology of your own. It is patient work, but it is the foundation of genuine competence.
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export function Story() {
   return (
-    <Section tight title="From your first chart to a plan of your own." intro="Most students arrive having watched plenty of videos and taken a few trades they cannot explain. Six weeks later they leave with a plan written in their own words, and a journal to prove they followed it.">
+    <Section tight title="From your first chart to a plan of your own." intro="Most students arrive having watched fragmented videos online without a structured framework. Weeks later, they complete the course with a rigorous written methodology, verifiable case studies, and clear execution discipline.">
       <div className="grid-12 gap-y-6 sm:gap-y-8 items-center">
         <ImageBlock
           ratio="4/3"
-          src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80"
+          src="/campus/live-mentor-classroom.jpg"
           alt="Classroom mentor session at Theorem Institute"
-          caption="Evening class, Forex Basic — Business Bay Campus"
+          caption="Live Classroom Session — Theorem Institute"
           className="col-span-4 sm:col-span-8 lg:col-span-7"
         />
         <div className="col-span-4 sm:col-span-6 lg:col-span-5 lg:col-start-8 space-y-4">
@@ -529,9 +523,9 @@ export function Story() {
             <h3 className="font-display text-lg sm:text-xl font-extrabold text-white">A typical week in Forex Basic</h3>
             <ul className="mt-3 space-y-2 text-xs sm:text-sm">
               {[
-                ['Classroom / Zoom', 'Two live mentor-led sessions with live chart analysis.'],
-                ['Simulation Lab', 'One structured practice session on demo micro-lots.'],
-                ['Weekly Assignment Review', '1-on-1 mentor review of the chart assignments and trade logs in your journal.'],
+                ['Classroom / Live Online', 'Two live mentor-led sessions with live chart analysis.'],
+                ['Simulation Lab', 'One structured practice session on demo execution and position sizing.'],
+                ['Weekly Assignment Review', '1-on-1 mentor review of the assignments and case studies logged in your journal.'],
               ].map(([tag, d]) => (
                 <li key={tag} className="border-b border-white/10 pb-2 last:border-b-0 last:pb-0">
                   <span className="font-bold text-white block">{tag}</span>
@@ -550,25 +544,34 @@ export function Experience() {
   return (
     <Section
       tight
-      title="Where the learning happens."
-      intro="Classrooms in Dubai and India, and a live online room for everyone else. Every class is recorded to your student portal."
+      title="Our Classrooms & Facilities."
+      intro="Physical classrooms in India and Dubai, alongside interactive live online cohorts led by experienced mentors."
       className="bg-card"
     >
       <div className="grid-12 gap-y-6 sm:gap-y-8">
         <ImageBlock
-          ratio="3/2"
-          src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=80"
-          alt="Live trading review floor"
-          caption="Weekly live trading review floor, Dubai Business Bay"
-          className="col-span-4 sm:col-span-8 lg:col-span-8"
+          ratio="4/3"
+          src="/campus/terminal-lab.jpg"
+          alt="Multi-monitor terminal workstations"
+          caption="Terminal Workstation Lab & Multi-Monitor Stations"
+          className="col-span-4 sm:col-span-8 lg:col-span-7"
         />
-        <ImageBlock
-          ratio="3/4"
-          src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1000&q=80"
-          alt="Marking up chart setups and trading journal"
-          caption="Marking up a student's journal and chart setup"
-          className="hidden sm:col-span-4 sm:col-start-5 sm:block lg:col-span-4 lg:col-start-9"
-        />
+        <div className="col-span-4 sm:col-span-8 lg:col-span-5 flex flex-col gap-6">
+          <ImageBlock
+            ratio="16/9"
+            src="/campus/lecture-hall.jpg"
+            alt="Interactive lecture room with whiteboard"
+            caption="Lecture Room & Strategy Discussion Hall"
+            className="w-full"
+          />
+          <ImageBlock
+            ratio="16/9"
+            src="/campus/classroom-desks.jpg"
+            alt="Classroom seating and seminar desks"
+            caption="Student Seminar & Practice Space"
+            className="w-full"
+          />
+        </div>
       </div>
     </Section>
   )
@@ -576,14 +579,14 @@ export function Experience() {
 
 const OUTCOMES = [
   ['A written trading plan', 'Your markets, your setups, how much you risk per trade, and the rules for when you stop. Written by you, checked by your mentor.'],
-  ['A reviewed chart journal', 'Every practical assignment and chart setup you submitted during the program, with your reasoning and your mentor’s notes beside it.'],
-  ['Notes and recordings', 'Module notes and class recordings stay in your student portal, so you can go back to any lesson anytime.'],
-  ['Verified Certificate', 'Issued when you complete every lesson, pass every module quiz, and defend your final trading plan.'],
+  ['A reviewed assignment journal', "Every assignment and chart setup you logged during the program, with your reasoning and your mentor's notes beside it."],
+  ['Curriculum notes & templates', 'Module notes, trading templates, and study guides stay accessible in your student portal anytime.'],
+  ['Certificate of Course Completion', 'Issued when you complete every lesson, pass every module quiz, and defend your final trading plan.'],
 ]
 
 export function Outcomes() {
   return (
-    <Section tight title="What you leave with." intro="Four tangible deliverables every student graduates with at the end of their program.">
+    <Section tight title="What you leave with." intro="Four tangible deliverables every student receives upon course completion.">
       <dl className="grid gap-5 sm:gap-6 sm:grid-cols-2">
         {OUTCOMES.map(([title, body]) => (
           <div key={title} className="card-rich p-5 sm:p-6">
@@ -605,7 +608,7 @@ export function Stories({ limit }) {
   if (visible.length === 0) return null
   const [lead, ...rest] = visible
   return (
-    <Section tight title="Student Feedback." intro={lead.sample ? 'Verified student reviews from our Dubai and India cohorts.' : undefined} className="bg-card">
+    <Section tight title="Student Testimonials." intro={lead.sample ? 'Verified student reviews from our Dubai and India cohorts.' : undefined} className="bg-card">
       <div className="grid-12 gap-y-6">
         <div className="col-span-4 sm:col-span-8 lg:col-span-8">
           <Testimonial story={lead} />
@@ -633,12 +636,9 @@ export function FinalCta({ title = 'Start with a conversation.', body = 'Tell us
         </div>
         <div className="col-span-4 sm:col-span-6 lg:col-span-5 lg:col-start-8 lg:justify-self-end">
           <div className="flex flex-wrap items-center gap-3">
-            <Link to="/register" className="btn-brand py-2.5 px-5 text-xs sm:text-sm font-bold shadow-md">Apply now</Link>
+            <Link to="/contact" className="btn-brand py-2.5 px-5 text-xs sm:text-sm font-bold shadow-md">Contact us</Link>
             <a href={site.whatsappLink} className="btn-outline-light py-2.5 px-4 text-xs sm:text-sm font-semibold">Chat on WhatsApp</a>
           </div>
-          <p className="mt-3 text-xs text-white/60">
-            Prefer email? <Link to="/contact" className="link-line text-white">Send an enquiry</Link>
-          </p>
         </div>
       </div>
     </section>

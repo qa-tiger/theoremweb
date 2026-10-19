@@ -1,15 +1,27 @@
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { FlapText, localTime, useNow } from '../components/Board'
 import { PageHeader, usePageTitle } from '../components/sections'
-import { locations, programs, site } from '../config/site'
+import { bundlePackage, locations, programs, site } from '../config/site'
 import { createEnquiry } from '../lib/api'
 
 const TIMEZONES = { Dubai: 'Asia/Dubai', India: 'Asia/Kolkata' }
 
+// Links into this form can arrive with ?program=, ?package=all-programs-bundle, or
+// ?ebook=<id> (see the program cards, the bundle banner, and the Knowledge Toolkit page).
+// This turns whichever one is present into a sensible starting program choice and message.
+function initialForm(params) {
+  const ebook = params.get('ebook')
+  if (ebook) {
+    return { name: '', contact: '', program: 'not-sure', location: 'Online', message: `I'd like to receive the free e-book: ${ebook.replace(/-/g, ' ')}.` }
+  }
+  const program = params.get('package') === bundlePackage.id ? bundlePackage.id : params.get('program') || 'not-sure'
+  return { name: '', contact: '', program, location: 'Online', message: '' }
+}
+
 function EnquiryForm() {
   const [params] = useSearchParams()
-  const [form, setForm] = useState({ name: '', contact: '', program: params.get('program') || 'not-sure', location: 'Online', message: '' })
+  const [form, setForm] = useState(() => initialForm(params))
   const [status, setStatus] = useState('idle') // idle | sending | sent
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value })
 
@@ -53,14 +65,15 @@ function EnquiryForm() {
           <select id="program" className="field py-2 text-xs sm:text-sm" value={form.program} onChange={set('program')}>
             <option value="not-sure">Not sure yet</option>
             {programs.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
+            <option value={bundlePackage.id}>{bundlePackage.title} (all 4)</option>
           </select>
         </div>
         <div>
           <label className="label text-xs font-bold text-white/90" htmlFor="location">Where would you study?</label>
           <select id="location" className="field py-2 text-xs sm:text-sm" value={form.location} onChange={set('location')}>
-            <option>Online (Live Zoom)</option>
-            <option>Dubai Campus (Business Bay)</option>
-            <option>India Campus</option>
+            <option>Online</option>
+            <option>Dubai</option>
+            <option>India</option>
           </select>
         </div>
       </div>
@@ -68,6 +81,29 @@ function EnquiryForm() {
         <label className="label text-xs font-bold text-white/90" htmlFor="message">Trading experience & goals <span className="font-normal text-white/50">(optional)</span></label>
         <textarea id="message" rows={3} className="field py-2 text-xs sm:text-sm" value={form.message} onChange={set('message')} />
       </div>
+
+      <div className="pt-1">
+        <label className="flex items-start gap-2.5 text-xs text-white/75 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            required
+            defaultChecked
+            className="mt-0.5 size-4 rounded border-white/20 bg-black/40 text-signal focus:ring-signal"
+          />
+          <span className="leading-relaxed">
+            I consent to Theorem Academy collecting and processing my contact details under our{' '}
+            <Link to="/privacy" target="_blank" className="text-signal underline hover:text-white">
+              DPDP Act Privacy Policy
+            </Link>{' '}
+            and{' '}
+            <Link to="/terms" target="_blank" className="text-signal underline hover:text-white">
+              User Agreement
+            </Link>{' '}
+            to respond to my enquiry.
+          </span>
+        </label>
+      </div>
+
       <button className="btn-brand py-2.5 px-5 text-xs sm:text-sm font-bold shadow-md" disabled={status === 'sending'}>
         {status === 'sending' ? 'Sending enquiry…' : 'Submit Enquiry'}
       </button>
@@ -82,7 +118,7 @@ export default function Contact() {
     <>
       <PageHeader
         title="Talk to an advisor before you enrol."
-        intro="Visit our trading floor in Business Bay Dubai or India, message on WhatsApp, or send an enquiry. An advisor will guide your batch selection."
+        intro="Visit our office in Dubai or India, message on WhatsApp, or send an enquiry. An advisor will guide your batch selection."
       />
 
       <section className="py-8 sm:py-10 lg:py-12">
@@ -91,7 +127,7 @@ export default function Contact() {
             <div key={l.city} className="card-hover-glow panel p-4 sm:p-5">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">Campus</span>
+                  <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">Location</span>
                   <h2 className="mt-1.5 font-display text-xl sm:text-2xl font-extrabold text-white">{l.city}</h2>
                 </div>
                 {TIMEZONES[l.city] && (

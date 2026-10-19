@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Link, Outlet, useLocation } from 'react-router-dom'
-import { PortalNavLink } from '../../components/Layout'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Wordmark } from '../../components/Layout'
 import { usePageTitle } from '../../components/sections'
-import { ProgramBoard } from '../../components/ui'
 import { programs } from '../../config/site'
 import { getEnrollments, getProgress } from '../../lib/api'
 import { useAuth } from '../../lib/auth'
@@ -13,69 +12,138 @@ export function useMyCourses() {
   const [courses, setCourses] = useState(null)
   useEffect(() => {
     let live = true
-    if (!user?.id) {
-      setCourses([])
-      return
-    }
-    getEnrollments(user.id)
-      .then(async (list) => {
-        const withProgress = await Promise.all(
-          list.map(async (e) => {
-            const prog = programs.find((p) => p.id === e.programId) || { id: e.programId, title: 'Institutional Trading Course', market: 'Trading' }
-            const progProgress = await getProgress(user.id, e.programId)
-            return { ...e, program: prog, progress: progProgress }
-          }),
-        )
-        if (live) setCourses(withProgress)
-      })
-      .catch(() => {
-        if (live) setCourses([])
-      })
-    return () => {
-      live = false
-    }
-  }, [user?.id])
+    getEnrollments(user.id).then(async (list) => {
+      const withProgress = await Promise.all(
+        list.map(async (e) => ({
+          ...e,
+          program: programs.find((p) => p.id === e.programId) || {
+            title: 'Enrolled Program',
+            market: 'General',
+            level: 'Basic',
+            duration: '6 weeks',
+          },
+          progress: await getProgress(user.id, e.programId),
+        })),
+      )
+      if (live) setCourses(withProgress)
+    })
+    return () => { live = false }
+  }, [user.id])
   return courses
 }
 
 export function PortalLayout() {
   const { user, signOut } = useAuth()
   const { pathname } = useLocation()
+
   return (
-    <div className="wrap grid gap-8 py-8 sm:py-12 lg:grid-cols-[14rem_1fr] lg:gap-12 text-white">
-      <aside className="space-y-5">
-        <div className="p-4 rounded-2xl border border-white/10 bg-[#121218] shadow-sm">
-          <p className="text-[0.68rem] uppercase font-bold text-white/50 tracking-wider">Student Profile</p>
-          <p className="mt-1 truncate font-display text-lg sm:text-xl font-extrabold text-white">{user?.name || 'Student'}</p>
-          <div className="mt-1.5 flex items-center gap-1.5">
-            <span className="size-1.5 rounded-full bg-signal animate-pulse" />
-            <span className="text-[0.7rem] text-signal font-bold">Active Batch</span>
+    <div className="wrap grid gap-8 py-8 sm:py-10 lg:grid-cols-[16rem_1fr] lg:gap-12 text-white">
+      {/* Student Profile Sidebar */}
+      <aside className="space-y-6">
+        {/* Brand Header */}
+        <div className="pb-2">
+          <Wordmark />
+        </div>
+
+        {/* User Profile Card */}
+        <div className="rounded-2xl border border-white/10 bg-[#121218] p-4 sm:p-5 shadow-xl">
+          <div className="flex items-center gap-3">
+            <div className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-signal/30 to-signal/10 text-signal font-extrabold text-lg border border-signal/40">
+              {user.name ? user.name[0].toUpperCase() : 'S'}
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-display text-base font-extrabold text-white leading-tight">
+                {user.name}
+              </p>
+              <p className="truncate text-[0.7rem] text-white/50">{user.email}</p>
+            </div>
+          </div>
+
+          <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-[0.68rem]">
+            <span className="text-white/60">Account Status</span>
+            {user.country === 'India' ? (
+              <span className="badge-signal text-[0.62rem] font-bold py-0.5 px-2">
+                KYC: {user.kycStatus || 'Submitted'}
+              </span>
+            ) : (
+              <span className="badge-outline text-[0.62rem] font-bold py-0.5 px-2 text-bull border-bull/40">
+                Active Student
+              </span>
+            )}
           </div>
         </div>
 
-        <nav className="-mx-4 flex overflow-x-auto border-b border-white/10 px-4 lg:mx-0 lg:flex-col lg:border-b-0 lg:px-0 space-y-1.5" aria-label="Portal Navigation">
-          <PortalNavLink to="/portal" end={!pathname.startsWith('/portal/course')}>📚 My Courses</PortalNavLink>
-          <PortalNavLink to="/portal/certificates">🏆 Verified Certificates</PortalNavLink>
-          <PortalNavLink to="/portal/support">💬 Student Help Desk</PortalNavLink>
+        {/* Navigation Menu */}
+        <nav className="flex lg:flex-col gap-1.5 overflow-x-auto pb-2 lg:pb-0" aria-label="Portal Navigation">
+          <NavLink
+            to="/portal"
+            end={!pathname.startsWith('/portal/course')}
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold transition-all ${
+                isActive
+                  ? 'bg-signal text-black font-extrabold shadow-lg shadow-signal/10'
+                  : 'text-white/70 hover:bg-white/5 hover:text-white border border-transparent'
+              }`
+            }
+          >
+            <span className="text-base">📚</span>
+            <span>My courses</span>
+          </NavLink>
+
+          <NavLink
+            to="/portal/certificates"
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold transition-all ${
+                isActive
+                  ? 'bg-signal text-black font-extrabold shadow-lg shadow-signal/10'
+                  : 'text-white/70 hover:bg-white/5 hover:text-white border border-transparent'
+              }`
+            }
+          >
+            <span className="text-base">🎓</span>
+            <span>Certificates</span>
+          </NavLink>
+
+          <NavLink
+            to="/portal/support"
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold transition-all ${
+                isActive
+                  ? 'bg-signal text-black font-extrabold shadow-lg shadow-signal/10'
+                  : 'text-white/70 hover:bg-white/5 hover:text-white border border-transparent'
+              }`
+            }
+          >
+            <span className="text-base">💬</span>
+            <span>Help and support</span>
+          </NavLink>
         </nav>
 
-        <div className="border-t border-white/10 pt-4 hidden lg:block">
-          <button onClick={signOut} className="text-xs font-semibold text-white/60 hover:text-signal transition-colors flex items-center gap-1.5">
-            <span>🚪</span>
-            <span>Sign out of portal</span>
-          </button>
-        </div>
+        {/* Log out */}
+        <button
+          onClick={signOut}
+          className="flex items-center gap-2 text-xs font-semibold text-white/50 hover:text-bear transition-colors px-2 pt-2"
+        >
+          <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          <span>Log out</span>
+        </button>
       </aside>
-      <div className="min-w-0"><Outlet /></div>
+
+      {/* Main Content Area */}
+      <div className="min-w-0">
+        <Outlet />
+      </div>
     </div>
   )
 }
 
-// Progress: an amber bar on an ink hairline, with the percentage in board digits beside it.
-export function ProgressBar({ percent = 0 }) {
+// Progress Bar Component
+export function ProgressBar({ percent }) {
   return (
-    <div className="h-2 bg-line" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label="Course progress">
-      <div className="h-full bg-signal transition-[width] duration-500" style={{ width: `${percent}%` }} />
+    <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label="Course progress">
+      <div className="h-full bg-signal transition-[width] duration-500 rounded-full" style={{ width: `${percent}%` }} />
     </div>
   )
 }
@@ -84,38 +152,234 @@ export function Dashboard() {
   usePageTitle('My courses')
   const { user } = useAuth()
   const courses = useMyCourses()
-  if (!courses) return <p className="text-ink-soft">Loading your courses…</p>
+
+  // Selected course in the simple dropdown
+  const [selectedCourseId, setSelectedCourseId] = useState(programs[0]?.id || 'forex-basic')
+
+  if (!courses) {
+    return (
+      <div className="flex items-center justify-center py-20 text-white/60 text-sm">
+        <span className="size-2 rounded-full bg-signal animate-ping mr-2" />
+        Loading your courses…
+      </div>
+    )
+  }
+
+  const selectedProgram = programs.find((p) => p.id === selectedCourseId) || programs[0]
 
   return (
-    <div>
-      <h1 className="text-[3.2rem] sm:text-5xl">Welcome back, {user?.name ? user.name.split(' ')[0] : 'Trader'}.</h1>
-      {courses.length === 0 ? (
-        <div className="mt-10">
-          <h2 className="text-[2.2rem] sm:text-3xl">You are not enrolled in a course yet.</h2>
-          <p className="mt-3 max-w-[34rem] text-ink-soft">Pick a program to unlock its lessons, notes, quizzes and certificate.</p>
-          <div className="mt-8"><ProgramBoard /></div>
+    <div className="space-y-8">
+      {/* Welcome Header */}
+      <div className="border-b border-white/10 pb-6">
+        <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
+          Student Portal
+        </span>
+        <h1 className="mt-2 font-display text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Welcome back, {user.name.split(' ')[0]}.
+        </h1>
+        <p className="mt-1 text-xs sm:text-sm text-white/70">
+          Track your course progress and view enrolled programs.
+        </p>
+      </div>
+
+      {/* Quick Metrics Bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div className="rounded-2xl border border-white/10 bg-[#121218] p-4 text-white">
+          <span className="text-white/50 text-xs font-medium block">Enrolled Courses</span>
+          <span className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text mt-1 block">
+            {courses.length}
+          </span>
         </div>
-      ) : (
-        <ul className="mt-10 border-t-2 border-ink">
-          {courses.map((c) => (
-            <li key={c.id} className="grid gap-5 border-b border-line py-7 sm:grid-cols-[1fr_auto] sm:items-end">
-              <div>
-                <p className="text-sm font-semibold text-brand">{c.program?.market || 'Trading'}</p>
-                <h2 className="mt-1 text-[2.6rem] sm:text-3xl">{c.program?.title || 'Course'}</h2>
-                <div className="mt-5 flex max-w-[34rem] items-center gap-4">
-                  <div className="flex-1"><ProgressBar percent={c.progress?.percent || 0} /></div>
-                  <span className="text-sm font-semibold tabular-nums">{c.progress?.percent || 0}%</span>
+        <div className="rounded-2xl border border-white/10 bg-[#121218] p-4 text-white">
+          <span className="text-white/50 text-xs font-medium block">Certificates</span>
+          <span className="font-display text-2xl sm:text-3xl font-extrabold text-signal mt-1 block">
+            {courses.filter((c) => c.progress.finished).length}
+          </span>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-[#121218] p-4 text-white">
+          <span className="text-white/50 text-xs font-medium block">Attendance Mode</span>
+          <span className="font-display text-sm sm:text-base font-bold text-white mt-2 block truncate">
+            {user.mode || 'Online (Zoom)'}
+          </span>
+        </div>
+        <div className="rounded-2xl border border-white/10 bg-[#121218] p-4 text-white">
+          <span className="text-white/50 text-xs font-medium block">Student ID</span>
+          <span className="font-mono text-xs font-bold text-white/80 mt-2 block truncate">
+            TH-{user.id?.slice(0, 6).toUpperCase() || 'STD'}
+          </span>
+        </div>
+      </div>
+
+      {/* Active Enrolled Courses (if student has enrolled courses) */}
+      {courses.length > 0 && (
+        <section className="space-y-4">
+          <h2 className="font-display text-xl sm:text-2xl font-extrabold text-white">
+            Your Active Courses ({courses.length})
+          </h2>
+          <div className="grid gap-4 sm:gap-5">
+            {courses.map((c) => (
+              <div
+                key={c.id}
+                className="card-hover-glow rounded-2xl border border-white/15 bg-gradient-to-br from-[#161620] to-[#0f0f14] p-5 sm:p-6 text-white flex flex-col md:flex-row md:items-center justify-between gap-6"
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="badge-signal text-[0.65rem] font-bold uppercase py-0.5 px-2">
+                      {c.program.market}
+                    </span>
+                    <span className="text-xs text-white/50">
+                      {c.program.level} • {c.program.duration}
+                    </span>
+                  </div>
+                  <h3 className="mt-2 font-display text-xl sm:text-2xl font-bold text-white truncate">
+                    {c.program.title}
+                  </h3>
+
+                  <div className="mt-4 max-w-md">
+                    <div className="flex items-center justify-between text-xs text-white/70 mb-1.5">
+                      <span>Curriculum Progress</span>
+                      <span className="font-bold text-signal tabular-nums">{c.progress.percent}%</span>
+                    </div>
+                    <ProgressBar percent={c.progress.percent} />
+                  </div>
+
+                  {c.progress.finished && (
+                    <p className="mt-3 text-xs text-bull font-semibold flex items-center gap-1.5">
+                      <span>✓</span> Course complete!{' '}
+                      <Link to="/portal/certificates" className="link-line text-signal font-bold">
+                        Download certificate
+                      </Link>
+                    </p>
+                  )}
                 </div>
-                {c.progress?.finished && (
-                  <p className="mt-3 text-sm">Course complete. <Link to="/portal/certificates" className="link-line">View your certificate</Link></p>
-                )}
+
+                <div className="flex items-center gap-3 shrink-0">
+                  <Link
+                    to={`/portal/course/${c.programId}`}
+                    className={`py-2.5 px-5 text-xs sm:text-sm font-bold shadow-md rounded-xl ${
+                      c.progress.finished ? 'btn-ghost' : 'btn-brand'
+                    }`}
+                  >
+                    {c.progress.percent === 0
+                      ? 'Start Course →'
+                      : c.progress.finished
+                      ? 'Review Lessons'
+                      : 'Continue Learning →'}
+                  </Link>
+                </div>
               </div>
-              <Link to={`/portal/course/${c.programId}`} className={c.progress?.finished ? 'btn-ghost' : 'btn-brand'}>
-                {c.progress?.percent === 0 ? 'Start course' : c.progress?.finished ? 'Review course' : 'Continue course'}
-              </Link>
-            </li>
-          ))}
-        </ul>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* When student is not enrolled yet: Simple Dropdown View */}
+      {courses.length === 0 && (
+        <section className="space-y-6">
+          <div className="rounded-2xl border border-white/10 bg-[#121218] p-6 sm:p-7 text-white space-y-5 shadow-lg">
+            <div>
+              <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
+                Course Selection
+              </span>
+              <h2 className="mt-2 font-display text-xl sm:text-2xl font-extrabold text-white">
+                You are not enrolled in a course yet.
+              </h2>
+              <p className="mt-1 text-xs sm:text-sm text-white/70">
+                Choose a course from the dropdown below to explore its curriculum and enrollment details.
+              </p>
+            </div>
+
+            {/* Simple Dropdown for Course Selection */}
+            <div className="max-w-xl">
+              <label htmlFor="course-dropdown" className="label text-xs font-bold text-white/90 mb-1.5 block">
+                Select Program:
+              </label>
+              <select
+                id="course-dropdown"
+                value={selectedCourseId}
+                onChange={(e) => setSelectedCourseId(e.target.value)}
+                className="field py-3 text-xs sm:text-sm font-semibold bg-[#181822] border-white/20"
+              >
+                <optgroup label="Forex Programs">
+                  {programs.filter((p) => p.market === 'Forex').map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.title} ({p.duration} • {p.level})
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Crypto Programs">
+                  {programs.filter((p) => p.market === 'Crypto').map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.title} ({p.duration} • {p.level})
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Equity Programs">
+                  {programs.filter((p) => p.market === 'Equity').map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.title} ({p.duration} • {p.level})
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+            </div>
+
+            {/* Selected Course Compact Preview & Single Contact Action */}
+            {selectedProgram && (
+              <div className="rounded-xl border border-white/10 bg-[#0e0e14] p-4 sm:p-5 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-3">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="badge-signal text-[0.65rem] font-bold uppercase py-0.5 px-2">
+                        {selectedProgram.market}
+                      </span>
+                      <span className="text-xs text-white/60 font-medium">
+                        {selectedProgram.level} • {selectedProgram.duration} • {selectedProgram.format}
+                      </span>
+                      {selectedProgram.comingSoon && (
+                        <span className="badge-outline text-[0.62rem] py-0.5 px-1.5">
+                          Coming soon
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="mt-1 font-display text-lg font-bold text-white">
+                      {selectedProgram.title}
+                    </h3>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 shrink-0">
+                    <Link
+                      to={`/programs/${selectedProgram.id}`}
+                      className="btn-ghost py-2 px-3.5 text-xs font-semibold"
+                    >
+                      View Syllabus
+                    </Link>
+                    {/* The single, dedicated contact option inside the portal */}
+                    <Link
+                      to={`/contact?program=${selectedProgram.id}`}
+                      className="btn-brand py-2 px-4 text-xs font-bold shadow-md"
+                    >
+                      Contact Admissions to Enroll
+                    </Link>
+                  </div>
+                </div>
+
+                <p className="text-xs sm:text-sm text-white/70 leading-relaxed">
+                  {selectedProgram.summary}
+                </p>
+
+                <div className="pt-2 text-[0.72rem] text-white/50 flex flex-wrap gap-x-4 gap-y-1">
+                  {selectedProgram.outcomes?.slice(0, 3).map((outcome, idx) => (
+                    <span key={idx} className="flex items-center gap-1.5">
+                      <span className="text-signal font-bold">✓</span>
+                      <span>{outcome}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
       )}
     </div>
   )

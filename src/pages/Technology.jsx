@@ -1,327 +1,542 @@
-import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { FinalCta, PageHeader, usePageTitle } from '../components/sections'
 import { Section } from '../components/ui'
-import TradingTerminalVisual from '../components/TradingTerminalVisual'
-import { freeEbooks, site } from '../config/site'
-
-
-const ANALYSIS_TOOLS = [
-  {
-    id: 'orderflow',
-    title: 'Order Flow & DOM (Depth of Market) Heatmaps',
-    tag: 'Institutional Liquidity',
-    icon: '🔥',
-    desc: 'Inspect where commercial banks and market makers position passive limit orders on the orderbook. Study institutional auction dynamics and liquidity depth rather than guessing from candlestick patterns alone.',
-    capabilities: [
-      'Live visual liquidity depth heatmaps',
-      'Iceberg order and resting limit detection',
-      'Book replenishment and spoofing identification',
-      'Direct integration with CME & top liquidity providers',
-    ],
-  },
-  {
-    id: 'footprint',
-    title: 'Footprint & Volume Delta Charting Software',
-    tag: 'Aggression Analysis',
-    icon: '📈',
-    desc: 'Inspect trades executing inside each individual candle. Footprint charts reveal whether market buyers or sellers were aggressive, identifying exhausted rallies and high-probability reversal points.',
-    capabilities: [
-      'Cumulative Volume Delta (CVD) divergence alerts',
-      'Bid/Ask diagonal volume imbalance highlighting',
-      'Unfinished business & auction market theory tracking',
-      'Point of Control (POC) migration indicators',
-    ],
-  },
-  {
-    id: 'market-profile',
-    title: 'Market Profile & Session Volume Distribution',
-    tag: 'Structural Value',
-    icon: '🏛️',
-    desc: 'Understand market value versus market price. Session Volume Profiles plot where highest volume traded, highlighting Value Area High (VAH), Value Area Low (VAL), and institutional acceptance zones.',
-    capabilities: [
-      'Dynamic session and multi-day Volume Profiles',
-      'High-volume nodes (support) & low-volume voids (targets)',
-      'Multi-timeframe Session VWAP with standard deviation bands',
-      'Daily open auction type classification (drive, test, reject)',
-    ],
-  },
-  {
-    id: 'macro-matrix',
-    title: 'Macro Correlation & Currency Strength Matrix',
-    tag: 'Global Context',
-    icon: '🌐',
-    desc: 'Cross-asset analytical dashboard mapping relationships between US Dollar Index (DXY), US 10Y Treasury yields, Brent crude, and benchmark equity futures to establish high-conviction daily market directional bias.',
-    capabilities: [
-      'Real-time central bank interest rate differential tracker',
-      'Yield curve inversion & spread momentum metrics',
-      'Risk-on vs. Risk-off multi-asset sentiment radar',
-      'Economic calendar impact weighting & release flags',
-    ],
-  },
-]
+import Modal from '../components/Modal'
+import {
+  EBOOKS,
+  EBOOK_CATEGORIES,
+  getEbookDownloadUrl,
+} from '../config/ebooks'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { getSessionUser } from '../lib/api'
+import { recordLead } from '../lib/leads'
 
 export default function Technology() {
-  const { pathname } = useLocation()
-  usePageTitle('Knowledge Toolkit & Trading Technology')
+  usePageTitle('Free Trading E-Books & Knowledge Resources')
 
-  const [downloadingBook, setDownloadingBook] = useState(null)
-  const [downloadSuccess, setDownloadSuccess] = useState(null)
-  const [emailInput, setEmailInput] = useState('')
+  const sessionUser = useMemo(() => getSessionUser(), [])
+  const savedLead = useMemo(() => {
+    try {
+      return JSON.parse(localStorage.getItem('academy-ebook-lead')) || {}
+    } catch {
+      return {}
+    }
+  }, [])
 
-  const handleDownloadSubmit = (e, book) => {
+  const [activeCategory, setActiveCategory] = useState('All')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [downloadModalBook, setDownloadModalBook] = useState(null)
+  const [downloadSuccess, setDownloadSuccess] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errorMsg, setErrorMsg] = useState('')
+
+  const [leadForm, setLeadForm] = useState({
+    name: sessionUser?.name || savedLead.name || '',
+    email: sessionUser?.email || savedLead.email || '',
+    phone: sessionUser?.phone || savedLead.phone || '',
+  })
+
+  // Filter books based on active category and search query
+  const filteredBooks = useMemo(() => {
+    return EBOOKS.filter((book) => {
+      const matchesCategory =
+        activeCategory === 'All' || book.category === activeCategory
+      const query = searchQuery.toLowerCase().trim()
+      const matchesSearch =
+        !query ||
+        book.title.toLowerCase().includes(query) ||
+        book.subtitle.toLowerCase().includes(query) ||
+        book.desc.toLowerCase().includes(query) ||
+        book.category.toLowerCase().includes(query)
+      return matchesCategory && matchesSearch
+    })
+  }, [activeCategory, searchQuery])
+
+  const featuredBook = EBOOKS.find((b) => b.featured) || EBOOKS[0]
+
+  function handleDownloadClick(book) {
+    setDownloadModalBook(book)
+    setDownloadSuccess(false)
+    setErrorMsg('')
+  }
+
+  function triggerMockDownload(book) {
+    // Generates a mock downloaded text/PDF placeholder to verify the download action works immediately
+    const sampleContent = `Theorem Academy - E-Book Library\n\nTitle: ${book.title}\nSubtitle: ${book.subtitle}\nCategory: ${book.category}\nLevel: ${book.level}\n\nNotice: This e-book will be served directly from your Supabase storage bucket once configured in src/config/ebooks.js.\nFile name: ${book.fileName}\n`
+    const blob = new Blob([sampleContent], { type: 'text/plain;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = book.fileName.replace('.pdf', '-preview.txt')
+    document.body.appendChild(anchor)
+    anchor.click()
+    document.body.removeChild(anchor)
+    URL.revokeObjectURL(url)
+  }
+
+  async function executeDownload(book) {
+    const directUrl = getEbookDownloadUrl(book)
+    if (!directUrl) {
+      triggerMockDownload(book)
+      return
+    }
+
+    try {
+      // Fetch binary blob to force browser to save directly without previewing
+      const response = await fetch(directUrl)
+      if (!response.ok) throw new Error('Fetch failed')
+      const blob = await response.blob()
+      const blobUrl = URL.createObjectURL(blob)
+      const anchor = document.createElement('a')
+      anchor.href = blobUrl
+      anchor.download = book.fileName
+      document.body.appendChild(anchor)
+      anchor.click()
+      document.body.removeChild(anchor)
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 3000)
+    } catch (err) {
+      console.warn('Direct blob download fallback to attachment URL:', err)
+      const anchor = document.createElement('a')
+      anchor.href = directUrl
+      anchor.download = book.fileName
+      document.body.appendChild(anchor)
+      anchor.click()
+      document.body.removeChild(anchor)
+    }
+  }
+
+  async function handleLeadSubmit(e) {
     e.preventDefault()
-    if (!emailInput) return
-    setDownloadSuccess(book.title)
-    setDownloadingBook(null)
-    setEmailInput('')
-    setTimeout(() => setDownloadSuccess(null), 6000)
+    if (!leadForm.name.trim() || !leadForm.email.trim() || !leadForm.phone.trim()) {
+      setErrorMsg('Please enter your Name, Email, and Phone number.')
+      return
+    }
+
+    setIsSubmitting(true)
+    setErrorMsg('')
+
+    try {
+      // 1. Record lead into public.leads table (with deduplication on email/phone)
+      await recordLead({
+        name: leadForm.name.trim(),
+        email: leadForm.email.trim(),
+        phone: leadForm.phone.trim(),
+        source: 'Free eBook Download',
+        stage: 'New Inquiry',
+        campus: 'Online',
+        programId: downloadModalBook.id,
+        programName: downloadModalBook.title,
+        noteText: `Downloaded free eBook: ${downloadModalBook.title} (${downloadModalBook.format || 'PDF'}${downloadModalBook.pages ? `, ${downloadModalBook.pages}` : ''})`,
+      })
+
+      // Persist lead details for user convenience on future downloads
+      try {
+        localStorage.setItem('academy-ebook-lead', JSON.stringify(leadForm))
+      } catch {
+        // ignore
+      }
+
+      // 2. Start direct download
+      await executeDownload(downloadModalBook)
+      setDownloadSuccess(true)
+    } catch (err) {
+      console.warn('Error recording lead, starting download:', err)
+      await executeDownload(downloadModalBook)
+      setDownloadSuccess(true)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <>
       <PageHeader
         back={{ to: '/', label: 'Home' }}
-        title="Knowledge Toolkit & Institutional Technology"
-        intro="Explore institutional market analysis tools, order flow heatmaps, and downloadable trading e-books developed by Theorem Institute."
+        title="Free E-Books & Study Resources"
+        intro="Download our comprehensive workbooks, risk frameworks, and study guides. 100% free — no credit card or subscription required."
       />
 
-      {/* Overview Highlights Strip */}
-      <section className="border-b border-white/10 bg-[#0d0d12] py-8 text-white">
-        <div className="wrap grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div className="p-3">
-            <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">4 E-Books</div>
-            <div className="mt-1 text-xs text-white/70">Free E-Books & Guides</div>
-          </div>
-          <div className="p-3">
-            <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">Tick-Level</div>
-            <div className="mt-1 text-xs text-white/70">Order Flow & DOM Data</div>
-          </div>
-          <div className="p-3">
-            <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">1% Hard Stop</div>
-            <div className="mt-1 text-xs text-white/70">Risk Control & Sizing Rules</div>
-          </div>
-          <div className="p-3">
-            <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text">Multi-Screen</div>
-            <div className="mt-1 text-xs text-white/70">Classroom Trading Desks</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Free E-Books Section (Requirement 1) */}
-      <Section
-        id="ebooks"
-        tight
-        title="Free Institutional E-Books & Guides"
-        intro="Download our comprehensive e-books on price action, order flow mechanics, crypto risk management, and global macro frameworks."
-        className="bg-[#09090c] border-b border-white/10"
-      >
-        {downloadSuccess && (
-          <div className="mb-8 rounded-2xl border border-signal/40 bg-signal/15 p-5 text-white flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">📥</span>
-              <div>
-                <h4 className="font-bold text-signal text-sm">Download link dispatched!</h4>
-                <p className="text-xs text-white/80 mt-0.5">We sent <strong>{downloadSuccess}</strong> to your inbox. You can also view it instantly in your student resources.</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setDownloadSuccess(null)}
-              className="text-xs text-white/60 hover:text-white font-bold"
-            >
-              ✕
-            </button>
-          </div>
-        )}
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {freeEbooks.map((book) => (
-            <article
-              key={book.id}
-              className="card-hover-glow group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#14141c] text-white p-5 shadow-xl transition-all"
-            >
-              <div>
-                {/* Book Header Thumbnail / Image */}
-                <div className="relative aspect-[16/10] overflow-hidden rounded-xl border border-white/10 bg-black/40">
-                  <img
-                    src={book.coverImage}
-                    alt={book.title}
-                    className="h-full w-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition-all duration-500"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#14141c] via-transparent to-transparent" />
-                  <span className="badge-signal absolute top-2.5 left-2.5 text-[0.65rem] font-bold py-0.5 px-2">
-                    {book.tag}
-                  </span>
-                  <span className="absolute bottom-2.5 right-2.5 rounded bg-black/70 px-2 py-0.5 text-[0.68rem] font-mono font-bold text-white/90 backdrop-blur-sm">
-                    {book.pages}
-                  </span>
-                </div>
-
-                <div className="mt-4">
-                  <span className="text-[0.7rem] font-semibold text-signal uppercase tracking-wider block">
-                    {book.category}
-                  </span>
-                  <h3 className="mt-1 font-display text-lg font-extrabold text-white group-hover:text-signal transition-colors leading-snug">
-                    {book.title}
+      {/* Featured E-Book Hero Spotlight */}
+      <Section tight className="bg-[#09090c] border-b border-white/10">
+        <div className="rounded-3xl border border-signal/30 bg-gradient-to-br from-signal/15 via-[#121218] to-[#161622] p-6 sm:p-8 lg:p-10 text-white relative overflow-hidden shadow-2xl">
+          <div className="absolute -right-20 -top-20 size-80 rounded-full bg-signal/10 blur-3xl pointer-events-none" />
+          
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            {/* Book Graphic / Cover Preview */}
+            <div className="lg:col-span-4 flex justify-center">
+              <div className="relative group/cover w-full max-w-[260px] aspect-[1/1.4] rounded-2xl bg-gradient-to-br from-[#1e1e28] to-[#0c0c12] border-2 border-white/20 p-5 shadow-2xl flex flex-col justify-between transform transition-transform duration-300 hover:scale-[1.03]">
+                {/* Spine effect */}
+                <div className="absolute left-0 inset-y-0 w-3 rounded-l-2xl bg-gradient-to-r from-white/30 to-transparent" />
+                
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
+                      {featuredBook.badge}
+                    </span>
+                    {featuredBook.pages && (
+                      <span className="text-xs font-mono text-white/60">{featuredBook.pages}</span>
+                    )}
+                  </div>
+                  <div className="mt-6 text-3xl">{featuredBook.icon}</div>
+                  <h3 className="mt-3 font-display text-xl font-extrabold text-white leading-tight">
+                    {featuredBook.title}
                   </h3>
-                  <p className="mt-2 text-xs text-white/70 leading-relaxed line-clamp-3">
-                    {book.summary}
+                  <p className="mt-1 text-xs text-signal font-medium">
+                    {featuredBook.subtitle}
                   </p>
                 </div>
 
-                {/* Highlights */}
-                <ul className="mt-4 space-y-1.5 border-t border-white/5 pt-3 text-[0.75rem] text-white/85">
-                  {book.highlights.slice(0, 2).map((h) => (
-                    <li key={h} className="flex items-start gap-1.5">
-                      <span className="text-signal font-bold shrink-0">✓</span>
-                      <span className="truncate">{h}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="border-t border-white/15 pt-3 flex items-center justify-between text-[0.7rem] text-white/60">
+                  <span>Format: {featuredBook.format}</span>
+                  <span className="font-semibold text-white/90">Free E-Book</span>
+                </div>
               </div>
+            </div>
 
-              <div className="mt-5 border-t border-white/10 pt-4">
-                {downloadingBook === book.id ? (
-                  <form onSubmit={(e) => handleDownloadSubmit(e, book)} className="space-y-2">
-                    <input
-                      type="email"
-                      required
-                      placeholder="Enter your email"
-                      value={emailInput}
-                      onChange={(e) => setEmailInput(e.target.value)}
-                      className="field w-full py-1.5 px-3 text-xs bg-black/60 border border-white/20 rounded-lg text-white"
-                      autoFocus
-                    />
-                    <div className="flex gap-2">
-                      <button
-                        type="submit"
-                        className="btn-brand flex-1 py-1.5 text-xs font-bold text-center"
-                      >
-                        Send PDF →
-                      </button>
+            {/* Featured Book Info */}
+            <div className="lg:col-span-8">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="inline-block size-2 rounded-full bg-signal animate-pulse" />
+                <span className="text-xs uppercase font-bold tracking-wider text-signal">Featured E-Book</span>
+              </div>
+              <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white leading-tight">
+                {featuredBook.title}
+              </h2>
+              <p className="mt-3 text-xs sm:text-sm text-white/80 leading-relaxed max-w-2xl">
+                {featuredBook.desc}
+              </p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <button
+                  type="button"
+                  onClick={() => handleDownloadClick(featuredBook)}
+                  className="btn-brand py-3 px-6 text-xs sm:text-sm font-bold flex items-center gap-2 shadow-xl shadow-signal/10"
+                >
+                  <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                  <span>Download Free PDF</span>
+                </button>
+                <Link
+                  to="/programs"
+                  className="btn-ghost py-3 px-5 text-xs sm:text-sm font-semibold"
+                >
+                  Explore Related Courses →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* E-Books Library Section (Hidden for now as requested) */}
+      {/* Set SHOW_EBOOK_LIBRARY to true to restore */}
+      {false && (
+        <Section
+          id="ebooks"
+          tight
+          title="Complete Free E-Book Library"
+          intro="Select any guide below to download the full PDF edition. Structured for beginners through intermediate and active traders."
+        >
+          {/* Category Filters & Search Bar */}
+          <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex flex-wrap gap-2">
+              {EBOOK_CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setActiveCategory(cat)}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                    activeCategory === cat
+                      ? 'bg-signal text-black font-bold shadow-md'
+                      : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white border border-white/10'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+
+            <div className="relative min-w-[240px]">
+              <input
+                type="text"
+                placeholder="Search e-books & topics…"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="field py-1.5 pl-9 pr-3 text-xs w-full bg-[#121218] border-white/15 focus:border-signal"
+              />
+              <svg
+                className="absolute left-3 top-1/2 -translate-y-1/2 size-3.5 text-white/40"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* E-Books Grid */}
+          {filteredBooks.length === 0 ? (
+            <div className="text-center py-16 card-rich rounded-2xl border border-white/10 text-white/70">
+              <span className="text-4xl block mb-2">🔍</span>
+              <p className="font-bold text-white">No e-books match your search.</p>
+              <p className="text-xs text-white/50 mt-1">Try clearing your filters or search query.</p>
+              <button
+                onClick={() => { setActiveCategory('All'); setSearchQuery('') }}
+                className="mt-4 btn-ghost py-1.5 px-4 text-xs font-semibold"
+              >
+                Clear Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {filteredBooks.map((book) => (
+                <article
+                  key={book.id}
+                  className="card-hover-glow rounded-2xl border border-white/10 bg-[#14141c] text-white flex flex-col justify-between overflow-hidden group/card"
+                >
+                  {/* Book Card Top Banner / Fake Cover */}
+                  <div className={`p-6 bg-gradient-to-br ${book.coverGradient} border-b border-white/10 relative`}>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
+                        {book.badge}
+                      </span>
+                      <span className="text-[0.7rem] font-mono text-white/75 bg-black/40 px-2 py-0.5 rounded">
+                        {book.pages}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3 mt-4">
+                      <span className="text-3xl p-2.5 rounded-xl bg-black/30 border border-white/10 shadow-inner">
+                        {book.icon}
+                      </span>
+                      <div>
+                        <span className="text-[0.65rem] uppercase font-bold tracking-wider text-signal">
+                          {book.category} • {book.level}
+                        </span>
+                        <h3 className="font-display text-lg sm:text-xl font-bold text-white leading-snug group-hover/card:text-signal transition-colors">
+                          {book.title}
+                        </h3>
+                      </div>
+                    </div>
+                    <p className="mt-2 text-xs text-white/80 font-medium">
+                      {book.subtitle}
+                    </p>
+                  </div>
+
+                  {/* Book Body */}
+                  <div className="p-6 flex-1 flex flex-col justify-between">
+                    <div>
+                      <p className="text-xs text-white/70 leading-relaxed">
+                        {book.desc}
+                      </p>
+                    </div>
+
+                    {/* Card Footer / Download Action */}
+                    <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between gap-3">
+                      <div className="text-[0.68rem] text-white/50 font-mono">
+                        <span>{book.format}</span> • <span>{book.fileSize}</span>
+                      </div>
+
                       <button
                         type="button"
-                        onClick={() => setDownloadingBook(null)}
-                        className="btn-ghost py-1.5 px-2 text-xs text-white/60"
+                        onClick={() => handleDownloadClick(book)}
+                        className="btn-brand py-2 px-4 text-xs font-bold flex items-center gap-1.5 shadow-md"
                       >
-                        Cancel
+                        <svg className="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        <span>Download PDF</span>
                       </button>
                     </div>
-                  </form>
-                ) : (
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[0.7rem] text-white/50">
-                      {book.downloads} downloads
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setDownloadingBook(book.id)}
-                      className="btn-brand py-2 px-3.5 text-xs font-bold shadow-sm inline-flex items-center gap-1.5"
-                    >
-                      <span>📥 Free Download</span>
-                    </button>
                   </div>
-                )}
+                </article>
+              ))}
+            </div>
+          )}
+        </Section>
+      )}
+
+      {/* Closing Call to Action: Focus on Academy / Courses, NOT Software */}
+      <FinalCta
+        title="Ready to go beyond reading?"
+        body="Explore structured courses and interactive learning sessions with our faculty, available online and in person."
+      />
+
+      {/* Download Lead Capture Modal */}
+      {downloadModalBook && (
+        <Modal
+          open={!!downloadModalBook}
+          onClose={() => { setDownloadModalBook(null); setDownloadSuccess(false); setErrorMsg('') }}
+        >
+          <div className="p-5 sm:p-6 text-white space-y-4">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <h3 className="font-display text-base sm:text-lg font-bold text-white">
+                {downloadSuccess ? 'Download Ready' : 'Download Free E-Book'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => { setDownloadModalBook(null); setDownloadSuccess(false); setErrorMsg('') }}
+                className="text-white/50 hover:text-white text-lg font-bold p-1 leading-none transition-colors"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Selected Book Mini Card */}
+            <div className="flex items-start gap-3.5 p-3.5 rounded-xl bg-white/5 border border-white/10">
+              <span className="text-2xl p-2 rounded-lg bg-black/40 border border-white/10 shrink-0">
+                {downloadModalBook.icon}
+              </span>
+              <div className="min-w-0 flex-1">
+                <span className="badge-signal text-[0.65rem] font-bold uppercase py-0.5 px-2 inline-block">
+                  {downloadModalBook.category}
+                </span>
+                <h4 className="mt-1 font-display text-sm sm:text-base font-bold text-white leading-tight truncate">
+                  {downloadModalBook.title}
+                </h4>
+                <p className="text-xs text-white/60 mt-0.5">
+                  {downloadModalBook.pages ? `${downloadModalBook.pages} • ` : ''}{downloadModalBook.format} • Instant Access
+                </p>
               </div>
-            </article>
-          ))}
-        </div>
-      </Section>
+            </div>
 
-      {/* Interactive Pro Terminal Showcase */}
-      <Section
-        tight
-        dark
-        title="Interactive Trading Terminal"
-        intro="Experience our live order block tracking, multi-asset execution brackets, and session telemetry."
-      >
-        <div className="max-w-4xl mx-auto">
-          <TradingTerminalVisual />
-        </div>
-      </Section>
-
-      {/* Market Analysis & Order Flow Software */}
-      <Section
-        id="analysis-software"
-        tight
-        title="Market Analysis & Order Flow Software"
-        intro="Look beneath standard retail candlestick charts. Our analysis software exposes real-time institutional liquidity, volume delta aggression, and value areas."
-      >
-        <div className="grid gap-6 md:grid-cols-2">
-          {ANALYSIS_TOOLS.map((tool) => (
-            <article
-              key={tool.id}
-              className="card-hover-glow p-6 sm:p-7 rounded-2xl border border-white/10 bg-[#16161e] text-white flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between border-b border-white/10 pb-3.5">
-                  <span className="text-2xl">{tool.icon}</span>
-                  <span className="rounded bg-white/10 px-2.5 py-1 text-xs font-bold text-signal uppercase tracking-wider">
-                    {tool.tag}
-                  </span>
+            {/* State A: Download Success Confirmation */}
+            {downloadSuccess ? (
+              <div className="space-y-4 py-2">
+                <div className="p-4 bg-bull/15 border border-bull/30 rounded-xl text-center space-y-1.5">
+                  <div className="size-10 rounded-full bg-bull/20 text-bull font-bold text-xl mx-auto flex items-center justify-center mb-1">
+                    ✓
+                  </div>
+                  <p className="text-sm font-bold text-white">Thank you, {leadForm.name}!</p>
+                  <p className="text-xs text-bull font-medium">Your download has started automatically.</p>
+                  <p className="text-[0.7rem] text-white/60 pt-1">
+                    Please check your device's downloads folder.
+                  </p>
                 </div>
-                <h3 className="mt-4 font-display text-xl sm:text-2xl font-bold text-white">
-                  {tool.title}
-                </h3>
-                <p className="mt-2 text-xs sm:text-sm text-white/75 leading-relaxed">
-                  {tool.desc}
+
+                <div className="pt-2 flex flex-col sm:flex-row gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => executeDownload(downloadModalBook)}
+                    className="btn-ghost flex-1 py-2.5 px-4 text-xs font-semibold flex items-center justify-center gap-2"
+                  >
+                    <span>Click here if download didn't start</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setDownloadModalBook(null); setDownloadSuccess(false); setErrorMsg('') }}
+                    className="btn-brand py-2.5 px-5 text-xs font-bold"
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* State B: Lead Capture Form (Name, Email, Phone) */
+              <form onSubmit={handleLeadSubmit} className="space-y-3.5">
+                <p className="text-xs text-white/75 leading-relaxed">
+                  Enter your details below to unlock and download your free PDF immediately:
                 </p>
 
-                <div className="mt-5 space-y-2 border-t border-white/5 pt-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-white/50">Analytical Features</h4>
-                  <ul className="space-y-1.5 text-xs text-white/90">
-                    {tool.capabilities.map((c) => (
-                      <li key={c} className="flex items-center gap-2">
-                        <span className="text-signal font-bold">✓</span>
-                        <span>{c}</span>
-                      </li>
-                    ))}
-                  </ul>
+                {errorMsg && (
+                  <div className="p-2.5 rounded-lg bg-red-500/15 border border-red-500/30 text-xs text-red-300">
+                    {errorMsg}
+                  </div>
+                )}
+
+                <div>
+                  <label className="label text-xs font-bold text-white/90" htmlFor="lead-name">
+                    Full Name <span className="text-signal">*</span>
+                  </label>
+                  <input
+                    id="lead-name"
+                    type="text"
+                    required
+                    placeholder="e.g. Rahul Sharma"
+                    className="field py-2 text-xs sm:text-sm mt-1"
+                    value={leadForm.name}
+                    onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
+                  />
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </Section>
 
-      {/* Classroom Hardware Infrastructure */}
-      <Section
-        tight
-        dark
-        title="Classroom Hardware & Multi-Screen Labs"
-        intro="How technology is deployed inside our Dubai Business Bay and India campus classrooms."
-      >
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="p-6 rounded-2xl border border-white/10 bg-[#121217] text-white">
-            <span className="text-3xl block mb-3">🖥️</span>
-            <h3 className="font-display text-xl font-bold text-white">Multi-Monitor Desks</h3>
-            <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">
-              Every student workstation features dedicated dual-panel high-refresh monitors configured for simultaneous macro oversight, DOM orderflow, and execution charts.
-            </p>
-          </div>
-          <div className="p-6 rounded-2xl border border-white/10 bg-[#121217] text-white">
-            <span className="text-3xl block mb-3">⚡</span>
-            <h3 className="font-display text-xl font-bold text-white">Low-Latency Feeds</h3>
-            <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">
-              Direct market data lines connected to major liquidity centers, ensuring orderbook depths update with zero lag during volatile London and New York session opens.
-            </p>
-          </div>
-          <div className="p-6 rounded-2xl border border-white/10 bg-[#121217] text-white">
-            <span className="text-3xl block mb-3">🎙️</span>
-            <h3 className="font-display text-xl font-bold text-white">Live Mentor Screen Broadcast</h3>
-            <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">
-              Lead mentors broadcast high-resolution live markups and executions to student monitors and interactive remote Zoom feeds simultaneously with crystal-clear audio.
-            </p>
-          </div>
-        </div>
-      </Section>
+                <div>
+                  <label className="label text-xs font-bold text-white/90" htmlFor="lead-email">
+                    Email Address <span className="text-signal">*</span>
+                  </label>
+                  <input
+                    id="lead-email"
+                    type="email"
+                    required
+                    placeholder="e.g. rahul@example.com"
+                    className="field py-2 text-xs sm:text-sm mt-1"
+                    value={leadForm.email}
+                    onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
+                  />
+                </div>
 
-      {/* Closing Call to Action */}
-      <FinalCta
-        title="See our market analysis tools in action."
-        body="Visit our Dubai campus in Business Bay, drop into our India lab, or book a live 1-on-1 Zoom walkthrough with an advisor."
-      />
+                <div>
+                  <label className="label text-xs font-bold text-white/90" htmlFor="lead-phone">
+                    Phone Number <span className="text-signal">*</span>
+                  </label>
+                  <input
+                    id="lead-phone"
+                    type="tel"
+                    required
+                    placeholder="e.g. +91 98765 43210 / +971 50 123 4567"
+                    className="field py-2 text-xs sm:text-sm mt-1"
+                    value={leadForm.phone}
+                    onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
+                  />
+                </div>
+
+                <div className="pt-1">
+                  <label className="flex items-start gap-2 text-[0.72rem] text-white/75 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      required
+                      defaultChecked
+                      className="mt-0.5 size-3.5 rounded border-white/20 bg-black/40 text-signal focus:ring-signal"
+                    />
+                    <span className="leading-snug">
+                      I consent to Theorem Academy processing my contact details under our{' '}
+                      <Link to="/privacy" target="_blank" className="text-signal underline hover:text-white">
+                        DPDP Act Privacy Policy
+                      </Link>{' '}
+                      and{' '}
+                      <Link to="/terms" target="_blank" className="text-signal underline hover:text-white">
+                        User Agreement
+                      </Link>{' '}
+                      to deliver this study material.
+                    </span>
+                  </label>
+                </div>
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="btn-brand w-full py-2.5 sm:py-3 text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-lg"
+                  >
+                    <svg className="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span>{isSubmitting ? 'Starting Download…' : 'Submit & Download PDF'}</span>
+                  </button>
+                  <p className="text-[0.68rem] text-center text-white/45 mt-2">
+                    🔒 DPDP Act (2023) compliant. Instant direct download. No credit card required.
+                  </p>
+                </div>
+              </form>
+            )}
+          </div>
+        </Modal>
+      )}
     </>
   )
 }

@@ -47,7 +47,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [visible])
 
-  // Canvas 3D Gold Coin & Orbiting Asset Coins (Optimized Ultra-Lite for all browsers)
+  // Canvas 3D Chrome Coin & Orbiting Asset Coins (Optimized Ultra-Lite for all browsers)
   useEffect(() => {
     if (!visible) return
     const canvas = canvasRef.current
@@ -73,15 +73,14 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
     resize()
     window.addEventListener('resize', resize)
 
-    // Floating Real Financial Coins with Responsive Orbit Radii & Learning Badges (Exactly 3 topic badges, rest icon-only)
+    // Floating Real Financial Coins with Responsive Orbit Radii
     const scaleFactor = isMobile ? 0.52 : 1.0
     const ORBIT_ASSETS = [
-      { symbol: 'Ξ', name: 'ETH', badge: 'Learn Crypto', color: '#627eea', radiusX: 310 * scaleFactor, radiusY: 98 * scaleFactor, speed: -0.62, offset: 0.7, size: isMobile ? 22 : 28 },
-      { symbol: '£', name: 'GBP', badge: 'Learn Forex', color: '#c084fc', radiusX: 250 * scaleFactor, radiusY: 82 * scaleFactor, speed: 0.72, offset: 2.3, size: isMobile ? 20 : 26 },
-      { symbol: '📈', name: 'EQ', badge: 'Learn Equity', color: '#10b981', radiusX: 345 * scaleFactor, radiusY: 110 * scaleFactor, speed: -0.5, offset: 3.8, size: isMobile ? 21 : 27 },
-      { symbol: '€', name: 'EUR', badge: null, color: '#3b82f6', radiusX: 215 * scaleFactor, radiusY: 70 * scaleFactor, speed: 0.86, offset: 5.0, size: isMobile ? 18 : 24 },
-      { symbol: '₿', name: 'BTC', badge: null, color: '#f7931a', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.58, offset: 6.1, size: isMobile ? 22 : 28 },
-      { symbol: '₮', name: 'USDT', badge: null, color: '#26a17b', radiusX: 185 * scaleFactor, radiusY: 62 * scaleFactor, speed: -0.85, offset: 1.7, size: isMobile ? 17 : 22 },
+      { symbol: '₿', name: 'BTC', color: '#f7931a', radiusX: 300 * scaleFactor, radiusY: 100 * scaleFactor, speed: -0.65, offset: 1.2, size: isMobile ? 22 : 28, label: 'Learn Crypto' },
+      { symbol: '₮', name: 'USDT', color: '#26a17b', radiusX: 250 * scaleFactor, radiusY: 80 * scaleFactor, speed: 0.75, offset: 3.8, size: isMobile ? 21 : 27 },
+      { symbol: '€', name: 'EUR', color: '#60a5fa', radiusX: 220 * scaleFactor, radiusY: 72 * scaleFactor, speed: 0.9, offset: 5.2, size: isMobile ? 18 : 24, label: 'Learn Forex' },
+      { symbol: 'AED', name: 'AED', color: '#10b981', radiusX: 330 * scaleFactor, radiusY: 108 * scaleFactor, speed: -0.5, offset: 2.6, size: isMobile ? 18 : 22, label: 'Learn Equity' },
+      { symbol: '£', name: 'GBP', color: '#c084fc', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.65, offset: 0.4, size: isMobile ? 18 : 24 },
     ]
 
     // Floating Golden Dust Sparkles (optimized: 16 on mobile, 32 on desktop, zero heavy shadowBlur)
@@ -103,12 +102,12 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       const cy = height / 2
       const mob = width < 768
 
-      // Ultra-lite clear: container CSS handles obsidian & gold radial backdrop
+      // Ultra-lite clear: container CSS handles obsidian & silver radial backdrop
       ctx.clearRect(0, 0, width, height)
 
       // 1. Perspective Matrix Floor Grid (single batched stroke for high performance)
       ctx.beginPath()
-      ctx.strokeStyle = 'rgba(242, 177, 52, 0.05)'
+      ctx.strokeStyle = 'rgba(199, 205, 214, 0.06)'
       ctx.lineWidth = 1
       const gridSteps = mob ? 6 : 10
       for (let i = -gridSteps; i <= gridSteps; i++) {
@@ -117,7 +116,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       }
       ctx.stroke()
 
-      // 2. Floating Golden Sparkle Particles (lite: pure alpha circles)
+      // 2. Floating Silver Sparkle Particles (lite: pure alpha circles)
       particles.forEach((p) => {
         p.z -= p.speed * 2
         if (p.z < 0) p.z = 450
@@ -126,11 +125,11 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         const y2d = cy + p.y * scale
         ctx.beginPath()
         ctx.arc(x2d, y2d, p.size * scale, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255, 220, 130, ${p.alpha * scale})`
+        ctx.fillStyle = `rgba(220, 224, 230, ${p.alpha * scale})`
         ctx.fill()
       })
 
-      // 3. Draw Orbiting Coin Medallions with Badges
+      // 3. Draw Orbiting Coin Medallions
       const renderAsset = (asset, isFront) => {
         const angle = time * asset.speed + asset.offset
         const z = Math.sin(angle)
@@ -158,12 +157,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
 
         ctx.strokeStyle = asset.color
         ctx.lineWidth = 2.2
-        if (!mob) {
-          ctx.shadowColor = asset.color
-          ctx.shadowBlur = 8
-        }
         ctx.stroke()
-        ctx.shadowBlur = 0
 
         // Inner Milled Coin Ridge
         ctx.beginPath()
@@ -179,120 +173,90 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         ctx.textBaseline = 'middle'
         ctx.fillText(asset.symbol, 0, 0.5)
 
-        // Floating Topic Badge (e.g. "Learn Crypto", "Learn Forex", "Learn Equity")
-        if (asset.badge) {
-          const badgeText = asset.badge
-          const fontSize = mob ? 9.5 : 11
-          ctx.font = `bold ${fontSize}px "Plus Jakarta Sans", sans-serif`
-          const tw = ctx.measureText(badgeText).width
-          const pw = tw + (mob ? 12 : 16)
-          const ph = mob ? 18 : 22
-          const py = r + (mob ? 7 : 10)
-
-          // Badge pill background
-          ctx.fillStyle = 'rgba(14, 14, 20, 0.92)'
-          ctx.beginPath()
-          if (ctx.roundRect) {
-            ctx.roundRect(-pw / 2, py, pw, ph, 999)
-          } else {
-            ctx.rect(-pw / 2, py, pw, ph)
-          }
-          ctx.fill()
-          ctx.strokeStyle = `${asset.color}aa`
-          ctx.lineWidth = 1
-          ctx.stroke()
-
-          // Badge text
-          ctx.fillStyle = '#ffffff'
+        // Label text below the coin (e.g. "Learn Crypto")
+        if (asset.label) {
+          const labelFontSize = mob ? 7 : 9
+          ctx.fillStyle = asset.color
+          ctx.font = `bold ${labelFontSize}px "Plus Jakarta Sans", sans-serif`
           ctx.textAlign = 'center'
-          ctx.textBaseline = 'middle'
-          ctx.fillText(badgeText, 0, py + ph / 2)
+          ctx.textBaseline = 'top'
+          ctx.fillText(asset.label, 0, r + 4)
         }
 
         ctx.restore()
       }
 
-      // Draw Coins behind the center coin (z < 0)
+      // Draw Coins behind the center dollar coin (z < 0)
       ORBIT_ASSETS.forEach((a) => renderAsset(a, false))
 
-      // 4. 3D Rotating Golden Coin Medallion in Center (Dual-Sided: Bitcoin ₿ on one side, Dollar $ on other)
+      // 4. 3D Rotating Chrome Coin Medallion in Center (steady rotation, zero mouse reaction)
       const coinRadius = mob ? 68 : 90
       const coinAngle = time * 1.4
       const cosAngle = Math.cos(coinAngle)
       const sinAngle = Math.sin(coinAngle)
       const coinThickness = (mob ? 11 : 16) * Math.abs(sinAngle)
 
-      // Determine face side: Bitcoin ₿ on front (cosAngle >= 0), Dollar $ on back (cosAngle < 0)
-      const isBitcoinFace = cosAngle >= 0
-      const centerSymbol = isBitcoinFace ? '₿' : '$'
-
       ctx.save()
       ctx.translate(cx, cy)
 
-      // 3D Coin Edge Extrusion
+      // 3D Coin Edge Extrusion (zero shadowBlur inside loop for 60fps smoothness)
       const edgeSteps = mob ? 4 : 8
       for (let e = 0; e < edgeSteps; e++) {
         const edgeOffset = (e / edgeSteps) * coinThickness * (sinAngle > 0 ? 1 : -1)
         ctx.beginPath()
         ctx.ellipse(edgeOffset, 0, coinRadius * Math.abs(cosAngle), coinRadius, 0, 0, Math.PI * 2)
-        ctx.strokeStyle = '#b8860b'
+        ctx.strokeStyle = '#5c6470'
         ctx.lineWidth = 1.5
         ctx.stroke()
       }
 
       // Main Coin Face Front
-      if (!mob) {
-        ctx.shadowColor = '#f2b134'
-        ctx.shadowBlur = 18
-      }
       ctx.beginPath()
       ctx.ellipse(0, 0, coinRadius * Math.abs(cosAngle), coinRadius, 0, 0, Math.PI * 2)
 
-      // Dynamic Shifting Metallic Gold Gradient
-      const goldGrad = ctx.createLinearGradient(-coinRadius * Math.abs(cosAngle), -coinRadius, coinRadius * Math.abs(cosAngle), coinRadius)
-      goldGrad.addColorStop(0, '#ffe599')
-      goldGrad.addColorStop(0.3, '#f2b134')
-      goldGrad.addColorStop(0.6, '#d49015')
-      goldGrad.addColorStop(0.85, '#ffe599')
-      goldGrad.addColorStop(1, '#855a00')
+      // Dynamic Shifting Metallic Chrome Gradient
+      const goldGrad = ctx.createLinearGradient(-coinRadius * cosAngle, -coinRadius, coinRadius * cosAngle, coinRadius)
+      goldGrad.addColorStop(0, '#ffffff')
+      goldGrad.addColorStop(0.3, '#d8dde3')
+      goldGrad.addColorStop(0.6, '#6b7280')
+      goldGrad.addColorStop(0.85, '#ffffff')
+      goldGrad.addColorStop(1, '#363b43')
       ctx.fillStyle = goldGrad
       ctx.fill()
 
-      ctx.strokeStyle = '#fff0c2'
+      ctx.strokeStyle = '#ffffff'
       ctx.lineWidth = mob ? 2 : 3
       ctx.stroke()
-      ctx.shadowBlur = 0
 
       // Inner Coin Milled Ridge
       ctx.beginPath()
       ctx.ellipse(0, 0, (coinRadius - (mob ? 9 : 12)) * Math.abs(cosAngle), coinRadius - (mob ? 9 : 12), 0, 0, Math.PI * 2)
-      ctx.strokeStyle = 'rgba(133, 90, 0, 0.6)'
+      ctx.strokeStyle = 'rgba(90, 97, 107, 0.6)'
       ctx.lineWidth = 1.5
       ctx.stroke()
 
-      // Center Embossed Dual-Sided Symbol on Coin (₿ on one side, $ on other side, facing forwards)
-      if (Math.abs(cosAngle) > 0.12) {
+      // Center Embossed Dollar ($) Symbol on Coin
+      if (Math.abs(cosAngle) > 0.15) {
         ctx.save()
-        // Scaling by Math.abs(cosAngle) ensures the icon always renders horizontally scaled without being backward/mirrored
-        ctx.scale(Math.abs(cosAngle), 1)
+        ctx.scale(cosAngle, 1)
 
         // Emboss Shadow
-        ctx.fillStyle = 'rgba(80, 48, 0, 0.75)'
+        ctx.fillStyle = 'rgba(30, 32, 36, 0.7)'
         ctx.font = `900 ${mob ? 50 : 68}px "Plus Jakarta Sans", sans-serif`
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillText(centerSymbol, 1.5, 3)
+        ctx.fillText('$', 1.5, 3)
 
         // Emboss Highlight
         ctx.fillStyle = '#ffffff'
-        ctx.fillText(centerSymbol, 0, 0)
+        ctx.fillText('$', 0, 0)
 
         ctx.restore()
       }
 
       ctx.restore()
 
-      // 5. Draw Assets in Front of the Center Coin (z >= 0)
+      // 5. Draw Assets in Front of the Coin (z >= 0)
       ORBIT_ASSETS.forEach((a) => renderAsset(a, true))
 
       animId = requestAnimationFrame(render)
@@ -336,7 +300,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       role="dialog"
       aria-modal="true"
       aria-label="Theorem 3D Financial Intro"
-      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#050508] bg-[radial-gradient(ellipse_at_center,_rgba(242,177,52,0.18)_0%,_rgba(15,15,20,0.85)_40%,_#050508_100%)] text-white transition-all duration-700 ease-[cubic-bezier(0.77,0,0.175,1)] ${
+      className={`fixed inset-0 z-50 flex flex-col justify-between overflow-hidden bg-[#050508] text-white transition-all duration-700 ease-[cubic-bezier(0.77,0,0.175,1)] ${
         isExiting ? 'scale-110 opacity-0 pointer-events-none' : 'scale-100 opacity-100'
       }`}
     >
@@ -365,7 +329,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         <button
           type="button"
           onClick={handleEnter}
-          className="pointer-events-auto shimmer-button group relative flex items-center gap-3 rounded-full border border-signal/60 bg-gradient-to-r from-[#f2b134] via-[#ffe39c] to-[#f2b134] px-9 py-4 text-sm sm:text-base font-extrabold text-[#082326] shadow-[0_0_40px_rgba(242,177,52,0.6)] hover:shadow-[0_0_60px_rgba(242,177,52,0.9)] transition-all transform hover:scale-105 active:scale-95"
+          className="pointer-events-auto shimmer-button group relative flex items-center gap-3 rounded-full border border-signal/60 bg-gradient-to-r from-[#aab0bb] via-[#ffffff] to-[#aab0bb] px-9 py-4 text-sm sm:text-base font-extrabold text-[#101114] transition-all transform hover:scale-105 active:scale-95"
         >
           <span className="tracking-wider">ENTER THEOREM</span>
           <span className="transition-transform duration-200 group-hover:translate-x-1 font-bold text-lg">→</span>

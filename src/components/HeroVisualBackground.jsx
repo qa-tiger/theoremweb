@@ -1,31 +1,7 @@
-import { useEffect, useState } from 'react'
-
 export const HERO_SCENES = [
   {
-    id: 'dubai',
-    name: 'Dubai Campus',
-    location: 'Business Bay & DIFC',
-    flag: '🇦🇪',
-    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=2000&q=85',
-    tagline: 'Physical Trading Floor • Business Bay, Dubai',
-    session: 'Dubai Market Session (Active)',
-    badge: 'UAE Flagship Campus',
-    tz: 'GST (UTC+4)',
-  },
-  {
-    id: 'online',
-    name: 'Live Online',
-    location: 'Interactive Live Classrooms',
-    flag: '🌐',
-    image: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=2000&q=85',
-    tagline: 'Interactive Screen Sharing & 1-on-1 Reviews',
-    session: '24/7 Global Orderflow',
-    badge: 'Live Online Cohort',
-    tz: 'Global Timezones',
-  },
-  {
     id: 'india',
-    name: 'India Campus',
+    name: 'India',
     location: 'Mumbai BKC & Financial Hub',
     flag: '🇮🇳',
     image: 'https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=2000&q=85',
@@ -34,9 +10,31 @@ export const HERO_SCENES = [
     badge: 'India Hub',
     tz: 'IST (UTC+5:30)',
   },
+  {
+    id: 'dubai',
+    name: 'Dubai',
+    location: 'Business Bay & DIFC',
+    flag: '🇦🇪',
+    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=2000&q=85',
+    tagline: 'Physical Trading Floor • Business Bay, Dubai',
+    session: 'Dubai Market Session (Active)',
+    badge: 'UAE Hub',
+    tz: 'GST (UTC+4)',
+  },
+  {
+    id: 'online',
+    name: 'Online',
+    location: 'Interactive Live Classrooms',
+    flag: '🌐',
+    image: 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=2000&q=85',
+    tagline: 'Interactive Screen Sharing & 1-on-1 Reviews',
+    session: '24/7 Global Orderflow',
+    badge: 'Live Online Cohort',
+    tz: 'Global Timezones',
+  },
 ]
 
-export default function HeroVisualBackground({ activeScene = 'dubai' }) {
+export default function HeroVisualBackground({ activeScene = 'india' }) {
   const active = HERO_SCENES.find((s) => s.id === activeScene) || HERO_SCENES[0]
 
   return (
@@ -57,19 +55,11 @@ export default function HeroVisualBackground({ activeScene = 'dubai' }) {
       <div className="absolute inset-0 bg-gradient-to-r from-[#07070a]/95 via-[#07070a]/75 to-[#07070a]/25" />
       <div className="absolute inset-0 bg-gradient-to-b from-[#07070a]/60 via-transparent to-[#09090b]" />
 
-      {/* Warm Ambient Gold Radial Halo Glow behind the right showcase area */}
-      <div
-        className="absolute top-1/4 right-[5%] w-[620px] h-[620px] rounded-full blur-[110px] opacity-85 pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, rgba(229, 184, 11, 0.16) 45%, transparent 70%)',
-        }}
-      />
-
       {/* Subtle Micro-Grid Accent */}
       <div
         className="absolute inset-0 opacity-[0.05]"
         style={{
-          backgroundImage: `radial-gradient(rgba(255,215,0,0.5) 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(rgba(199,205,214,0.5) 1px, transparent 1px)`,
           backgroundSize: '32px 32px',
         }}
       />

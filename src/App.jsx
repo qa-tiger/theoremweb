@@ -11,6 +11,8 @@ import Mentors from './pages/Mentors'
 import NotFound from './pages/NotFound'
 import { ProgramDetail, Programs } from './pages/Programs'
 import Technology from './pages/Technology'
+import Privacy from './pages/Privacy'
+import Terms from './pages/Terms'
 import Certificates from './pages/portal/Certificates'
 import Course from './pages/portal/Course'
 import { Dashboard, PortalLayout } from './pages/portal/Portal'
@@ -37,13 +39,15 @@ export default function App() {
             <Route path="programs/:programId" element={<ProgramDetail />} />
             <Route path="technology" element={<Technology />} />
             <Route path="technology/tools" element={<Technology />} />
-            <Route path="knowledge-toolkit" element={<Technology />} />
-            <Route path="ebooks" element={<Technology />} />
             <Route path="tools" element={<Technology />} />
+            <Route path="ebooks" element={<Technology />} />
+            <Route path="free-ebooks" element={<Technology />} />
             <Route path="about" element={<About />} />
             <Route path="mentors" element={<Mentors />} />
-            <Route path="team" element={<Mentors />} />
             <Route path="contact" element={<Contact />} />
+            <Route path="privacy" element={<Privacy />} />
+            <Route path="terms" element={<Terms />} />
+            <Route path="user-agreement" element={<Terms />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="checkout/:programId" element={<RequireAuth><Checkout /></RequireAuth>} />
