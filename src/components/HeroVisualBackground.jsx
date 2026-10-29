@@ -43,15 +43,6 @@ export default function HeroVisualBackground({ activeScene = 'offline' }) {
       {/* Directional Contrast Gradient: Solid obsidian on left for crystal-clear text readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#07070a]/95 via-[#07070a]/75 to-[#07070a]/25" />
       <div className="absolute inset-0 bg-gradient-to-b from-[#07070a]/60 via-transparent to-[#09090b]" />
-
-      {/* Subtle Micro-Grid Accent */}
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
-          backgroundSize: '4rem 4rem',
-        }}
-      />
     </div>
   )
 }
