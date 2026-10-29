@@ -18,19 +18,19 @@ export const site = {
 export const locations = [
   {
     id: 'training-floor-1',
-    label: 'Training Floor',
-    address: 'Office 000, Business Bay, Dubai', // placeholder
-    hours: 'Saturday to Thursday, 10:00 to 19:00',
+    label: 'Training Floor (UAE)',
+    address: 'Sharjah Media city, Sharjah UAE',
+    hours: 'Saturday to Thursday, 10:00 to 19:00 GST',
   },
   {
     id: 'training-floor-2',
-    label: 'Training Floor',
+    label: 'Training Floor (India)',
     address: '3rd Floor, Ambika Niwas, behind Tungareshwar Sweets, Gurunanak nagar, Vishal Nagar, Vasai West, Vasai-Virar, Maharashtra 401202',
     hours: 'Monday to Saturday, 10:00 to 19:00',
   },
   {
     id: 'online',
-    label: 'Online',
+    label: 'Online Campus',
     address: 'Live interactive classes on Zoom with dedicated mentors',
     hours: 'Weekday evening and weekend batches',
   },

@@ -5,6 +5,7 @@ import { AuthProvider, RequireAuth } from './lib/auth'
 import { Login, Register } from './pages/Auth'
 import Checkout from './pages/Checkout'
 import About from './pages/About'
+import Careers from './pages/Careers'
 import Contact from './pages/Contact'
 import Home from './pages/Home'
 import Mentors from './pages/Mentors'
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="ebooks" element={<Technology />} />
             <Route path="free-ebooks" element={<Technology />} />
             <Route path="about" element={<About />} />
+            <Route path="careers" element={<Careers />} />
             <Route path="mentors" element={<Mentors />} />
             <Route path="contact" element={<Contact />} />
             <Route path="privacy" element={<Privacy />} />

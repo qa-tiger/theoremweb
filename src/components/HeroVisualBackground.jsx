@@ -4,7 +4,7 @@ export const HERO_SCENES = [
     name: 'Offline',
     location: 'In-Person Trading Floors',
     flag: '🏛️',
-    image: '/campus/terminal-lab.jpeg',
+    image: '/campus/offline-classroom-session.jpg',
     tagline: 'Structured Trading Labs • In-Person Terminal Desks',
     session: 'Live Market Session (Active)',
     badge: 'Offline Cohort',

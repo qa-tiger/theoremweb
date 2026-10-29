@@ -40,6 +40,7 @@ export function Wordmark({ className = '', onClick, compact = false }) {
 
 const NAV_LINKS = [
   ['About', '/about'],
+  ['Careers', '/careers'],
   ['Contact', '/contact'],
 ]
 

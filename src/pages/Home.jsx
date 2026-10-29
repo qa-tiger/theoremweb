@@ -10,12 +10,7 @@ import {
   Stories,
   usePageTitle,
 } from '../components/sections'
-import { ImageBlock, Section } from '../components/ui'
-import { programs, teachers } from '../config/site'
 
-// The markets a mentor teaches (not every tier by name — Sohail alone covers 6 program
-// tiers now, which reads as a wall of text joined with "&").
-const marketsTaught = (teaches) => [...new Set(programs.filter((p) => teaches.includes(p.title)).map((p) => p.market))]
 
 const SCENE_ROTATION = ['offline', 'online']
 
@@ -120,38 +115,6 @@ function Hero() {
   )
 }
 
-// Compact mentor preview cards for the homepage
-function MentorsPreview() {
-  return (
-    <Section
-      tight
-      title="The mentors who guide your trades."
-      intro="Each cohort is led by one dedicated mentor from day one through course completion. No automated bots or revolving instructors."
-      action={<Link to="/mentors" className="link-line">Meet full faculty →</Link>}
-    >
-      <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
-        {teachers.map((t) => (
-          <article key={t.name} className="card-hover-glow panel group text-white p-5 sm:p-6">
-            <Link to={`/mentors#${t.id || t.name.toLowerCase().replace(/\s+/g, '-')}`} className="grid grid-cols-[minmax(0,1.3fr)_minmax(0,3fr)] items-center gap-4 sm:gap-5">
-              <ImageBlock src={t.photo} alt={`Portrait of ${t.name}`} initials={t.initials} ratio="4/5" shotNote={`Portrait of ${t.name}`} />
-              <div>
-                <span className="badge-signal text-xs py-0.5 px-2.5 uppercase tracking-wider">{t.role}</span>
-                <h3 className="mt-2.5 font-display text-2xl font-extrabold text-white transition-colors group-hover:text-signal sm:text-3xl leading-none">
-                  {t.name}
-                </h3>
-                <p className="mt-2 text-xs sm:text-sm text-white/75 leading-relaxed line-clamp-2">{t.focus}.</p>
-                <div className="mt-3 text-xs sm:text-sm font-medium text-white/80">
-                  Teaches: <span className="font-bold text-white">{marketsTaught(t.teaches).join(' & ')}</span>
-                </div>
-                <span className="link-line mt-3.5 inline-block text-xs sm:text-sm font-bold text-signal">View Profile →</span>
-              </div>
-            </Link>
-          </article>
-        ))}
-      </div>
-    </Section>
-  )
-}
 
 export default function Home() {
   usePageTitle(null)
@@ -169,8 +132,6 @@ export default function Home() {
         action={<Link to="/about" className="link-line text-white">Our teaching philosophy →</Link>}
       />
 
-      {/* 6. Lead Mentors Spotlight */}
-      <MentorsPreview />
 
       {/* 7. Student Testimonials */}
       <Stories limit={3} />

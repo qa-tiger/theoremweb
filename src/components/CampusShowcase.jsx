@@ -5,7 +5,7 @@ const LOCATIONS = [
   {
     id: 'offline',
     title: 'Offline',
-    image: '/campus/terminal-lab.jpeg',
+    image: '/campus/offline-classroom-session.jpg',
     hours: 'Mon – Sat, 10:00 – 19:00 IST / GST',
     perks: [
       'In-person multi-monitor terminal desks',
