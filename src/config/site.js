@@ -256,28 +256,35 @@ export const programs = [
 // builds (see Testimonials). Replace with real, consented student stories before launch.
 export const stories = [
   {
-    sample: true,
-    name: 'Student name',
-    program: 'Forex Basic, in-person batch',
-    quote: 'I had been trading without a methodology for a year and could not explain a single decision I took. The first thing Farhan did was make me write down why I was taking the setup, where my risk invalidation was, and what my position size was. Six weeks later I have complete clarity on every trade.',
-    outcome: 'Now trades a small live account with a written plan',
+    name: 'Aftab Ansari',
+    stars: 5,
+    date: '2 months ago',
+    source: 'Google Review',
+    program: 'Forex & Risk Management',
+    quote: 'I had zero knowledge before joining these classes but Farhan and Anas explained all the basics like candlesticks, risk management, and strategies in very simple language with the best examples and what I loved most is the live market practice sessions. Now I can place trades with confidence and actually understand charts. Highly recommend if you’re a beginner.',
+    outcome: 'Charts & Live Sessions',
   },
   {
-    sample: true,
-    name: 'Student name',
-    program: 'Crypto Basic, online batch',
-    quote: 'The session on wallet security alone was worth it. I moved everything off an exchange I should never have trusted.',
+    name: 'Narayan Bohara',
+    stars: 5,
+    date: '2 months ago',
+    source: 'Google Review',
+    program: 'Trading Foundations',
+    quote: 'This class was fantastic. The teacher explained hard ideas in a very simple way and made sure everyone understood before moving on. I learned a lot and feel much more confident now. I will suggest all my friends to join this class and learn more about trading.',
+    outcome: 'Recommends to Friends',
   },
   {
-    sample: true,
-    name: 'Student name',
-    program: 'Equity Basic, in-person batch',
-    quote: 'I work full time, so the structured schedule and direct mentor access kept me accountable and consistent.',
+    name: 'Aashu Yadav',
+    stars: 5,
+    date: '5 months ago',
+    source: 'Google Review',
+    program: 'Stock Market Trading',
+    quote: 'I attended a demo lecture for stock market trading. The session was informative and well-structured. The trainer explained the basics of trading, candlestick patterns, and market concepts in a simple and easy-to-understand manner. The environment was professional, and the way of teaching was beginner-friendly. They focused on practical knowledge and real market examples, which made the session interesting and engaging. Overall, it was a good learning experience, especially for someone who is new to trading and wants proper guidance to start in the stock market.',
+    outcome: 'Practical Guidance',
   },
 ]
 
 // The offer: what every program fee includes, and the refund terms.
-// placeholder: confirm every line with the academy before launch; these are promises to students.
 export const offer = {
   includes: [
     'Live classes with your mentor, in person or online',

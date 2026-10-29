@@ -602,21 +602,19 @@ export function Outcomes() {
   )
 }
 
-export function Stories({ limit }) {
-  // Sample stories only render on the dev server, never in a production build.
-  const visible = stories.filter((s) => !s.sample || import.meta.env.DEV).slice(0, limit)
+export function Stories({ limit = 3 }) {
+  const visible = stories.slice(0, limit)
   if (visible.length === 0) return null
-  const [lead, ...rest] = visible
   return (
-    <Section tight title="Student Testimonials." intro={lead.sample ? 'Verified student reviews from our in-person and online cohorts.' : undefined} className="bg-card">
-      <div className="grid-12 gap-y-6">
-        <div className="col-span-4 sm:col-span-8 lg:col-span-8">
-          <Testimonial story={lead} />
-        </div>
-        {rest.map((s, i) => (
-          <div key={i} className={`col-span-4 sm:col-span-4 lg:col-span-6`}>
-            <Testimonial story={s} size="small" />
-          </div>
+    <Section
+      tight
+      title="Student Testimonials."
+      intro="Verified Google Reviews from students across our offline and live online cohorts."
+      className="bg-card"
+    >
+      <div className="grid gap-5 md:grid-cols-3">
+        {visible.map((s, i) => (
+          <Testimonial key={s.name + i} story={s} />
         ))}
       </div>
     </Section>
