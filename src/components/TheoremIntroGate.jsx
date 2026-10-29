@@ -77,14 +77,17 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
     resize()
     window.addEventListener('resize', resize)
 
-    // Floating Real Financial Coins with Responsive Orbit Radii
-    const scaleFactor = isMobile ? 0.52 : 1.0
+    // Floating Real Financial Coins with Harmonious Orbital Cadence (eliminates full 5-coin cluster clumps)
+    const scaleFactor = isMobile ? 0.6 : 1.0
     const ORBIT_ASSETS = [
-      { symbol: '₿', name: 'BTC', color: '#f7931a', radiusX: 300 * scaleFactor, radiusY: 100 * scaleFactor, speed: -0.32, offset: 1.2, size: isMobile ? 22 : 28, label: 'Learn Crypto' },
-      { symbol: '₮', name: 'USDT', color: '#26a17b', radiusX: 250 * scaleFactor, radiusY: 80 * scaleFactor, speed: 0.38, offset: 3.8, size: isMobile ? 21 : 27, label: 'Learn Commodities' },
-      { symbol: '€', name: 'EUR', color: '#60a5fa', radiusX: 220 * scaleFactor, radiusY: 72 * scaleFactor, speed: 0.45, offset: 5.2, size: isMobile ? 18 : 24, label: 'Learn Forex' },
-      { symbol: 'AED', name: 'AED', color: '#10b981', radiusX: 330 * scaleFactor, radiusY: 108 * scaleFactor, speed: -0.25, offset: 2.6, size: isMobile ? 18 : 22, label: 'Learn Equity' },
-      { symbol: '£', name: 'GBP', color: '#c084fc', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.33, offset: 0.4, size: isMobile ? 18 : 24, label: 'Learn Indices' },
+      // Outer ring: Crypto, Indices, Equity (spaced 120° apart in pure harmony)
+      { symbol: '₿', sub: 'BTC', name: 'BTC', color: '#f7931a', radiusX: 320 * scaleFactor, radiusY: 102 * scaleFactor, speed: 0.28, offset: 0, size: isMobile ? 28 : 40, label: 'Learn Crypto' },
+      { symbol: 'SPX', sub: 'SP500', name: 'SPX', color: '#c084fc', radiusX: 320 * scaleFactor, radiusY: 102 * scaleFactor, speed: 0.28, offset: (2 * Math.PI) / 3, size: isMobile ? 28 : 40, label: 'Learn Indices' },
+      { symbol: 'AED', sub: 'EQUITY', name: 'AED', color: '#10b981', radiusX: 320 * scaleFactor, radiusY: 102 * scaleFactor, speed: 0.28, offset: (4 * Math.PI) / 3, size: isMobile ? 27 : 38, label: 'Learn Equity' },
+
+      // Inner ring: Commodities & Forex (spaced 180° apart with gentle phase variation)
+      { symbol: 'XAU', sub: 'Au • GOLD', name: 'XAU', color: '#f59e0b', radiusX: 245 * scaleFactor, radiusY: 78 * scaleFactor, speed: 0.35, offset: Math.PI / 4, size: isMobile ? 28 : 40, label: 'Learn Commodities' },
+      { symbol: '€', sub: 'FOREX', name: 'EUR', color: '#60a5fa', radiusX: 245 * scaleFactor, radiusY: 78 * scaleFactor, speed: 0.35, offset: (5 * Math.PI) / 4, size: isMobile ? 27 : 38, label: 'Learn Forex' },
     ]
 
     // Floating Golden Dust Sparkles (optimized: 16 on mobile, 32 on desktop, zero heavy shadowBlur)
@@ -160,31 +163,43 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         ctx.fill()
 
         ctx.strokeStyle = asset.color
-        ctx.lineWidth = 2.2
+        ctx.lineWidth = 2.4
         ctx.stroke()
 
         // Inner Milled Coin Ridge
         ctx.beginPath()
-        ctx.arc(0, 0, r * 0.78, 0, Math.PI * 2)
-        ctx.strokeStyle = `${asset.color}66`
-        ctx.lineWidth = 1
+        ctx.arc(0, 0, r * 0.82, 0, Math.PI * 2)
+        ctx.strokeStyle = `${asset.color}77`
+        ctx.lineWidth = 1.2
         ctx.stroke()
 
-        // Coin Currency Symbol
+        // Coin Currency / Asset Symbol (Adaptive sizing for single-char & multi-letter tickers)
+        const symLen = asset.symbol.length
+        const fontScale = symLen <= 1 ? 0.82 : symLen === 2 ? 0.68 : 0.54
+        const symbolFontSize = Math.round(asset.size * fontScale)
         ctx.fillStyle = '#ffffff'
-        ctx.font = `bold ${asset.size * 0.82}px "Plus Jakarta Sans", sans-serif`
+        ctx.font = `bold ${symbolFontSize}px "Plus Jakarta Sans", sans-serif`
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillText(asset.symbol, 0, 0.5)
+        const yOffset = asset.sub ? -Math.round(asset.size * 0.14) : 0.5
+        ctx.fillText(asset.symbol, 0, yOffset)
 
-        // Label text below the coin (e.g. "Learn Crypto")
+        // Subtitle badge on coin face (e.g. "Au • GOLD", "SP500", "BTC")
+        if (asset.sub) {
+          ctx.fillStyle = asset.color
+          const subFontSize = Math.max(7, Math.round(asset.size * 0.22))
+          ctx.font = `800 ${subFontSize}px "Plus Jakarta Sans", sans-serif`
+          ctx.fillText(asset.sub, 0, Math.round(asset.size * 0.46))
+        }
+
+        // Label text below the coin (e.g. "Learn Commodities", "Learn Indices")
         if (asset.label) {
-          const labelFontSize = mob ? 7 : 9
+          const labelFontSize = mob ? 8 : 10
           ctx.fillStyle = asset.color
           ctx.font = `bold ${labelFontSize}px "Plus Jakarta Sans", sans-serif`
           ctx.textAlign = 'center'
           ctx.textBaseline = 'top'
-          ctx.fillText(asset.label, 0, r + 4)
+          ctx.fillText(asset.label, 0, r + 7)
         }
 
         ctx.restore()
@@ -194,11 +209,11 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       ORBIT_ASSETS.forEach((a) => renderAsset(a, false))
 
       // 4. 3D Rotating Chrome Coin Medallion in Center (steady rotation, zero mouse reaction)
-      const coinRadius = mob ? 92 : 124
+      const coinRadius = mob ? 56 : 78
       const coinAngle = time * 1.4
       const cosAngle = Math.cos(coinAngle)
       const sinAngle = Math.sin(coinAngle)
-      const coinThickness = (mob ? 11 : 16) * Math.abs(sinAngle)
+      const coinThickness = (mob ? 6 : 9) * Math.abs(sinAngle)
 
       ctx.save()
       ctx.translate(cx, cy)
