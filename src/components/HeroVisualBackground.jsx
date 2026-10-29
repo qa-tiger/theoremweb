@@ -15,7 +15,7 @@ export const HERO_SCENES = [
     name: 'Online',
     location: 'Interactive Live Classrooms',
     flag: '🌐',
-    image: '/campus/online-teaching-desk.png',
+    image: '/campus/online-study-student.jpg',
     tagline: 'Interactive Screen Sharing & 1-on-1 Reviews',
     session: '24/7 Global Orderflow',
     badge: 'Live Online Cohort',
@@ -48,8 +48,8 @@ export default function HeroVisualBackground({ activeScene = 'offline' }) {
       <div
         className="absolute inset-0 opacity-[0.05]"
         style={{
-          backgroundImage: `radial-gradient(rgba(199,205,214,0.5) 1px, transparent 1px)`,
-          backgroundSize: '32px 32px',
+          backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
+          backgroundSize: '4rem 4rem',
         }}
       />
     </div>
