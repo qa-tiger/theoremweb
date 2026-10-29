@@ -157,7 +157,9 @@ export function Ticket({ children, className = '' }) {
 export function ProgramCards({ programs = allPrograms }) {
   const [filter, setFilter] = useState('all')
 
-  const filtered = filter === 'all' ? programs : programs.filter((p) => p.market.toLowerCase() === filter.toLowerCase())
+  const filtered = filter === 'all'
+    ? programs
+    : programs.filter((p) => p.market.toLowerCase().startsWith(filter.toLowerCase().slice(0, 6)))
 
   return (
     <div className="space-y-4">
@@ -169,7 +171,7 @@ export function ProgramCards({ programs = allPrograms }) {
           ['crypto', 'Crypto'],
           ['equity', 'Equities'],
           ['indices', 'Indices'],
-          ['commodities', 'Commodities'],
+          ['commodity', 'Commodities'],
         ].map(([val, label]) => (
           <button
             key={val}
@@ -251,44 +253,201 @@ export function ProgramCards({ programs = allPrograms }) {
 }
 
 /*
-  Programs as a board of rows, echoing the market board: comparable attributes line up
-  in columns, and each row opens the program page.
+  5-Market Vertical Matrix: Forex, Crypto, Equity, Indices, Commodity.
+  Allows students to explore and jump directly to Basic, Intermediate, or Advanced
+  across all five asset disciplines in an organized, executive multi-column layout.
 */
-export function ProgramBoard({ programs = allPrograms, detailed = false }) {
+export function ProgramMatrix({ currentProgramId, programs = allPrograms }) {
+  const [selectedTier, setSelectedTier] = useState('all')
+
+  const marketDefs = [
+    {
+      id: 'forex',
+      market: 'Forex',
+      icon: '💱',
+      subtitle: 'Currencies & Macro Pairs',
+      badge: 'High Liquidity',
+    },
+    {
+      id: 'crypto',
+      market: 'Crypto',
+      icon: '🪙',
+      subtitle: 'Spot, Futures & Web3',
+      badge: '24/7 Market',
+    },
+    {
+      id: 'equity',
+      market: 'Equity',
+      icon: '📈',
+      subtitle: 'Indian & US Stocks',
+      badge: 'Cash & F&O',
+    },
+    {
+      id: 'indices',
+      market: 'Indices',
+      icon: '📊',
+      subtitle: 'Nifty, S&P 500, Nasdaq',
+      badge: 'Index Volatility',
+    },
+    {
+      id: 'commodity',
+      market: 'Commodity',
+      icon: '🛢️',
+      subtitle: 'Gold, Silver & Crude Oil',
+      badge: 'Bullion & Energy',
+    },
+  ]
+
+  const tiers = ['Basic', 'Intermediate', 'Advanced']
+
   return (
-    <div role="table" aria-label="Programs" className="border-t-2 border-ink">
-      <div role="row" className="hidden grid-cols-[minmax(0,1fr)_7rem_7rem_6rem] gap-4 border-b border-line py-2 text-xs text-ink-soft lg:grid">
-        <span role="columnheader">Program</span>
-        <span role="columnheader">Market</span>
-        <span role="columnheader">Level</span>
-        <span role="columnheader">Duration</span>
+    <div className="space-y-6">
+      {/* Tier Filter Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+        <div className="flex items-center gap-1.5 overflow-x-auto">
+          <span className="text-[0.7rem] font-bold text-white/50 uppercase tracking-wider mr-1">
+            Skill Tier:
+          </span>
+          {[
+            ['all', 'All Tiers'],
+            ['Basic', 'Basic (Foundations)'],
+            ['Intermediate', 'Intermediate'],
+            ['Advanced', 'Advanced (Mastery)'],
+          ].map(([val, label]) => (
+            <button
+              key={val}
+              type="button"
+              onClick={() => setSelectedTier(val)}
+              className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all ${
+                selectedTier === val
+                  ? 'bg-signal text-black font-extrabold shadow-sm'
+                  : 'border border-white/10 bg-[#1a1a24] text-white/70 hover:border-signal/40 hover:text-white'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        <p className="text-[0.72rem] text-white/50 hidden sm:block">
+          Select any level to view its full syllabus, dates & admissions details
+        </p>
       </div>
-      {programs.map((p) => (
-        <Link
-          key={p.id}
-          to={`/programs/${p.id}`}
-          role="row"
-          className="group relative grid gap-x-4 gap-y-1.5 border-b border-line py-4 transition-colors hover:bg-signal/[0.06] lg:grid-cols-[minmax(0,1fr)_7rem_7rem_6rem] lg:items-baseline"
-        >
-          <span aria-hidden="true" className="absolute inset-y-0 -left-5 w-1 origin-top scale-y-0 bg-signal transition-transform duration-200 group-hover:scale-y-100 sm:-left-8 lg:-left-12" />
-          <span role="cell" className="min-w-0">
-            <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="font-display text-xl leading-none font-bold transition-transform duration-200 ease-out group-hover:translate-x-1 sm:text-2xl">{p.title}</span>
-              {p.featured && <span className="rounded bg-signal px-1.5 py-0.5 text-[0.65rem] font-bold text-ink">Start here</span>}
-              {p.comingSoon && <span className="rounded border border-line px-1.5 py-0.5 text-[0.65rem] font-bold text-ink-soft">Coming soon</span>}
-            </span>
-            {detailed && <span className="mt-1.5 block max-w-[40rem] text-xs text-ink-soft">{p.summary}</span>}
-          </span>
-          <span role="cell" className="text-xs text-ink-soft lg:text-sm lg:text-ink">
-            <span className="lg:hidden">{p.market}, {p.level.toLowerCase()}, {p.duration}</span>
-            <span className="hidden lg:inline">{p.market}</span>
-          </span>
-          <span role="cell" className="hidden text-xs lg:block">{p.level}</span>
-          <span role="cell" className="hidden text-xs lg:block">{p.duration}</span>
-        </Link>
-      ))}
+
+      {/* 5 Vertical Market Columns */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {marketDefs.map((m) => {
+          const progs = programs.filter(
+            (p) => p.market.toLowerCase().startsWith(m.id.slice(0, 6))
+          )
+          const isCurrentMarket = progs.some((p) => p.id === currentProgramId)
+
+          return (
+            <div
+              key={m.id}
+              className={`rounded-2xl border transition-all duration-200 flex flex-col justify-between p-4 sm:p-5 ${
+                isCurrentMarket
+                  ? 'border-signal/50 bg-gradient-to-b from-[#191924] to-[#111118] shadow-[0_0_30px_rgba(216,221,227,0.08)] ring-1 ring-signal/20'
+                  : 'border-white/10 bg-[#121218] hover:border-white/20'
+              }`}
+            >
+              {/* Market Column Header */}
+              <div>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-2xl" role="img" aria-label={m.market}>
+                    {m.icon}
+                  </span>
+                  <span className="text-[0.62rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/5 text-white/60 border border-white/10">
+                    {m.badge}
+                  </span>
+                </div>
+
+                <h3 className="mt-3 font-display text-lg sm:text-xl font-extrabold text-white">
+                  {m.market}
+                </h3>
+                <p className="mt-0.5 text-[0.7rem] text-white/55 font-medium leading-snug">
+                  {m.subtitle}
+                </p>
+
+                {/* 3 Level Action Buttons */}
+                <div className="mt-4 space-y-2">
+                  {tiers.map((lvl) => {
+                    const prog = progs.find(
+                      (p) => p.level.toLowerCase() === lvl.toLowerCase()
+                    )
+                    if (!prog) return null
+
+                    const isCurrent = prog.id === currentProgramId
+                    const isMuted =
+                      selectedTier !== 'all' &&
+                      selectedTier.toLowerCase() !== lvl.toLowerCase()
+
+                    if (isCurrent) {
+                      return (
+                        <div
+                          key={prog.id}
+                          className="w-full flex items-center justify-between p-2.5 rounded-xl border border-signal bg-signal/15 text-white font-bold text-xs shadow-sm"
+                        >
+                          <div className="flex items-center gap-1.5">
+                            <span className="size-1.5 rounded-full bg-signal animate-pulse" />
+                            <span>{prog.level}</span>
+                          </div>
+                          <span className="text-[0.6rem] uppercase tracking-wider py-0.5 px-2 rounded bg-signal text-black font-extrabold">
+                            Viewing
+                          </span>
+                        </div>
+                      )
+                    }
+
+                    return (
+                      <Link
+                        key={prog.id}
+                        to={`/programs/${prog.id}`}
+                        className={`group/tier flex items-center justify-between p-2.5 rounded-xl border transition-all duration-150 ${
+                          isMuted
+                            ? 'opacity-35 hover:opacity-100 border-white/5 bg-[#171720]'
+                            : 'border-white/10 bg-[#171720] hover:bg-white/10 hover:border-signal/50 hover:shadow-md'
+                        }`}
+                      >
+                        <div className="min-w-0">
+                          <span className="block text-xs font-bold text-white group-hover/tier:text-signal transition-colors">
+                            {prog.level}
+                          </span>
+                          <span className="block text-[0.62rem] text-white/50">
+                            {prog.comingSoon ? 'Coming soon' : prog.duration}
+                          </span>
+                        </div>
+                        <span className="text-white/40 group-hover/tier:text-signal group-hover/tier:translate-x-0.5 transition-all text-xs font-bold">
+                          →
+                        </span>
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* Market Column Footer */}
+              <div className="mt-4 pt-3 border-t border-white/10">
+                <Link
+                  to={`/contact?program=${progs[0]?.id || m.id}`}
+                  className="text-[0.68rem] font-semibold text-white/60 hover:text-signal flex items-center justify-between transition-colors"
+                >
+                  <span>Enquire {m.market}</span>
+                  <span>→</span>
+                </Link>
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
+}
+
+/*
+  ProgramBoard: provides backwards-compatibility, rendering the organized 5-column matrix.
+*/
+export function ProgramBoard({ programs = allPrograms, currentProgramId }) {
+  return <ProgramMatrix currentProgramId={currentProgramId} programs={programs} />
 }
 
 // The four teaching stages. They happen in order, so they are numbered, on board tiles.

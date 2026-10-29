@@ -1,6 +1,6 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { FinalCta, Offer, PageHeader, usePageTitle } from '../components/sections'
-import { ProgramBoard, ProgramCards, Section, Ticket } from '../components/ui'
+import { ProgramCards, ProgramMatrix, Section, Ticket } from '../components/ui'
 import { curriculum } from '../config/curriculum'
 import { programs, teachers } from '../config/site'
 
@@ -166,8 +166,13 @@ export function ProgramDetail() {
         </Link>
       </div>
 
-      <Section tight title="Other programs." intro="Explore other asset classes and skill levels." className="bg-[#09090b] border-t border-white/10">
-        <ProgramBoard programs={others} />
+      <Section
+        tight
+        title="Explore all markets & levels."
+        intro="Select across our 5 trading disciplines to view curriculum and cohort details for Basic, Intermediate, or Advanced tiers."
+        className="bg-[#09090b] border-t border-white/10"
+      >
+        <ProgramMatrix currentProgramId={program.id} />
       </Section>
     </>
   )
