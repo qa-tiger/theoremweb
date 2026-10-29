@@ -81,10 +81,10 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
     const scaleFactor = isMobile ? 0.52 : 1.0
     const ORBIT_ASSETS = [
       { symbol: '₿', name: 'BTC', color: '#f7931a', radiusX: 300 * scaleFactor, radiusY: 100 * scaleFactor, speed: -0.32, offset: 1.2, size: isMobile ? 22 : 28, label: 'Learn Crypto' },
-      { symbol: '₮', name: 'USDT', color: '#26a17b', radiusX: 250 * scaleFactor, radiusY: 80 * scaleFactor, speed: 0.38, offset: 3.8, size: isMobile ? 21 : 27 },
+      { symbol: '₮', name: 'USDT', color: '#26a17b', radiusX: 250 * scaleFactor, radiusY: 80 * scaleFactor, speed: 0.38, offset: 3.8, size: isMobile ? 21 : 27, label: 'Learn Commodities' },
       { symbol: '€', name: 'EUR', color: '#60a5fa', radiusX: 220 * scaleFactor, radiusY: 72 * scaleFactor, speed: 0.45, offset: 5.2, size: isMobile ? 18 : 24, label: 'Learn Forex' },
       { symbol: 'AED', name: 'AED', color: '#10b981', radiusX: 330 * scaleFactor, radiusY: 108 * scaleFactor, speed: -0.25, offset: 2.6, size: isMobile ? 18 : 22, label: 'Learn Equity' },
-      { symbol: '£', name: 'GBP', color: '#c084fc', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.33, offset: 0.4, size: isMobile ? 18 : 24, label: 'Learn Future' },
+      { symbol: '£', name: 'GBP', color: '#c084fc', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.33, offset: 0.4, size: isMobile ? 18 : 24, label: 'Learn Indices' },
     ]
 
     // Floating Golden Dust Sparkles (optimized: 16 on mobile, 32 on desktop, zero heavy shadowBlur)
@@ -194,7 +194,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       ORBIT_ASSETS.forEach((a) => renderAsset(a, false))
 
       // 4. 3D Rotating Chrome Coin Medallion in Center (steady rotation, zero mouse reaction)
-      const coinRadius = mob ? 78 : 104
+      const coinRadius = mob ? 92 : 124
       const coinAngle = time * 1.4
       const cosAngle = Math.cos(coinAngle)
       const sinAngle = Math.sin(coinAngle)
@@ -256,24 +256,57 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
 
         ctx.restore()
       } else if (cosAngle <= -0.15) {
-        // Back face: embossed "THEOREM" wordmark
+        // Back face: "THEOREM" milled into the chrome, finished in the coin's own metal.
+        // Every measurement below derives from coinRadius (not a mobile/desktop flag), so
+        // the wordmark rescales smoothly with the coin at any viewport width.
         ctx.save()
         ctx.scale(Math.abs(cosAngle), 1)
 
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.35)'
-        ctx.shadowBlur = 2
-        ctx.shadowOffsetX = 0
-        ctx.shadowOffsetY = 1
-        ctx.font = `900 ${(mob ? 17 : 22)}px "Sofia Sans Extra Condensed", "Arial Narrow", sans-serif`
+        const fontSize = Math.round(coinRadius * 0.175)
+        const letterSpacingPx = fontSize * 0.1
+        ctx.font = `800 ${fontSize}px "Sofia Sans Extra Condensed", "Arial Narrow", sans-serif`
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.lineJoin = 'round'
-        ctx.strokeStyle = '#000000'
-        ctx.lineWidth = mob ? 2.4 : 3
-        ctx.strokeText('T H E O R E M', 0, 1)
-        ctx.fillStyle = '#000000'
-        ctx.fillText('T H E O R E M', 0, 1)
+        try { ctx.letterSpacing = `${letterSpacingPx}px` } catch { /* unsupported in this browser */ }
 
+        // Measure the actual rendered width (incl. letter-spacing) so the rule below
+        // always lines up with the glyphs instead of a guessed multiplier.
+        const textWidth = ctx.measureText('THEOREM').width
+
+        // Soft recessed shadow pooling beneath the lettering
+        ctx.shadowColor = 'rgba(8, 9, 11, 0.55)'
+        ctx.shadowBlur = fontSize * 0.12
+        ctx.shadowOffsetX = fontSize * 0.03
+        ctx.shadowOffsetY = fontSize * 0.08
+        ctx.fillStyle = '#6b7280' // base tone for the shadow pass (gradient drawn on top next)
+        ctx.fillText('THEOREM', 0, 0)
+
+        // Polished chrome gradient fill, matching the coin's own metallic sweep
+        ctx.shadowColor = 'transparent'
+        ctx.shadowBlur = 0
+        ctx.shadowOffsetX = 0
+        ctx.shadowOffsetY = 0
+        const textGrad = ctx.createLinearGradient(0, -fontSize * 0.65, 0, fontSize * 0.65)
+        textGrad.addColorStop(0, '#f7f9fb')
+        textGrad.addColorStop(0.42, '#c3c9d1')
+        textGrad.addColorStop(0.55, '#6b7280')
+        textGrad.addColorStop(1, '#2f3237')
+        ctx.fillStyle = textGrad
+        ctx.fillText('THEOREM', 0, 0)
+
+        // Crisp top-edge highlight where the light catches the raised letterforms
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
+        ctx.fillText('THEOREM', -fontSize * 0.02, -fontSize * 0.05)
+
+        // Thin signature rule beneath the wordmark, sized to the measured text width
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)'
+        ctx.lineWidth = Math.max(0.5, fontSize * 0.03)
+        ctx.beginPath()
+        ctx.moveTo(-textWidth / 2, fontSize * 0.68)
+        ctx.lineTo(textWidth / 2, fontSize * 0.68)
+        ctx.stroke()
+
+        try { ctx.letterSpacing = '0px' } catch { /* unsupported in this browser */ }
         ctx.restore()
       }
 
@@ -334,8 +367,8 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       <header className="relative z-10 flex items-center justify-between p-6 sm:p-10 pointer-events-none">
         <div className="flex items-center gap-2.5 opacity-85">
           <span className="size-2 rounded-full bg-signal animate-pulse" />
-          <span className="font-mono text-xs tracking-widest text-white/80 uppercase font-bold">
-            THEOREM FINANCIAL 3D
+          <span className="font-mono text-xs tracking-widest text-white uppercase font-bold">
+            Theorems we decode, markets you conquer
           </span>
         </div>
         <button

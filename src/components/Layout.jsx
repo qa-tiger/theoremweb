@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
-import { bundlePackage, locations, programs, site } from '../config/site'
+import { bundlePackage, programs, site } from '../config/site'
 import { useAuth } from '../lib/auth'
 import TheoremIntroGate from './TheoremIntroGate'
 import { ScrollProgressBar } from './ui'
@@ -9,7 +9,7 @@ import { ScrollProgressBar } from './ui'
 // (not baked into the logo image) so the tagline stays legible at header size, unlike
 // the old raster lockup where it shrank to a few illegible pixels.
 // When inside My Portal, clicking the logo refreshes the page instead of leaving the portal.
-export function Wordmark({ className = '', onClick }) {
+export function Wordmark({ className = '', onClick, compact = false }) {
   const { pathname } = useLocation()
   const isPortal = pathname.startsWith('/portal')
 
@@ -26,7 +26,11 @@ export function Wordmark({ className = '', onClick }) {
       <img src="/theorem-icon.png" alt="" aria-hidden="true" className="mark-in h-10 w-auto object-contain" />
       <span className="flex flex-col leading-none">
         <span className="font-display text-2xl font-extrabold tracking-wide text-white">THEOREM</span>
-        <span className="hidden sm:block font-sans text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-white/45 whitespace-nowrap">
+        <span
+          className={`hidden sm:block font-sans text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-white ${
+            compact ? 'max-w-[12rem] leading-snug' : 'whitespace-nowrap'
+          }`}
+        >
           Theorems we decode, markets you conquer
         </span>
       </span>
@@ -36,13 +40,12 @@ export function Wordmark({ className = '', onClick }) {
 
 const NAV_LINKS = [
   ['About', '/about'],
-  ['Our Team', '/mentors'],
   ['Contact', '/contact'],
 ]
 
 // Programs grouped by market for the Courses mega-menu — each market shows its
 // Basic / Intermediate / Advanced tiers together.
-const MARKETS = ['Forex', 'Crypto', 'Equity']
+const MARKETS = ['Forex', 'Crypto', 'Equity', 'Indices', 'Commodities']
 const programsByMarket = (list) => MARKETS.map((market) => [market, list.filter((p) => p.market === market)])
 
 // Current page: an amber bar along the bottom edge of the header, like a selected tab.
@@ -173,8 +176,8 @@ export function Nav({ isHidden = false, animateIn = false }) {
             </NavLink>
 
             {/* Courses Dropdown Menu: one column per market, Basic / Intermediate / Advanced */}
-            <div className="absolute top-full left-0 w-[46rem] rounded-2xl bg-[#121218] border border-white/15 p-4 shadow-2xl backdrop-blur-2xl opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
-              <div className="grid grid-cols-3 gap-4">
+            <div className="absolute top-full left-1/2 -translate-x-1/2 w-[52rem] max-w-[calc(100vw-2rem)] rounded-2xl bg-[#121218] border border-white/15 p-3.5 shadow-2xl backdrop-blur-2xl opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
+              <div className="grid grid-cols-5 gap-2.5">
                 {programsByMarket(programs).map(([market, list]) => (
                   <div key={market}>
                     <div className="text-[0.65rem] font-bold uppercase tracking-wider text-white/50 px-2.5 py-1.5 border-b border-white/10 mb-1.5">
@@ -268,8 +271,8 @@ export function Nav({ isHidden = false, animateIn = false }) {
           <Link to={user ? '/portal' : '/login'} className="text-xs sm:text-sm font-semibold text-white/80 transition-colors hover:text-signal">
             {user ? 'My portal' : 'Log in'}
           </Link>
-          <Link to="/contact" className="btn-brand shimmer-button rounded-lg px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-ink">
-            Contact us
+          <Link to="/register" className="btn-brand shimmer-button rounded-lg px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-ink">
+            Register
           </Link>
         </div>
 
@@ -381,7 +384,7 @@ export function Nav({ isHidden = false, animateIn = false }) {
           </div>
 
           <div className="mt-auto pt-6 flex flex-col gap-3">
-            <Link to="/contact" onClick={close} className="btn btn-brand shimmer-button py-3 text-center text-xs font-bold uppercase tracking-wider text-ink shadow-lg">Contact us</Link>
+            <Link to="/register" onClick={close} className="btn btn-brand shimmer-button py-3 text-center text-xs font-bold uppercase tracking-wider text-ink shadow-lg">Register</Link>
             <Link to={user ? '/portal' : '/login'} onClick={close} className="btn btn-outline-light py-3 text-center text-xs font-semibold text-white">{user ? 'My portal' : 'Log in'}</Link>
           </div>
         </nav>
@@ -428,7 +431,7 @@ export function Footer() {
     <footer className="border-t border-board-line bg-board text-white">
       <div className="wrap grid-12 gap-y-12 py-16 lg:py-20">
         <div className="col-span-4 sm:col-span-8 lg:col-span-3">
-          <Wordmark />
+          <Wordmark compact />
           <p className="mt-5 max-w-[22rem] text-sm leading-relaxed text-white/65">{site.description}</p>
         </div>
         <div className="col-span-2 lg:col-span-2">
@@ -464,9 +467,7 @@ export function Footer() {
             <li><a href={`mailto:${site.email}`} className="hover:text-signal">{site.email}</a></li>
             <li>{site.phone}</li>
             <li><a href={site.whatsappLink} className="hover:text-signal">WhatsApp {site.whatsapp}</a></li>
-            {locations.filter((l) => l.id !== 'online').map((l) => (
-              <li key={l.id} className="pt-2 text-white/65"><span className="text-white">{l.label}</span><br />{l.address}</li>
-            ))}
+            <li className="pt-2 text-white/65"><span className="text-white">Training Floors</span><br />India & UAE</li>
           </FooterColumn>
         </div>
       </div>
@@ -474,7 +475,7 @@ export function Footer() {
       <div className="wrap">
         <div className="border-t border-white/15 py-8 text-xs text-white/65">
           <p className="max-w-[60rem] leading-relaxed">
-            Trading forex, crypto and equities carries a high risk of losing money. Our programs are education, not financial or investment advice, and past performance does not guarantee future results.
+            Trading forex, crypto, equities, indices and commodities carries a high risk of losing money. Our programs are education, not financial or investment advice, and past performance does not guarantee future results.
           </p>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p>© {new Date().getFullYear()} {site.name}</p>

@@ -11,7 +11,7 @@ import {
   usePageTitle,
 } from '../components/sections'
 import { ImageBlock, Section } from '../components/ui'
-import { programs, site, teachers } from '../config/site'
+import { programs, teachers } from '../config/site'
 
 // The markets a mentor teaches (not every tier by name — Sohail alone covers 6 program
 // tiers now, which reads as a wall of text joined with "&").
@@ -55,8 +55,8 @@ function Hero() {
               {/* Concise Asset Focus */}
               <div className="space-y-0.5 pt-0.5">
                 <span className="text-sm sm:text-base font-semibold text-white/80 block">Learn</span>
-                <p className="font-display text-xl sm:text-2xl lg:text-[1.85rem] font-extrabold tracking-wide text-signal">
-                  Forex <span className="text-white/40 font-normal mx-1.5">|</span> Crypto <span className="text-white/40 font-normal mx-1.5">|</span> Equity
+                <p className="font-display text-lg sm:text-xl lg:text-[1.5rem] font-extrabold tracking-wide text-signal">
+                  Forex <span className="text-white/40 font-normal mx-1">|</span> Crypto <span className="text-white/40 font-normal mx-1">|</span> Equity <span className="text-white/40 font-normal mx-1">|</span> Indices <span className="text-white/40 font-normal mx-1">|</span> Commodities
                 </p>
               </div>
             </div>
@@ -80,22 +80,17 @@ function Hero() {
             {/* Clean Trust & Metric Strip */}
             <div className="hero-rise pt-4 border-t border-white/10" style={{ animationDelay: '240ms' }}>
               <div className="grid grid-cols-3 gap-3 sm:gap-6 max-w-lg">
-                <a
-                  href={site.googleReviewLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group block rounded-md transition-opacity hover:opacity-80 focus-visible:opacity-80"
-                >
+                <div>
                   <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text tabular-nums leading-none">
                     4.9 <span className="text-sm font-sans text-signal">★</span>
                   </div>
-                  <div className="mt-1.5 text-xs text-white/70 font-medium leading-tight underline decoration-white/30 underline-offset-2 group-hover:decoration-white/70">
+                  <div className="mt-1.5 text-xs text-white/70 font-medium leading-tight">
                     Rated on Google
                   </div>
-                </a>
+                </div>
                 <div>
                   <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text tabular-nums leading-none">
-                    1,850+
+                    500+
                   </div>
                   <div className="mt-1.5 text-xs text-white/70 font-medium leading-tight">
                     Students Enrolled
@@ -103,7 +98,7 @@ function Hero() {
                 </div>
                 <div>
                   <div className="font-display text-2xl sm:text-3xl font-extrabold gold-foil-text tabular-nums leading-none">
-                    &lt;15
+                    &lt;10
                   </div>
                   <div className="mt-1.5 text-xs text-white/70 font-medium leading-tight">
                     Traders / Cohort

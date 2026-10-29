@@ -289,7 +289,7 @@ export function Register() {
     phone: '',
     password: '',
     country: 'India',
-    idType: 'aadhaar', // 'aadhaar' | 'pan'
+    idType: 'aadhaar', // 'aadhaar' | 'pan' | 'national_id'
     idNumber: '',
     idFileName: '',
     idFileData: '',
@@ -327,7 +327,7 @@ export function Register() {
     if (account.password.length < 8) return setError('Use at least 8 characters for your password.')
     if (account.password !== confirmPassword) return setError('Those passwords don’t match.')
 
-    // KYC validation for Indian users
+    // KYC validation
     if (account.country === 'India') {
       const cleanId = account.idNumber.replace(/\s/g, '').trim()
       if (!cleanId) {
@@ -342,6 +342,14 @@ export function Register() {
       if (!account.idFileName) {
         return setError(`Please upload a copy of your ${account.idType === 'aadhaar' ? 'Aadhaar' : 'PAN'} card to complete KYC verification.`)
       }
+    } else {
+      const cleanId = account.idNumber.trim()
+      if (!cleanId) {
+        return setError('Please enter your National ID number.')
+      }
+      if (!account.idFileName) {
+        return setError('Please upload a copy of your National ID to complete KYC verification.')
+      }
     }
 
     if (!consentAgreed) {
@@ -353,7 +361,7 @@ export function Register() {
     try {
       const res = await signUp({
         ...account,
-        kycStatus: account.country === 'India' ? 'Submitted' : 'Not Required',
+        kycStatus: 'Submitted',
       })
 
       if (res?.needsEmailVerification) {
@@ -370,7 +378,7 @@ export function Register() {
           stage: 'Application Submitted',
           campus: account.country === 'India' ? 'Offline' : 'Online',
           city: account.country || 'India',
-          noteText: `Website registration created. KYC: ${account.country === 'India' ? (account.idType ? account.idType.toUpperCase() : 'Submitted') : 'Not Required'} ${account.idNumber ? `(${account.idNumber})` : ''}`,
+          noteText: `Website registration created. KYC: ${account.idType ? account.idType.toUpperCase() : 'Submitted'} ${account.idNumber ? `(${account.idNumber})` : ''}`,
           estimatedValue: 2400,
         })
       } catch (leadErr) {
@@ -559,7 +567,17 @@ export function Register() {
               required
               className="field py-2 text-xs sm:text-sm"
               value={account.country}
-              onChange={(e) => setAccount({ ...account, country: e.target.value })}
+              onChange={(e) => {
+                const country = e.target.value
+                setAccount({
+                  ...account,
+                  country,
+                  idType: country === 'India' ? 'aadhaar' : 'national_id',
+                  idNumber: '',
+                  idFileName: '',
+                  idFileData: '',
+                })
+              }}
             >
               <option value="India">India (KYC Required)</option>
               <option value="United Arab Emirates">United Arab Emirates (UAE)</option>
@@ -575,8 +593,8 @@ export function Register() {
                 <span>🛡️</span> Government KYC verification required for Indian users below.
               </p>
             ) : (
-              <p className="mt-1 text-[0.7rem] text-white/50">
-                Identity verification is only required for students residing in India.
+              <p className="mt-1 text-[0.7rem] text-signal font-semibold flex items-center gap-1.5">
+                <span>🛡️</span> National ID verification required below.
               </p>
             )}
           </div>
@@ -612,8 +630,8 @@ export function Register() {
             />
           </div>
 
-          {/* Conditional KYC Section for Indian users only */}
-          {account.country === 'India' && (
+          {/* KYC Section: Aadhaar/PAN for India, National ID for every other country */}
+          {account.country === 'India' ? (
             <div className="rounded-xl border border-signal/40 bg-gradient-to-b from-signal/15 via-[#121218] to-signal/5 p-4 sm:p-5 space-y-4">
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div className="flex items-center gap-2.5">
@@ -768,6 +786,115 @@ export function Register() {
                 )}
               </div>
             </div>
+          ) : (
+            <div className="rounded-xl border border-signal/40 bg-gradient-to-b from-signal/15 via-[#121218] to-signal/5 p-4 sm:p-5 space-y-4">
+              <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="flex items-center justify-center size-7 rounded-lg bg-signal/25 text-signal text-sm">
+                    🆔
+                  </span>
+                  <div>
+                    <h3 className="text-xs sm:text-sm font-bold text-white leading-tight">
+                      KYC Identity Verification
+                    </h3>
+                    <p className="text-[0.68rem] text-white/60">
+                      Mandatory for international residents. Upload a government-issued National ID.
+                    </p>
+                  </div>
+                </div>
+                <span className="badge-signal text-[0.62rem] font-bold uppercase tracking-wider py-0.5 px-2">
+                  Mandatory
+                </span>
+              </div>
+
+              {/* Document Type (single option: National ID) */}
+              <div>
+                <label className="label text-xs font-bold text-white/90 mb-2 block">
+                  Document Type
+                </label>
+                <div className="flex items-center gap-2.5 p-3 rounded-xl border border-signal bg-signal/20 text-white font-bold ring-1 ring-signal">
+                  <span className="text-xl">🪪</span>
+                  <div>
+                    <span className="block text-xs font-bold">National ID</span>
+                    <span className="block text-[0.65rem] text-white/50 font-normal">Passport, national ID card, or driving licence</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* ID Number */}
+              <div>
+                <label className="label text-xs font-bold text-white/90" htmlFor="idNumber">
+                  National ID Number
+                </label>
+                <input
+                  id="idNumber"
+                  type="text"
+                  required
+                  placeholder="e.g. X1234567"
+                  maxLength={20}
+                  className="field py-2 text-xs sm:text-sm font-mono uppercase tracking-wider"
+                  value={account.idNumber}
+                  onChange={(e) => setAccount({ ...account, idNumber: e.target.value.toUpperCase().slice(0, 20) })}
+                />
+              </div>
+
+              {/* ID Document File Upload */}
+              <div>
+                <label className="label text-xs font-bold text-white/90 mb-1.5 flex items-center justify-between">
+                  <span>Upload National ID</span>
+                  <span className="text-[0.68rem] text-white/50 font-normal">PDF, JPG, PNG up to 10MB</span>
+                </label>
+
+                {!account.idFileName ? (
+                  <label className="flex flex-col items-center justify-center p-5 rounded-xl border-2 border-dashed border-white/20 hover:border-signal/60 bg-black/40 hover:bg-black/60 cursor-pointer transition-all text-center group">
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      className="sr-only"
+                      onChange={handleIdFileUpload}
+                    />
+                    <span className="text-2xl mb-1 group-hover:scale-110 transition-transform">📄</span>
+                    <span className="text-xs font-semibold text-white group-hover:text-signal transition-colors">
+                      Click to upload ID document
+                    </span>
+                    <span className="text-[0.68rem] text-white/50 mt-0.5">
+                      Ensure name and photo are clearly readable
+                    </span>
+                  </label>
+                ) : (
+                  <div className="flex items-center justify-between p-3 rounded-xl border border-signal/40 bg-black/60">
+                    <div className="flex items-center gap-2.5 overflow-hidden">
+                      {account.idFileData && account.idFileData.startsWith('data:image') ? (
+                        <img
+                          src={account.idFileData}
+                          alt="ID preview"
+                          className="size-9 rounded-lg object-cover border border-white/20 shrink-0"
+                        />
+                      ) : (
+                        <span className="flex items-center justify-center size-9 rounded-lg bg-signal/20 text-signal font-bold text-sm shrink-0">
+                          📄
+                        </span>
+                      )}
+                      <div className="overflow-hidden">
+                        <p className="text-xs font-bold text-white truncate max-w-[200px] sm:max-w-[280px]">
+                          {account.idFileName}
+                        </p>
+                        <p className="text-[0.68rem] text-bull font-semibold flex items-center gap-1 mt-0.5">
+                          <span>✓</span> Document attached ready for verification
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setAccount({ ...account, idFileName: '', idFileData: '' })}
+                      className="text-xs text-bear hover:underline font-semibold ml-2 shrink-0"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           )}
 
           <div className="pt-1">
@@ -814,16 +941,18 @@ export function Register() {
             </div>
           )}
 
-          {/* 1. Market Selection: Forex, Crypto, Equity */}
+          {/* 1. Market Selection: Forex, Crypto, Equity, Indices, Commodities */}
           <div>
             <label className="label text-xs font-bold text-white/90 mb-2 block">
               1. Select Asset Market
             </label>
-            <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5 sm:gap-3">
               {[
                 { id: 'Forex', name: 'Forex', icon: '💱', desc: 'Currencies' },
                 { id: 'Crypto', name: 'Crypto', icon: '🪙', desc: 'Digital Assets' },
-                { id: 'Equity', name: 'Equity', icon: '📈', desc: 'Stocks & Indices' },
+                { id: 'Equity', name: 'Equity', icon: '📈', desc: 'Stocks' },
+                { id: 'Indices', name: 'Indices', icon: '📊', desc: 'Benchmarks' },
+                { id: 'Commodities', name: 'Commodities', icon: '🛢️', desc: 'Gold, Oil & More' },
               ].map((m) => {
                 const active = !isBundle && selectedMarket === m.id
                 return (

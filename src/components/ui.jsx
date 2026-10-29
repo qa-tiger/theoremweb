@@ -168,6 +168,8 @@ export function ProgramCards({ programs = allPrograms }) {
           ['forex', 'Forex'],
           ['crypto', 'Crypto'],
           ['equity', 'Equities'],
+          ['indices', 'Indices'],
+          ['commodities', 'Commodities'],
         ].map(([val, label]) => (
           <button
             key={val}

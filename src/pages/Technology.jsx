@@ -230,14 +230,12 @@ export default function Technology() {
         </div>
       </Section>
 
-      {/* E-Books Library Section (Hidden for now as requested) */}
-      {/* Set SHOW_EBOOK_LIBRARY to true to restore */}
-      {false && (
-        <Section
-          id="ebooks"
-          tight
-          title="Complete Free E-Book Library"
-          intro="Select any guide below to download the full PDF edition. Structured for beginners through intermediate and active traders."
+      {/* E-Books Library Section */}
+      <Section
+        id="ebooks"
+        tight
+        title="Complete Free E-Book Library"
+        intro="Select any guide below to download the full PDF edition. Structured for beginners through intermediate and active traders."
         >
           {/* Category Filters & Search Bar */}
           <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -357,8 +355,7 @@ export default function Technology() {
               ))}
             </div>
           )}
-        </Section>
-      )}
+      </Section>
 
       {/* Closing Call to Action: Focus on Academy / Courses, NOT Software */}
       <FinalCta

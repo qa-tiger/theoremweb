@@ -18,7 +18,7 @@ function BundleBanner() {
             Learn all programs and save 40%.
           </h2>
           <p className="mt-1.5 text-xs sm:text-sm text-white/70 leading-relaxed max-w-xl">
-            Forex, Crypto and Equity together, with the same mentors and one student portal.
+            Forex, Crypto, Equity, Indices and Commodities together, with the same mentors and one student portal.
           </p>
         </div>
         <Link to="/contact?package=all-programs-bundle" className="btn-brand py-2.5 px-5 text-xs sm:text-sm font-bold text-center shrink-0">

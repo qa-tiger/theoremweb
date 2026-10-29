@@ -8,9 +8,6 @@ export const site = {
   phone: '+971 4 240 8899',
   whatsapp: '+971 58 500 8921',
   whatsappLink: 'https://wa.me/971585008921',
-  // placeholder: replace with the academy's real Google Business Profile review link
-  // (from Google Business Profile → "Ask for reviews" → Share review form)
-  googleReviewLink: 'https://g.page/r/REPLACE-WITH-GOOGLE-PLACE-ID/review',
   social: [
     { label: 'Instagram', href: '#' }, // placeholder links
     { label: 'YouTube', href: '#' },
@@ -64,7 +61,7 @@ export const teachers = [
 ]
 
 // price is in INR; priceAed is shown when a student pays in AED.
-// Each market (Forex, Crypto, Equity) now runs as three tiers: Basic, Intermediate, Advanced.
+// Each market (Forex, Crypto, Equity, Indices, Commodities) runs as three tiers: Basic, Intermediate, Advanced.
 // comingSoon programs have no published syllabus or price yet — their detail page shows a
 // "curriculum being finalised" notice instead of a module list, and no fee is shown anywhere.
 export const programs = [
@@ -181,6 +178,78 @@ export const programs = [
     summary: 'Building and managing a full equity portfolio, with sector rotation, risk budgeting and a weekly live assignment review.',
     outcomes: ['Portfolio construction and risk budgeting', 'Sector rotation', 'Advanced chart and fundamentals reading', 'Weekly reviewed assignment journal'],
   },
+  {
+    id: 'indices-basic',
+    comingSoon: true,
+    audience: 'Beginners who want to trade global benchmarks like the S&P 500, Nasdaq and Nifty 50 instead of picking individual stocks.', // placeholder copy: confirm with the academy
+    title: 'Indices Basic',
+    market: 'Indices',
+    level: 'Basic',
+    duration: '6 weeks', // placeholder: confirm length
+    format: 'In person or online',
+    summary: 'Reading major global indices, how they are weighted, and trading benchmark moves with a clear, risk-managed approach.',
+    outcomes: ['How indices are constructed and weighted', 'Reading index futures and CFDs', 'Correlating indices with macro events', 'Position sizing for benchmark trades'],
+  },
+  {
+    id: 'indices-intermediate',
+    comingSoon: true,
+    audience: 'Students who have finished Indices Basic and want a structured, reviewed process for trading benchmark moves.', // placeholder copy: confirm with the academy
+    title: 'Indices Intermediate',
+    market: 'Indices',
+    level: 'Intermediate',
+    duration: '6 weeks', // placeholder: confirm length
+    format: 'In person or online',
+    summary: 'Multi-timeframe index structure, sector rotation signals, and a reviewed assignment journal across global benchmarks.',
+    outcomes: ['Multi-timeframe index structure', 'Sector rotation and breadth signals', 'Journaling index trades', 'Preparing for Indices Advanced'],
+  },
+  {
+    id: 'indices-advanced',
+    comingSoon: true,
+    audience: 'Experienced traders ready for institutional-style index strategies across global benchmarks.', // placeholder copy: confirm with the academy
+    title: 'Indices Advanced',
+    market: 'Indices',
+    level: 'Advanced',
+    duration: '8 weeks', // placeholder: confirm length
+    format: 'In person or online',
+    summary: 'Institutional index strategies, cross-market correlation, and risk budgeting across a basket of global benchmarks.',
+    outcomes: ['Cross-market and cross-asset correlation', 'Index liquidity and rollover dynamics', 'Portfolio-level risk budgeting', 'Weekly reviewed assignment journal'],
+  },
+  {
+    id: 'commodities-basic',
+    comingSoon: true,
+    audience: 'Beginners who want to trade gold, silver, oil and other commodities with a structured, risk-managed approach.', // placeholder copy: confirm with the academy
+    title: 'Commodities Basic',
+    market: 'Commodities',
+    level: 'Basic',
+    duration: '6 weeks', // placeholder: confirm length
+    format: 'In person or online',
+    summary: 'Gold, silver, oil and other major commodities: supply and demand drivers, seasonality, and position sizing.',
+    outcomes: ['Supply and demand drivers for key commodities', 'Reading commodity futures and CFDs', 'Seasonality and macro correlation', 'Position sizing for commodity trades'],
+  },
+  {
+    id: 'commodities-intermediate',
+    comingSoon: true,
+    audience: 'Students who have finished Commodities Basic and want a structured, reviewed process for trading commodities.', // placeholder copy: confirm with the academy
+    title: 'Commodities Intermediate',
+    market: 'Commodities',
+    level: 'Intermediate',
+    duration: '6 weeks', // placeholder: confirm length
+    format: 'In person or online',
+    summary: 'Multi-timeframe commodity structure, intermarket correlation with currencies and bonds, and a reviewed assignment journal.',
+    outcomes: ['Multi-timeframe commodity structure', 'Intermarket correlation with currencies and bonds', 'Journaling commodity trades', 'Preparing for Commodities Advanced'],
+  },
+  {
+    id: 'commodities-advanced',
+    comingSoon: true,
+    audience: 'Experienced traders ready for institutional-style commodity strategies across energy and metals.', // placeholder copy: confirm with the academy
+    title: 'Commodities Advanced',
+    market: 'Commodities',
+    level: 'Advanced',
+    duration: '8 weeks', // placeholder: confirm length
+    format: 'In person or online',
+    summary: 'Institutional commodity strategies, supply-chain and geopolitical risk reading, and portfolio-level risk budgeting.',
+    outcomes: ['Supply-chain and geopolitical risk reading', 'Commodity curve and rollover dynamics', 'Portfolio-level risk budgeting', 'Weekly reviewed assignment journal'],
+  },
 ]
 
 // SAMPLE stories to show the layout. They are NOT real students and are hidden in production
@@ -229,7 +298,6 @@ export const faqs = [
   ['Will this make me money?', 'No course can promise that, and you should be wary of any that does. We teach a method, risk management and the habit of reviewing your own trades. Trading carries real risk of loss.'],
   ['Can I study online from anywhere?', 'Yes. Online batches are live, at weekday evening and weekend times, with the same mentors, notes and certificate as the classroom batches.'],
   ['What if the program is not right for me?', 'You get a full refund if you cancel within 7 days of enrolling and before attending more than two classes.'],
-  ['How do I pay?', 'Online by card or UPI in rupees, or by card or Apple Pay in dirhams. Your seat is confirmed as soon as the payment goes through.'],
 ]
 
 export const formatINR = (n) => '₹' + n.toLocaleString('en-IN')
