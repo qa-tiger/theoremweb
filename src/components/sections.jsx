@@ -30,7 +30,7 @@ export function PageHeader({ back, title, intro, children }) {
         <div className="grid-12 gap-y-4 sm:gap-y-6">
           <div className="col-span-4 sm:col-span-8 lg:col-span-8">
             <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2 mb-2 inline-block">
-              Theorem Institute
+              Theorem Academy
             </span>
             <h1 className="hero-rise font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight text-white">
               {title}
@@ -50,7 +50,7 @@ export function PageHeader({ back, title, intro, children }) {
 
 // Reasons to trust the academy, stated plainly. No numbers until real ones exist.
 const TRUST = [
-  ['Real physical classrooms', 'In Dubai (Business Bay) and India. Visit before enrolling.'],
+  ['Real physical classrooms', 'Visit our training floor in person before enrolling.'],
   ['Direct mentor access', 'Real-time guidance and personal feedback throughout the curriculum.'],
   ['1-on-1 Assignment reviews', 'Personal feedback on your course assignments and chart executions to build independent reasoning.'],
   [`${offer.refundDays}-day refund guarantee`, '100% money-back if the program is not right for you.'],
@@ -116,7 +116,7 @@ export function Paths() {
                   <span className="badge-signal font-bold uppercase tracking-wider text-[0.65rem] py-0.5 px-2">
                     {path.badge}
                   </span>
-                  <span className="text-[0.7rem] font-medium text-white/50">Dubai • India • Online</span>
+                  <span className="text-[0.7rem] font-medium text-white/50">Offline • Online</span>
                 </div>
 
                 <h3 className="mt-3.5 font-display text-xl sm:text-2xl leading-tight font-extrabold text-white group-hover:text-signal transition-colors">
@@ -157,7 +157,7 @@ export function Paths() {
 }
 
 /*
-  "The Hybrid Academy Experience" — Explains why offline trading labs (Dubai & India)
+  "The Hybrid Academy Experience" — Explains why offline trading labs
   combined with live interactive online cohorts produce real trading discipline.
 */
 function PillarCard({ item, index }) {
@@ -258,8 +258,8 @@ export function HybridExperience() {
     {
       num: '01',
       title: 'Physical Classrooms & Live Sessions',
-      tag: 'India & Dubai',
-      desc: 'Study on multi-monitor terminal workstations in Business Bay Dubai and India, or join live interactive cohorts led by experienced mentors.',
+      tag: 'In-Person',
+      desc: 'Study on multi-monitor terminal workstations in person, or join live interactive cohorts led by experienced mentors.',
       points: [
         'Dedicated multi-monitor workstation terminals',
         'Direct face-to-face floor atmosphere & mentorship',
@@ -294,13 +294,13 @@ export function HybridExperience() {
     <Section tight className="bg-[#050505] text-white border-y border-board-line">
       <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
         <span className="badge-signal uppercase font-bold text-xs tracking-wider py-1 px-3.5 rounded-full">
-          Why Theorem Institute
+          Why Theorem Academy
         </span>
         <h2 className="mt-3.5 font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
           An Institutional Standard in Market Education
         </h2>
         <p className="mt-2.5 text-sm sm:text-base text-white/75 leading-relaxed">
-          In-person facilities in India and Dubai, paired with interactive live cohorts and direct one-on-one mentor guidance.
+          In-person training facilities, paired with interactive live cohorts and direct one-on-one mentor guidance.
         </p>
       </div>
 
@@ -362,7 +362,7 @@ export function Offer({ className = 'bg-card/40' }) {
                 `All 4 programs (${bundlePackage.totalWeeks})`,
                 `${bundlePackage.certificationsCount} verified certificates of course completion`,
                 'Weekly 1-on-1 private assignment reviews',
-                'India & Dubai locations + live cohorts',
+                'In-person locations + live cohorts',
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2">
                   <span aria-hidden="true" className="grid size-4 shrink-0 place-items-center rounded bg-signal text-[0.65rem] font-bold text-black">
@@ -381,7 +381,7 @@ export function Offer({ className = 'bg-card/40' }) {
             <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">
               {bundlePackage.title}
             </span>
-            <p className="mt-1 text-[0.7rem] text-white/60 font-medium">Dubai • India • Live Online</p>
+            <p className="mt-1 text-[0.7rem] text-white/60 font-medium">Offline • Live Online</p>
 
             <p className="mt-4 text-xl sm:text-2xl font-display font-extrabold text-white leading-snug">
               Save {bundlePackage.discountPercent}% versus enrolling in each program separately.
@@ -421,7 +421,7 @@ export function Faq({ className = '' }) {
         <div className="col-span-4 sm:col-span-8 lg:col-span-4">
           <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">Support & Clarity</span>
           <h2 className="mt-2 font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">Questions before you enrol.</h2>
-          <p className="mt-2.5 text-xs sm:text-sm text-white/65 leading-relaxed">Anything else, ask our Dubai or India admissions team. Most replies come within minutes on WhatsApp.</p>
+          <p className="mt-2.5 text-xs sm:text-sm text-white/65 leading-relaxed">Anything else, ask our admissions team. Most replies come within minutes on WhatsApp.</p>
           <a href={site.whatsappLink} className="btn-primary mt-6 py-2.5 px-5 text-xs font-bold inline-flex items-center gap-2">
             <span>💬 Ask Admissions on WhatsApp</span>
           </a>
@@ -513,9 +513,9 @@ export function Story() {
       <div className="grid-12 gap-y-6 sm:gap-y-8 items-center">
         <ImageBlock
           ratio="4/3"
-          src="/campus/live-mentor-classroom.jpg"
-          alt="Classroom mentor session at Theorem Institute"
-          caption="Live Classroom Session — Theorem Institute"
+          src="/campus/live-mentor-classroom.jpeg"
+          alt="Classroom mentor session at Theorem Academy"
+          caption="Live Classroom Session — Theorem Academy"
           className="col-span-4 sm:col-span-8 lg:col-span-7"
         />
         <div className="col-span-4 sm:col-span-6 lg:col-span-5 lg:col-start-8 space-y-4">
@@ -545,13 +545,13 @@ export function Experience() {
     <Section
       tight
       title="Our Classrooms & Facilities."
-      intro="Physical classrooms in India and Dubai, alongside interactive live online cohorts led by experienced mentors."
+      intro="Physical classrooms in person, alongside interactive live online cohorts led by experienced mentors."
       className="bg-card"
     >
       <div className="grid-12 gap-y-6 sm:gap-y-8">
         <ImageBlock
           ratio="4/3"
-          src="/campus/terminal-lab.jpg"
+          src="/campus/terminal-lab.jpeg"
           alt="Multi-monitor terminal workstations"
           caption="Terminal Workstation Lab & Multi-Monitor Stations"
           className="col-span-4 sm:col-span-8 lg:col-span-7"
@@ -559,14 +559,14 @@ export function Experience() {
         <div className="col-span-4 sm:col-span-8 lg:col-span-5 flex flex-col gap-6">
           <ImageBlock
             ratio="16/9"
-            src="/campus/lecture-hall.jpg"
+            src="/campus/lecture-hall.jpeg"
             alt="Interactive lecture room with whiteboard"
             caption="Lecture Room & Strategy Discussion Hall"
             className="w-full"
           />
           <ImageBlock
             ratio="16/9"
-            src="/campus/classroom-desks.jpg"
+            src="/campus/classroom-desks.jpeg"
             alt="Classroom seating and seminar desks"
             caption="Student Seminar & Practice Space"
             className="w-full"
@@ -608,7 +608,7 @@ export function Stories({ limit }) {
   if (visible.length === 0) return null
   const [lead, ...rest] = visible
   return (
-    <Section tight title="Student Testimonials." intro={lead.sample ? 'Verified student reviews from our Dubai and India cohorts.' : undefined} className="bg-card">
+    <Section tight title="Student Testimonials." intro={lead.sample ? 'Verified student reviews from our in-person and online cohorts.' : undefined} className="bg-card">
       <div className="grid-12 gap-y-6">
         <div className="col-span-4 sm:col-span-8 lg:col-span-8">
           <Testimonial story={lead} />
@@ -624,7 +624,7 @@ export function Stories({ limit }) {
 }
 
 // Final conversion band. Navy/petrol, so it reads as the close of the page and flows into the footer.
-export function FinalCta({ title = 'Start with a conversation.', body = 'Tell us what you trade now, or that you have never traded. We will recommend a program and a batch in Dubai, India or online.' }) {
+export function FinalCta({ title = 'Start with a conversation.', body = 'Tell us what you trade now, or that you have never traded. We will recommend a program and a batch in person or online.' }) {
   const ref = useReveal()
   return (
     <section ref={ref} className="reveal-up bg-board text-white border-t border-board-line">

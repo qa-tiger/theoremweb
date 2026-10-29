@@ -57,6 +57,10 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
     let animId
     let time = 0
 
+    // Theorem chrome mark drawn on the center coin (replaces the dollar sign)
+    const logoImg = new Image()
+    logoImg.src = '/theorem-icon.png'
+
     const isMobile = window.innerWidth < 768
     // Cap DPR to 1.0 on mobile and 1.5 on desktop for high-speed 60fps across all devices
     const getDpr = (mob) => (mob ? 1.0 : Math.min(window.devicePixelRatio || 1, 1.5))
@@ -76,11 +80,11 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
     // Floating Real Financial Coins with Responsive Orbit Radii
     const scaleFactor = isMobile ? 0.52 : 1.0
     const ORBIT_ASSETS = [
-      { symbol: '₿', name: 'BTC', color: '#f7931a', radiusX: 300 * scaleFactor, radiusY: 100 * scaleFactor, speed: -0.65, offset: 1.2, size: isMobile ? 22 : 28, label: 'Learn Crypto' },
-      { symbol: '₮', name: 'USDT', color: '#26a17b', radiusX: 250 * scaleFactor, radiusY: 80 * scaleFactor, speed: 0.75, offset: 3.8, size: isMobile ? 21 : 27 },
-      { symbol: '€', name: 'EUR', color: '#60a5fa', radiusX: 220 * scaleFactor, radiusY: 72 * scaleFactor, speed: 0.9, offset: 5.2, size: isMobile ? 18 : 24, label: 'Learn Forex' },
-      { symbol: 'AED', name: 'AED', color: '#10b981', radiusX: 330 * scaleFactor, radiusY: 108 * scaleFactor, speed: -0.5, offset: 2.6, size: isMobile ? 18 : 22, label: 'Learn Equity' },
-      { symbol: '£', name: 'GBP', color: '#c084fc', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.65, offset: 0.4, size: isMobile ? 18 : 24 },
+      { symbol: '₿', name: 'BTC', color: '#f7931a', radiusX: 300 * scaleFactor, radiusY: 100 * scaleFactor, speed: -0.32, offset: 1.2, size: isMobile ? 22 : 28, label: 'Learn Crypto' },
+      { symbol: '₮', name: 'USDT', color: '#26a17b', radiusX: 250 * scaleFactor, radiusY: 80 * scaleFactor, speed: 0.38, offset: 3.8, size: isMobile ? 21 : 27 },
+      { symbol: '€', name: 'EUR', color: '#60a5fa', radiusX: 220 * scaleFactor, radiusY: 72 * scaleFactor, speed: 0.45, offset: 5.2, size: isMobile ? 18 : 24, label: 'Learn Forex' },
+      { symbol: 'AED', name: 'AED', color: '#10b981', radiusX: 330 * scaleFactor, radiusY: 108 * scaleFactor, speed: -0.25, offset: 2.6, size: isMobile ? 18 : 22, label: 'Learn Equity' },
+      { symbol: '£', name: 'GBP', color: '#c084fc', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.33, offset: 0.4, size: isMobile ? 18 : 24, label: 'Learn Future' },
     ]
 
     // Floating Golden Dust Sparkles (optimized: 16 on mobile, 32 on desktop, zero heavy shadowBlur)
@@ -190,7 +194,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       ORBIT_ASSETS.forEach((a) => renderAsset(a, false))
 
       // 4. 3D Rotating Chrome Coin Medallion in Center (steady rotation, zero mouse reaction)
-      const coinRadius = mob ? 68 : 90
+      const coinRadius = mob ? 78 : 104
       const coinAngle = time * 1.4
       const cosAngle = Math.cos(coinAngle)
       const sinAngle = Math.sin(coinAngle)
@@ -235,21 +239,40 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       ctx.lineWidth = 1.5
       ctx.stroke()
 
-      // Center Embossed Dollar ($) Symbol on Coin
-      if (Math.abs(cosAngle) > 0.15) {
+      // Center Embossed Theorem Mark on Coin
+      if (cosAngle > 0.15 && logoImg.complete && logoImg.naturalWidth) {
         ctx.save()
         ctx.scale(cosAngle, 1)
 
-        // Emboss Shadow
-        ctx.fillStyle = 'rgba(30, 32, 36, 0.7)'
-        ctx.font = `900 ${mob ? 50 : 68}px "Plus Jakarta Sans", sans-serif`
+        const aspect = logoImg.naturalWidth / logoImg.naturalHeight
+        const drawH = coinRadius * (mob ? 1.05 : 1.15)
+        const drawW = drawH * aspect
+
+        ctx.shadowColor = 'rgba(20, 22, 26, 0.55)'
+        ctx.shadowBlur = 5
+        ctx.shadowOffsetX = 1.5
+        ctx.shadowOffsetY = 2.5
+        ctx.drawImage(logoImg, -drawW / 2, -drawH / 2, drawW, drawH)
+
+        ctx.restore()
+      } else if (cosAngle <= -0.15) {
+        // Back face: embossed "THEOREM" wordmark
+        ctx.save()
+        ctx.scale(Math.abs(cosAngle), 1)
+
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.35)'
+        ctx.shadowBlur = 2
+        ctx.shadowOffsetX = 0
+        ctx.shadowOffsetY = 1
+        ctx.font = `900 ${(mob ? 17 : 22)}px "Sofia Sans Extra Condensed", "Arial Narrow", sans-serif`
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
-        ctx.fillText('$', 1.5, 3)
-
-        // Emboss Highlight
-        ctx.fillStyle = '#ffffff'
-        ctx.fillText('$', 0, 0)
+        ctx.lineJoin = 'round'
+        ctx.strokeStyle = '#000000'
+        ctx.lineWidth = mob ? 2.4 : 3
+        ctx.strokeText('T H E O R E M', 0, 1)
+        ctx.fillStyle = '#000000'
+        ctx.fillText('T H E O R E M', 0, 1)
 
         ctx.restore()
       }
@@ -329,10 +352,12 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         <button
           type="button"
           onClick={handleEnter}
-          className="pointer-events-auto shimmer-button group relative flex items-center gap-3 rounded-full border border-signal/60 bg-gradient-to-r from-[#aab0bb] via-[#ffffff] to-[#aab0bb] px-9 py-4 text-sm sm:text-base font-extrabold text-[#101114] transition-all transform hover:scale-105 active:scale-95"
+          className={`enter-glow-button pointer-events-auto shimmer-button group relative flex items-center gap-3 rounded-full border border-signal/60 bg-gradient-to-r from-[#aab0bb] via-[#ffffff] to-[#aab0bb] px-12 py-5 text-base sm:text-lg font-extrabold text-[#101114] transition-all transform hover:scale-105 active:scale-95 ${
+            isExiting ? 'speaking-active' : ''
+          }`}
         >
-          <span className="tracking-wider">ENTER THEOREM</span>
-          <span className="transition-transform duration-200 group-hover:translate-x-1 font-bold text-lg">→</span>
+          <span className="tracking-[0.2em]">ENTER</span>
+          <span className="transition-transform duration-200 group-hover:translate-x-1 font-bold text-xl">→</span>
         </button>
         <span className="mt-3 text-[0.7rem] font-mono tracking-widest text-white/55 uppercase font-medium">
           INSTITUTIONAL TRADING ACADEMY

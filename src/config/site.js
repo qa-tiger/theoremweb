@@ -2,8 +2,8 @@
 // Anything marked "placeholder" must be replaced with real information before launch.
 
 export const site = {
-  name: 'Theorem Institute',
-  description: 'Premier financial educational institute in India and Dubai (Business Bay), plus live interactive global cohorts.',
+  name: 'Theorem Academy',
+  description: 'Premier financial education academy with in-person training floors and live interactive global cohorts.',
   email: 'admissions@theoreminstitute.com',
   phone: '+971 4 240 8899',
   whatsapp: '+971 58 500 8921',
@@ -20,20 +20,20 @@ export const site = {
 
 export const locations = [
   {
-    city: 'Dubai',
-    country: 'UAE',
+    id: 'training-floor-1',
+    label: 'Training Floor',
     address: 'Office 000, Business Bay, Dubai', // placeholder
     hours: 'Saturday to Thursday, 10:00 to 19:00',
   },
   {
-    city: 'India',
-    country: 'India',
+    id: 'training-floor-2',
+    label: 'Training Floor',
     address: '3rd Floor, Ambika Niwas, behind Tungareshwar Sweets, Gurunanak nagar, Vishal Nagar, Vasai West, Vasai-Virar, Maharashtra 401202',
     hours: 'Monday to Saturday, 10:00 to 19:00',
   },
   {
-    city: 'Online',
-    country: 'Anywhere',
+    id: 'online',
+    label: 'Online',
     address: 'Live interactive classes on Zoom with dedicated mentors',
     hours: 'Weekday evening and weekend batches',
   },
@@ -63,7 +63,7 @@ export const teachers = [
   },
 ]
 
-// price is in INR; priceAed is shown for Dubai students.
+// price is in INR; priceAed is shown when a student pays in AED.
 // Each market (Forex, Crypto, Equity) now runs as three tiers: Basic, Intermediate, Advanced.
 // comingSoon programs have no published syllabus or price yet — their detail page shows a
 // "curriculum being finalised" notice instead of a module list, and no fee is shown anywhere.
@@ -189,7 +189,7 @@ export const stories = [
   {
     sample: true,
     name: 'Student name',
-    program: 'Forex Basic, Dubai batch',
+    program: 'Forex Basic, in-person batch',
     quote: 'I had been trading without a methodology for a year and could not explain a single decision I took. The first thing Farhan did was make me write down why I was taking the setup, where my risk invalidation was, and what my position size was. Six weeks later I have complete clarity on every trade.',
     outcome: 'Now trades a small live account with a written plan',
   },
@@ -202,7 +202,7 @@ export const stories = [
   {
     sample: true,
     name: 'Student name',
-    program: 'Equity Basic, India batch',
+    program: 'Equity Basic, in-person batch',
     quote: 'I work full time, so the structured schedule and direct mentor access kept me accountable and consistent.',
   },
 ]
@@ -211,7 +211,7 @@ export const stories = [
 // placeholder: confirm every line with the academy before launch; these are promises to students.
 export const offer = {
   includes: [
-    'Live classes with your mentor, in Dubai, India or online',
+    'Live classes with your mentor, in person or online',
     'Dedicated curriculum notes and study guides in your student portal',
     'Module notes to download',
     'A mentor review of the assignments you submit during the program',

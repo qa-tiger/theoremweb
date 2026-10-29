@@ -35,14 +35,14 @@ export function Programs() {
     <>
       <PageHeader
         title="Structured programs. Choose your market."
-        intro="Each program runs in our Dubai & India classrooms and interactive live online, with seasoned mentors and weekly assignment reviews."
+        intro="Each program runs in our in-person classrooms and interactive live online, with seasoned mentors and weekly assignment reviews."
       />
       <Section tight className="pt-6 sm:pt-8 lg:pt-10">
         <ProgramCards />
       </Section>
       <BundleBanner />
       <Offer className="border-t border-white/10" />
-      <FinalCta title="Not sure which program fits your schedule?" body="Tell us what you trade now, or that you have never traded. An advisor will recommend a program and a batch in Dubai, India or online." />
+      <FinalCta title="Not sure which program fits your schedule?" body="Tell us what you trade now, or that you have never traded. An advisor will recommend a program and a batch in person or online." />
     </>
   )
 }
@@ -141,7 +141,7 @@ export function ProgramDetail() {
             <p className="mt-4 border-t border-white/15 pt-4 text-xs sm:text-sm text-white/75 leading-relaxed">
               {program.comingSoon
                 ? 'Dates and fees for this program are being confirmed. Contact admissions to be notified when it opens.'
-                : 'Contact admissions for current fees, the next cohort dates, and to check your batch (Dubai, India or online).'}
+                : 'Contact admissions for current fees, the next cohort dates, and to check your batch (in person or online).'}
             </p>
             <Link to={`/contact?program=${program.id}`} className="btn-brand mt-4 w-full py-2.5 text-xs sm:text-sm font-bold text-center block shadow-md">
               Contact us about {program.title}

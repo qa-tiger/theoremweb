@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import HeroVisualBackground from '../components/HeroVisualBackground'
-import DubaiCampusShowcase from '../components/DubaiCampusShowcase'
+import CampusShowcase from '../components/CampusShowcase'
 import {
   Approach,
   Faq,
@@ -17,12 +17,12 @@ import { programs, site, teachers } from '../config/site'
 // tiers now, which reads as a wall of text joined with "&").
 const marketsTaught = (teaches) => [...new Set(programs.filter((p) => teaches.includes(p.title)).map((p) => p.market))]
 
-const SCENE_ROTATION = ['india', 'dubai', 'online']
+const SCENE_ROTATION = ['offline', 'online']
 
 function Hero() {
-  const [activeScene, setActiveScene] = useState('india')
+  const [activeScene, setActiveScene] = useState('offline')
 
-  // Auto-rotate background scenes every 5 seconds (India -> Dubai -> Live Online -> India)
+  // Auto-rotate background scenes every 5 seconds (Offline -> Online -> Offline)
   useEffect(() => {
     const rotationTimer = setInterval(() => {
       setActiveScene((current) => {
@@ -46,7 +46,7 @@ function Hero() {
             
             {/* Main Headline */}
             <div className="hero-rise space-y-3 sm:space-y-3.5">
-              <p className="text-sm font-medium text-white/55">India, Dubai, and live interactive cohorts worldwide.</p>
+              <p className="text-sm font-medium text-white/55">In-person training floors and live interactive cohorts worldwide.</p>
               <h1 className="font-display text-4xl sm:text-5xl lg:text-[4rem] font-extrabold tracking-tight leading-[1.02]">
                 <span className="text-white">Master </span>
                 <span className="gold-bright-text">Institutional Trading.</span>
@@ -116,7 +116,7 @@ function Hero() {
 
           {/* Right Column: Interactive Campus Showcase Card */}
           <div className="hero-rise lg:col-span-5 relative self-start" style={{ animationDelay: '160ms' }}>
-            <DubaiCampusShowcase activeId={activeScene} onSelect={setActiveScene} />
+            <CampusShowcase activeId={activeScene} onSelect={setActiveScene} />
           </div>
 
         </div>
@@ -162,10 +162,10 @@ export default function Home() {
   usePageTitle(null)
   return (
     <>
-      {/* 1. Dubai Executive Hero with Famous Skyline Visuals & Campus Showcase */}
+      {/* 1. Executive Hero with Campus Showcase */}
       <Hero />
 
-      {/* 2. Why Theorem Institute: 3 Clear Pillars (Clean Fundfloat-style simplicity) */}
+      {/* 2. Why Theorem Academy: 3 Clear Pillars (Clean Fundfloat-style simplicity) */}
       <HybridExperience />
 
       {/* 4. The 4-Stage Teaching Method */}
@@ -186,7 +186,7 @@ export default function Home() {
       {/* 9. Closing Conversion Banner */}
       <FinalCta
         title="Start trading with a proven, reviewed plan."
-        body="Tell us what you trade now, or start from scratch. Join our next cohort in Dubai, India, or live online."
+        body="Tell us what you trade now, or start from scratch. Join our next cohort in person or live online."
       />
     </>
   )

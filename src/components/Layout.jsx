@@ -5,7 +5,9 @@ import { useAuth } from '../lib/auth'
 import TheoremIntroGate from './TheoremIntroGate'
 import { ScrollProgressBar } from './ui'
 
-// Wordmark: the full Theorem logo lockup (mark + name + tagline) as one image.
+// Wordmark: the chrome mark plus live "THEOREM" + tagline text. Rendered as real text
+// (not baked into the logo image) so the tagline stays legible at header size, unlike
+// the old raster lockup where it shrank to a few illegible pixels.
 // When inside My Portal, clicking the logo refreshes the page instead of leaving the portal.
 export function Wordmark({ className = '', onClick }) {
   const { pathname } = useLocation()
@@ -20,8 +22,14 @@ export function Wordmark({ className = '', onClick }) {
   }
 
   return (
-    <Link to={isPortal ? '/portal' : '/'} onClick={handleClick} className={`flex items-center ${className}`}>
-      <img src="/theorem-logo.png" alt={site.name} className="mark-in h-12 w-auto object-contain" />
+    <Link to={isPortal ? '/portal' : '/'} onClick={handleClick} className={`flex items-center gap-2.5 ${className}`}>
+      <img src="/theorem-icon.png" alt="" aria-hidden="true" className="mark-in h-10 w-auto object-contain" />
+      <span className="flex flex-col leading-none">
+        <span className="font-display text-2xl font-extrabold tracking-wide text-white">THEOREM</span>
+        <span className="hidden sm:block font-sans text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-white/45 whitespace-nowrap">
+          Theorems we decode, markets you conquer
+        </span>
+      </span>
     </Link>
   )
 }
@@ -456,8 +464,8 @@ export function Footer() {
             <li><a href={`mailto:${site.email}`} className="hover:text-signal">{site.email}</a></li>
             <li>{site.phone}</li>
             <li><a href={site.whatsappLink} className="hover:text-signal">WhatsApp {site.whatsapp}</a></li>
-            {locations.filter((l) => l.city !== 'Online').map((l) => (
-              <li key={l.city} className="pt-2 text-white/65"><span className="text-white">{l.city}</span><br />{l.address}</li>
+            {locations.filter((l) => l.id !== 'online').map((l) => (
+              <li key={l.id} className="pt-2 text-white/65"><span className="text-white">{l.label}</span><br />{l.address}</li>
             ))}
           </FooterColumn>
         </div>

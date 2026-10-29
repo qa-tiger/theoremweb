@@ -368,7 +368,7 @@ export function Register() {
           phone: account.phone.trim(),
           source: 'Website Registration',
           stage: 'Application Submitted',
-          campus: account.country === 'India' ? 'India' : 'Online',
+          campus: account.country === 'India' ? 'Offline' : 'Online',
           city: account.country || 'India',
           noteText: `Website registration created. KYC: ${account.country === 'India' ? (account.idType ? account.idType.toUpperCase() : 'Submitted') : 'Not Required'} ${account.idNumber ? `(${account.idNumber})` : ''}`,
           estimatedValue: 2400,
@@ -516,7 +516,7 @@ export function Register() {
                 </span>
               </div>
               <p className="mt-2 text-xs text-white/75 leading-relaxed">
-                Contact admissions for current cohort fees, the next cohort dates, and to check your batch (Dubai, India or online).
+                Contact admissions for current cohort fees, the next cohort dates, and to check your batch (in person or online).
               </p>
             </div>
           )}
@@ -902,7 +902,7 @@ export function Register() {
             <legend className="label text-xs font-bold text-white/90 mb-2">3. Attendance Format</legend>
             <Segmented
               name="Attendance"
-              options={[['Online', 'Online'], ['Dubai', 'Dubai'], ['India', 'India']]}
+              options={[['Online', 'Online'], ['Offline', 'Offline']]}
               value={prefs.mode}
               onChange={(mode) => setPrefs({ ...prefs, mode })}
             />

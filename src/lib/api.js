@@ -116,7 +116,7 @@ export async function signUp({ name, email, phone, password, country, idType, id
           name: name || 'Student',
           email: cleanEmail,
           phone: phone || null,
-          campus: country === 'India' ? 'India' : 'Online',
+          campus: country === 'India' ? 'Offline' : 'Online',
           program_id: 'forex-basic',
           program_name: 'Forex Basic',
           fee_status: 'Pending',

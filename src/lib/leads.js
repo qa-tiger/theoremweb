@@ -87,7 +87,7 @@ export function createNoteEntry(text, author = 'Website System') {
  * @param {string} [params.phone] - User's phone / WhatsApp
  * @param {string} [params.source] - 'Website Registration' | 'Free eBook Download' | 'Website Form'
  * @param {string} [params.stage] - 'New Inquiry' | 'Application Submitted'
- * @param {string} [params.campus] - 'Online' | 'Dubai' | 'India'
+ * @param {string} [params.campus] - 'Online' | 'Offline'
  * @param {string} [params.city] - City or Country
  * @param {string} [params.programId] - Course ID (e.g. 'forex-basic')
  * @param {string} [params.programName] - Course Title (e.g. 'Forex Basic')

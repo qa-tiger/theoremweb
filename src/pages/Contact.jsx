@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { FlapText, localTime, useNow } from '../components/Board'
 import { PageHeader, usePageTitle } from '../components/sections'
 import { bundlePackage, locations, programs, site } from '../config/site'
 import { createEnquiry } from '../lib/api'
-
-const TIMEZONES = { Dubai: 'Asia/Dubai', India: 'Asia/Kolkata' }
 
 // Links into this form can arrive with ?program=, ?package=all-programs-bundle, or
 // ?ebook=<id> (see the program cards, the bundle banner, and the Knowledge Toolkit page).
@@ -72,8 +69,7 @@ function EnquiryForm() {
           <label className="label text-xs font-bold text-white/90" htmlFor="location">Where would you study?</label>
           <select id="location" className="field py-2 text-xs sm:text-sm" value={form.location} onChange={set('location')}>
             <option>Online</option>
-            <option>Dubai</option>
-            <option>India</option>
+            <option>Offline</option>
           </select>
         </div>
       </div>
@@ -113,30 +109,19 @@ function EnquiryForm() {
 
 export default function Contact() {
   usePageTitle('Contact')
-  const now = useNow()
   return (
     <>
       <PageHeader
         title="Talk to an advisor before you enrol."
-        intro="Visit our office in Dubai or India, message on WhatsApp, or send an enquiry. An advisor will guide your batch selection."
+        intro="Visit our training floor in person, message on WhatsApp, or send an enquiry. An advisor will guide your batch selection."
       />
 
       <section className="py-8 sm:py-10 lg:py-12">
         <div className="wrap grid gap-4 sm:grid-cols-3 sm:gap-5">
           {locations.map((l) => (
-            <div key={l.city} className="card-hover-glow panel p-4 sm:p-5">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">Location</span>
-                  <h2 className="mt-1.5 font-display text-xl sm:text-2xl font-extrabold text-white">{l.city}</h2>
-                </div>
-                {TIMEZONES[l.city] && (
-                  <span className="[--flap-w:0.95rem]">
-                    <span className="sr-only">Local time {localTime(now, TIMEZONES[l.city])}</span>
-                    <FlapText text={localTime(now, TIMEZONES[l.city])} length={5} />
-                  </span>
-                )}
-              </div>
+            <div key={l.id} className="card-hover-glow panel p-4 sm:p-5">
+              <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">Location</span>
+              <h2 className="mt-1.5 font-display text-xl sm:text-2xl font-extrabold text-white">{l.label}</h2>
               <p className="mt-3 text-xs leading-relaxed text-white/70">{l.address}</p>
               <p className="mt-2 text-[0.7rem] font-semibold text-white/50">{l.hours}</p>
             </div>

@@ -29,7 +29,7 @@ export default function Checkout() {
   const { user } = useAuth()
   const navigate = useNavigate()
   const program = ALL_OFFERINGS.find((p) => p.id === programId)
-  const [currency, setCurrency] = useState(user?.mode === 'Dubai' ? 'AED' : 'INR')
+  const [currency, setCurrency] = useState('INR')
   const [method, setMethod] = useState('card')
   const [card, setCard] = useState({ number: '', expiry: '', cvc: '', name: user?.name || '' })
   const [upi, setUpi] = useState('')
@@ -80,7 +80,7 @@ export default function Checkout() {
             <div className="grid gap-4 sm:grid-cols-2">
               <fieldset>
                 <legend className="label text-xs font-bold text-white/90 mb-1.5">Currency</legend>
-                <Segmented name="Currency" options={[['INR', '₹ INR (India)'], ['AED', 'AED (Dubai)']]} value={currency} onChange={setCurrency} />
+                <Segmented name="Currency" options={[['INR', '₹ INR'], ['AED', 'AED']]} value={currency} onChange={setCurrency} />
               </fieldset>
               <fieldset>
                 <legend className="label text-xs font-bold text-white/90 mb-1.5">Payment Method</legend>
@@ -150,7 +150,7 @@ export default function Checkout() {
               )}
             </div>
             <h2 className="mt-2 font-display text-xl sm:text-2xl font-extrabold text-white leading-tight">{program.title}</h2>
-            <p className="mt-1 text-xs text-white/60">{program.duration}, {(user.mode || 'Online') === 'Online' ? 'Online Cohort' : `In-Person (${user.mode})`}</p>
+            <p className="mt-1 text-xs text-white/60">{program.duration}, {(user.mode || 'Online') === 'Online' ? 'Online Cohort' : 'In-Person Cohort'}</p>
             <dl className="mt-4 space-y-2 border-t border-white/15 pt-4 text-xs sm:text-sm">
               <div className="flex justify-between">
                 <dt className="text-white/60">Program fee</dt>

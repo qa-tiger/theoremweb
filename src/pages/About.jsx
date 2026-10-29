@@ -6,7 +6,7 @@ export default function About() {
     <>
       <PageHeader
         title="An institutional academy for modern capital markets."
-        intro="We educate learners across global forex, digital assets, and equities in India and Dubai, as well as live interactive cohorts. Small batch sizes, direct mentor accountability, and an uncompromising focus on market realities."
+        intro="We educate learners across global forex, digital assets, and equities in person and through live interactive cohorts. Small batch sizes, direct mentor accountability, and an uncompromising focus on market realities."
       />
       <MarketPhilosophy />
       <Experience />
