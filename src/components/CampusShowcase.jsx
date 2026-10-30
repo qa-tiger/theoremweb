@@ -73,20 +73,20 @@ export default function CampusShowcase({ activeId = 'offline', onSelect }) {
         </div>
 
         {/* High-Definition Photographic Showcase Window */}
-        <div className="relative h-52 sm:h-60 w-full overflow-hidden">
+        <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-black/40">
           <img
             key={activeLocation.id}
             src={activeLocation.image}
             alt={activeLocation.title}
-            className="photo-fade h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-105"
+            className="photo-fade h-full w-full object-cover brightness-115 contrast-105 saturate-105 transition-transform duration-700 ease-out hover:scale-105"
             loading="eager"
           />
-          {/* Subtle Contrast Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#101016] via-[#101016]/30 to-black/40" />
+          {/* Gentle Bottom-Only Shadow Gradient (Keeps upper & middle image bright and clear) */}
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#101016]/85 via-[#101016]/25 to-transparent pointer-events-none" />
 
           {/* Bottom Title on Image */}
           <div className="absolute bottom-3 left-4 right-4">
-            <h3 className="font-display text-xl sm:text-2xl font-extrabold text-white leading-tight drop-shadow-md min-h-[2.8rem] sm:min-h-[3.2rem] flex items-center">
+            <h3 className="font-display text-xl sm:text-2xl font-extrabold text-white leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] flex items-center">
               {activeLocation.title}
             </h3>
           </div>
