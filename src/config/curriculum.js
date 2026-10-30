@@ -350,6 +350,20 @@ export const curriculum = {
         { q: 'How does monitoring the US Dollar Index (DXY) assist your forex trading bias?', options: ['It reveals the broad strength or weakness of the world reserve currency across major pairs', 'It replaces chart analysis entirely', 'It is an unregulated crypto token', 'It guarantees 100% winning trades'], answer: 0 },
       ],
     },
+    {
+      id: 'fi-4',
+      title: 'Market Structure Basics',
+      lessons: [
+        lesson('fi-4-1', 'Market Structure Basics: Swing Highs, Swing Lows & Trend Identification'),
+        lesson('fi-4-2', 'Break of Structure (BOS): Validating Structural Continuations'),
+        lesson('fi-4-3', 'Change of Character (CHoCH): Spotting Early Trend Shifts & Reversals'),
+        lesson('fi-4-4', 'Premium vs. Discount Pricing Zones: Fibonacci Equilibrium for Entries'),
+      ],
+      quiz: [
+        { q: 'What constitutes a valid Break of Structure (BOS) in an established uptrend?', options: ['A decisive candle body close above the previous swing high', 'A long wick touching an indicator', 'Price dropping to support', 'A weekend gap'], answer: 0 },
+        { q: 'Why is identifying Premium vs. Discount pricing critical in market structure?', options: ['Institutions buy in Discount (below equilibrium) and sell in Premium (above equilibrium)', 'It only matters for stock dividends', 'It changes broker commissions', 'It determines leverage'], answer: 0 },
+      ],
+    },
   ],
 
   // 7. FOREX ADVANCED
@@ -363,37 +377,53 @@ export const curriculum = {
     },
     {
       id: 'fa-1',
-      title: 'Market Structure & Institutional Orderflow',
+      title: 'Liquidity Concepts & Liquidity Pools Architecture',
       lessons: [
-        lesson('fa-1-1', 'Swing Points and Breaks of Structure (BOS)'),
-        lesson('fa-1-2', 'Change of Character (CHoCH) vs. Structural Continuations'),
-        lesson('fa-1-3', 'Premium vs. Discount Pricing Zones for High-Probability Entries'),
+        lesson('fa-1-1', 'Understanding Market Liquidity: Why Price Moves Toward Unfilled Orders'),
+        lesson('fa-1-2', 'Buy-Side Liquidity (BSL) & Sell-Side Liquidity (SSL) Pools'),
+        lesson('fa-1-3', 'Equal Highs (EQH) & Equal Lows (EQL): Engineered Retail Traps'),
+        lesson('fa-1-4', 'Internal Range Liquidity vs. External Range Liquidity (IRL & ERL)'),
+        lesson('fa-1-5', 'Session Liquidity Sweeps: Asian Range Purges & London Open Judas Swings'),
       ],
       quiz: [
-        { q: 'A clean Break of Structure (BOS) in an established uptrend occurs when price…', options: ['Closes decisively above the previous swing high', 'Touches a moving average indicator', 'Closes flat on low volume', 'Gaps down at the open'], answer: 0 },
-        { q: 'In an institutional framework, when looking to buy in an uptrend, high-probability entries are found in the…', options: ['Premium zone', 'Discount zone', 'Upper extreme', 'Any random level'], answer: 1 },
+        { q: 'Where do the largest institutional Buy-Side Liquidity (BSL) pools typically rest on a chart?', options: ['Directly above prominent swing highs, equal highs, and key resistance levels', 'At the center of a consolidation range', 'Below the daily low', 'Only on 1-minute charts'], answer: 0 },
+        { q: 'What is the primary purpose of an institutional liquidity sweep?', options: ['Engineered smart-money participants purge retail stop losses to accumulate opposite counterpart liquidity', 'A software error by retail brokers', 'Trading halts', 'Random noise without significance'], answer: 0 },
       ],
     },
     {
       id: 'fa-2',
-      title: 'Liquidity Pools, Imbalances & Market Execution',
+      title: 'Institutional Orderflow, Fair Value Gaps & Imbalances',
       lessons: [
-        lesson('fa-2-1', 'Identifying Where Retail Liquidity Clusters (Buy-Side & Sell-Side)'),
-        lesson('fa-2-2', 'Multi-Timeframe Top-Down Analysis (Daily → 4H → 15M → 1M)'),
-        lesson('fa-2-3', 'Fair Value Gaps (FVG), Imbalances & Order Block Delivery'),
+        lesson('fa-2-1', 'Fair Value Gaps (FVG), Inefficiencies & Balanced Price Ranges (BPR)'),
+        lesson('fa-2-2', 'Liquidity Voids, Volume Imbalances & Mitigation Blocks'),
+        lesson('fa-2-3', 'Institutional Order Blocks (OB) & Rejection Block Delivery'),
+        lesson('fa-2-4', 'Liquidity Purge & Revert: The Turtle Soup Sweep into Displacement Model'),
       ],
       quiz: [
-        { q: 'Equal highs (EQH) on a chart are significant because…', options: ['Buy-side liquidity (stop losses) rests directly above them, attracting institutional sweeps', 'They represent zero interest', 'They are broker glitches', 'They guarantee price will reverse immediately'], answer: 0 },
-        { q: 'What is the recommended sequence for institutional top-down market analysis?', options: ['1-Minute → 15-Minute → Daily', 'Daily (directional bias) → 1-Hour (structure) → 15M/5M (execution)', '5-Minute only without looking at higher timeframes', 'Weekly only'], answer: 1 },
+        { q: 'A Fair Value Gap (FVG) represents…', options: ['A three-candle price imbalance where one side of the market dominated, leaving unfilled institutional resting orders', 'A flat trading day with zero volume', 'A guaranteed market reversal pattern', 'An indicator lag'], answer: 0 },
+        { q: 'What validates a high-probability Order Block after a liquidity sweep?', options: ['Aggressive displacement breaking market structure with an accompanying Fair Value Gap', 'A slow sideways drift', 'Touching a 200 EMA', 'Market closing for the weekend'], answer: 0 },
       ],
     },
     {
       id: 'fa-3',
+      title: 'Multi-Timeframe Liquidity Execution & Draw on Liquidity',
+      lessons: [
+        lesson('fa-3-1', 'Identifying the Higher-Timeframe Draw on Liquidity (DOL on Daily / 4H)'),
+        lesson('fa-3-2', 'Top-Down Execution: Daily Liquidity Bias → 1H Structure → 15M/5M/1M Entries'),
+        lesson('fa-3-3', 'Inducement vs. True Liquidity Targets: Protecting Against Early Traps'),
+      ],
+      quiz: [
+        { q: 'What is meant by the "Draw on Liquidity" (DOL)?', options: ['The higher-timeframe magnetic liquidity pool or imbalance that price is algorithmically seeking next', 'The amount of cash in your broker account', 'A technical drawdown', 'Bank withdrawal fees'], answer: 0 },
+        { q: 'What is the key to executing high R:R trades using multi-timeframe liquidity?', options: ['Aligning lower timeframe entry displacement with the higher-timeframe Draw on Liquidity', 'Entering immediately without confirmation on the 1-minute chart', 'Never setting a stop loss', 'Trading every session regardless of liquidity'], answer: 0 },
+      ],
+    },
+    {
+      id: 'fa-4',
       title: 'Professional Execution, Prop-Firm Rules & Risk Budgeting',
       lessons: [
-        lesson('fa-3-1', 'Comprehensive Trade Journaling: Tracking Execution, Psychology & Metrics'),
-        lesson('fa-3-2', 'Prop-Firm Capital Rules: Navigating Daily Drawdowns & Profit Targets'),
-        lesson('fa-3-3', 'Weekly Performance Reviews & Continuous Edge Refinement'),
+        lesson('fa-4-1', 'Comprehensive Trade Journaling: Tracking Execution, Psychology & Metrics'),
+        lesson('fa-4-2', 'Prop-Firm Capital Rules: Navigating Daily Drawdowns & Profit Targets'),
+        lesson('fa-4-3', 'Weekly Performance Reviews & Continuous Edge Refinement'),
       ],
       quiz: [
         { q: 'What is the primary reason most traders fail funded account / prop-firm challenges?', options: ['Breaching maximum daily drawdown limits due to oversized risk and emotional revenge trading', 'Slow computer speed', 'Exchange maintenance', 'Missing weekend trades'], answer: 0 },
