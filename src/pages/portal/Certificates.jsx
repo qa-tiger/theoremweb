@@ -74,65 +74,36 @@ export default function Certificates() {
       </div>
 
       {/* Render Any Issued Certificates */}
-      {issuedCertificates.map((c) => (
-        <section key={c.id} className="space-y-4">
-          <Certificate name={user.name} program={c.program} date={c.enrolledAt || Date.now()} id={c.id.toUpperCase()} />
-          <button onClick={() => window.print()} className="btn-brand py-2 px-5 text-xs font-bold shadow-md print:hidden">
-            Download Certificate as PDF
-          </button>
-        </section>
-      ))}
-
-      {/* Enrolled Active Programs Status */}
-      {courses.length > 0 && (
-        <section className="space-y-4 print:hidden">
-          <h2 className="font-display text-lg sm:text-xl font-bold text-white">
-            Enrolled Programs ({courses.length})
-          </h2>
-          <div className="grid gap-3 sm:gap-4">
-            {courses.map((c) => (
-              <div
-                key={c.id}
-                className="rounded-2xl border border-white/10 bg-[#121218] p-5 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-              >
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="badge-signal text-[0.65rem] font-bold uppercase py-0.5 px-2">
-                      {c.program.market}
-                    </span>
-                    <span className="badge-outline text-[0.62rem] font-bold text-bull border-bull/40 py-0.5 px-2">
-                      Active Enrollment
-                    </span>
-                  </div>
-                  <h3 className="mt-1.5 font-display text-base sm:text-lg font-bold text-white">
-                    {c.program.title}
-                  </h3>
-                  <p className="text-xs text-white/60 mt-0.5">
-                    {c.program.level} • {c.program.duration} • Certificate issued upon cohort conclusion.
-                  </p>
-                </div>
-
-                <Link
-                  to={`/portal/course/${c.programId}`}
-                  className="btn-outline-light py-2 px-4 text-xs font-semibold shrink-0"
-                >
-                  View Curriculum →
-                </Link>
-              </div>
-            ))}
+      {issuedCertificates.length > 0 ? (
+        issuedCertificates.map((c) => (
+          <section key={c.id} className="space-y-4">
+            <Certificate name={user.name} program={c.program} date={c.enrolledAt || Date.now()} id={c.id.toUpperCase()} />
+            <button onClick={() => window.print()} className="btn-brand py-2 px-5 text-xs font-bold shadow-md print:hidden">
+              Download Certificate as PDF
+            </button>
+          </section>
+        ))
+      ) : (
+        /* Empty State - Friendly Notice */
+        <div className="rounded-2xl border border-white/10 bg-[#121218] p-8 sm:p-10 text-center text-white/70 space-y-4 shadow-lg print:hidden max-w-xl mx-auto">
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-signal/15 text-signal border border-signal/30 mx-auto shadow-md">
+            <svg className="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5" />
+            </svg>
           </div>
-        </section>
-      )}
-
-      {courses.length === 0 && (
-        <div className="rounded-2xl border border-white/10 bg-[#121218] p-8 text-center text-white/70 space-y-3">
-          <p className="text-sm font-semibold text-white">No active course enrollments yet.</p>
-          <p className="text-xs text-white/50 max-w-md mx-auto">
-            Enroll in a Theorem Academy program to start your training and earn an accredited certificate of completion.
-          </p>
-          <Link to="/portal" className="btn-brand inline-block py-2 px-4 text-xs font-bold mt-2">
-            Explore Programs
-          </Link>
+          <div>
+            <h2 className="text-lg sm:text-xl font-bold font-display text-white">
+              No Certificates Issued Yet
+            </h2>
+            <p className="text-xs sm:text-sm text-white/60 mt-1 max-w-md mx-auto leading-relaxed">
+              Your official certificate of completion will appear here once your enrolled cohort and faculty evaluation are complete.
+            </p>
+          </div>
+          <div className="pt-2">
+            <Link to="/portal" className="btn-outline-light inline-block py-2 px-4 text-xs font-semibold text-white hover:border-signal">
+              ← Back to My Courses
+            </Link>
+          </div>
         </div>
       )}
     </div>
