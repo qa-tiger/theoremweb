@@ -278,20 +278,28 @@ export default function PayFees() {
   const { user } = useAuth()
 
   // Automatic Regional Detection (Privacy-Friendly, Legal & Coarse IP only)
-  const resolveInitialRegion = () => {
-    try {
-      const cached = sessionStorage.getItem('theorem_settlement_region')
-      if (cached === 'india' || cached === 'uae') return cached
-    } catch {}
-
-    const userCountry = (user?.country || '').toLowerCase().trim()
-    if (userCountry === 'india') return 'india'
-    if (userCountry && userCountry !== 'india') return 'uae'
-
+  const isIndianEnvironment = () => {
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
-      if (tz.includes('Calcutta') || tz.includes('Kolkata')) return 'india'
-      if (tz.includes('Dubai') || tz.includes('Muscat') || tz.includes('Riyadh')) return 'uae'
+      if (tz.includes('Calcutta') || tz.includes('Kolkata')) return true
+      if (new Date().getTimezoneOffset() === -330) return true
+    } catch {}
+    const c = (user?.country || '').toLowerCase().trim()
+    return c === 'india' || c.includes('mumbai') || c.includes('delhi') || c.includes('vasai')
+  }
+
+  const resolveInitialRegion = () => {
+    // 1. Device timezone & local environment (instant, 100% accurate for users physically in India)
+    if (isIndianEnvironment()) return 'india'
+
+    // 2. Check explicitly non-Indian accounts
+    const userCountry = (user?.country || '').toLowerCase().trim()
+    if (userCountry.includes('uae') || userCountry.includes('emirates') || userCountry.includes('dubai')) return 'uae'
+
+    // 3. Check session cache
+    try {
+      const cached = sessionStorage.getItem('theorem_settlement_region_v2')
+      if (cached === 'india' || cached === 'uae') return cached
     } catch {}
 
     return 'india'
@@ -308,23 +316,14 @@ export default function PayFees() {
     let isMounted = true
 
     async function verifyLocation() {
-      const userCountry = (user?.country || '').toLowerCase().trim()
-      if (userCountry === 'india') {
+      // If client is already confirmed in Indian timezone, keep India
+      if (isIndianEnvironment()) {
         setActiveRegion('india')
+        try {
+          sessionStorage.setItem('theorem_settlement_region_v2', 'india')
+        } catch {}
         return
       }
-      if (userCountry && userCountry !== 'india') {
-        setActiveRegion('uae')
-        return
-      }
-
-      try {
-        const cached = sessionStorage.getItem('theorem_settlement_region')
-        if (cached) {
-          if (isMounted) setActiveRegion(cached)
-          return
-        }
-      } catch {}
 
       const controller = new AbortController()
       const timeoutId = setTimeout(() => controller.abort(), 2500)
@@ -342,7 +341,7 @@ export default function PayFees() {
           if (isMounted) {
             setActiveRegion(resolved)
             try {
-              sessionStorage.setItem('theorem_settlement_region', resolved)
+              sessionStorage.setItem('theorem_settlement_region_v2', resolved)
             } catch {}
           }
           return
@@ -351,17 +350,10 @@ export default function PayFees() {
         // Fallback gracefully on network error or adblockers
       }
 
-      try {
-        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''
-        const isIndia = tz.includes('Calcutta') || tz.includes('Kolkata')
-        const fallback = isIndia ? 'india' : 'uae'
-        if (isMounted) {
-          setActiveRegion(fallback)
-          try {
-            sessionStorage.setItem('theorem_settlement_region', fallback)
-          } catch {}
-        }
-      } catch {}
+      // Fallback
+      if (isMounted) {
+        setActiveRegion(isIndianEnvironment() ? 'india' : 'uae')
+      }
     }
 
     verifyLocation()
