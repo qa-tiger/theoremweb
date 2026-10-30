@@ -95,6 +95,21 @@ export function PortalLayout() {
           </NavLink>
 
           <NavLink
+            to="/portal/fees"
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold transition-all ${
+                isActive
+                  ? 'bg-signal text-black font-extrabold shadow-lg shadow-signal/10'
+                  : 'text-white/70 hover:bg-white/5 hover:text-white border border-transparent'
+              }`
+            }
+          >
+            <span className="text-base">💳</span>
+            <span>Pay fees</span>
+          </NavLink>
+
+
+          <NavLink
             to="/portal/certificates"
             className={({ isActive }) =>
               `flex items-center gap-3 rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold transition-all ${

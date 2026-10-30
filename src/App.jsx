@@ -18,6 +18,7 @@ import Certificates from './pages/portal/Certificates'
 import Course from './pages/portal/Course'
 import { Dashboard, PortalLayout } from './pages/portal/Portal'
 import Support from './pages/portal/Support'
+import PayFees from './pages/portal/PayFees'
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation()
@@ -56,6 +57,8 @@ export default function App() {
             <Route path="portal" element={<RequireAuth><PortalLayout /></RequireAuth>}>
               <Route index element={<Dashboard />} />
               <Route path="course/:programId" element={<Course />} />
+              <Route path="fees" element={<PayFees />} />
+              <Route path="pay-fees" element={<PayFees />} />
               <Route path="certificates" element={<Certificates />} />
               <Route path="support" element={<Support />} />
             </Route>
