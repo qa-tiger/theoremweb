@@ -12,6 +12,7 @@ import { ScrollProgressBar } from './ui'
 export function Wordmark({ className = '', onClick, compact = false }) {
   const { pathname } = useLocation()
   const isPortal = pathname.startsWith('/portal')
+  const isCompact = compact || isPortal
 
   const handleClick = (e) => {
     if (onClick) onClick(e)
@@ -22,13 +23,13 @@ export function Wordmark({ className = '', onClick, compact = false }) {
   }
 
   return (
-    <Link to={isPortal ? '/portal' : '/'} onClick={handleClick} className={`flex items-center gap-2.5 ${className}`}>
-      <img src="/theorem-icon.png" alt="" aria-hidden="true" className="mark-in h-10 w-auto object-contain" />
-      <span className="flex flex-col leading-none">
-        <span className="font-display text-2xl font-extrabold tracking-wide text-white">THEOREM</span>
+    <Link to={isPortal ? '/portal' : '/'} onClick={handleClick} className={`flex items-center gap-2.5 min-w-0 ${className}`}>
+      <img src="/theorem-icon.png" alt="" aria-hidden="true" className="mark-in h-9 w-auto object-contain shrink-0" />
+      <span className="flex flex-col leading-tight min-w-0">
+        <span className="font-display text-xl sm:text-2xl font-extrabold tracking-wide text-white">THEOREM</span>
         <span
-          className={`hidden sm:block font-sans text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-white ${
-            compact ? 'max-w-[12rem] leading-snug' : 'whitespace-nowrap'
+          className={`hidden sm:block font-sans text-[0.55rem] font-semibold uppercase text-white/70 ${
+            isCompact ? 'max-w-[11.5rem] leading-tight break-words tracking-normal' : 'whitespace-nowrap tracking-[0.1em]'
           }`}
         >
           Theorems we decode, markets you conquer
