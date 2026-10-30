@@ -309,8 +309,58 @@ export const curriculum = {
     },
   ],
 
-  // 6. FOREX ADVANCED
+  // 6. FOREX INTERMEDIATE
+  'forex-intermediate': [
+    {
+      id: 'fi-1',
+      title: 'Fundamental Analysis of the Market',
+      lessons: [
+        lesson('fi-1-1', 'Fundamental analysis of the market: Core Macro Drivers & Interest Rates'),
+        lesson('fi-1-2', 'Central Bank Monetary Policies (Federal Reserve, ECB, BOE, BOJ)'),
+        lesson('fi-1-3', 'Understanding Inflation, Sovereign Bond Yields & Currency Valuation'),
+      ],
+      quiz: [
+        { q: 'What is the primary role of fundamental analysis in currency trading?', options: ['Understanding macroeconomic drivers and interest rate expectations moving currency values', 'Drawing trendlines on short timeframes', 'Predicting the exact closing price of tomorrow', 'Selecting broker leverage'], answer: 0 },
+        { q: 'When a central bank raises its benchmark interest rate, its currency typically…', options: ['Strengthens as international capital seeks higher yield', 'Depreciates immediately to zero', 'Freezes trading volume', 'Moves completely at random'], answer: 0 },
+      ],
+    },
+    {
+      id: 'fi-2',
+      title: 'Reading News and Figuring Out Bias',
+      lessons: [
+        lesson('fi-2-1', 'Reading news and figuring out bias: Economic Calendar Mastery'),
+        lesson('fi-2-2', 'High-Impact News Releases: Non-Farm Payrolls (NFP), CPI & FOMC Decisions'),
+        lesson('fi-2-3', 'Establishing Directional Daily & Weekly Market Bias from Global Headlines'),
+      ],
+      quiz: [
+        { q: 'How does a professional trader establish directional market bias using news releases?', options: ['Comparing actual figures against forecast expectations to gauge real sentiment vs. priced-in consensus', 'Entering maximum lot size right at the release second', 'Ignoring news completely', 'Trading only when the market is asleep'], answer: 0 },
+        { q: 'What often happens during high-impact news like US CPI or NFP?', options: ['High volatility, wide spreads, and liquidity sweeps before a true directional trend forms', 'Zero price movement', 'Trading is permanently closed for the day', 'All currencies become identical in value'], answer: 0 },
+      ],
+    },
+    {
+      id: 'fi-3',
+      title: 'How to Read the Other Economic Data',
+      lessons: [
+        lesson('fi-3-1', 'How to read the other economic data: GDP, Retail Sales & Industrial Output'),
+        lesson('fi-3-2', 'Labor Market Health: Jobless Claims, Unemployment Rate & Wage Growth'),
+        lesson('fi-3-3', 'Intermarket Relationships: The US Dollar Index (DXY), Oil & Treasury Yields'),
+      ],
+      quiz: [
+        { q: 'Why is GDP (Gross Domestic Product) and Manufacturing PMI critical to read as economic data?', options: ['They measure overall economic expansion or contraction, directly influencing central bank policy expectations', 'They provide stock ticker symbols', 'They tell you where to put a stop loss', 'They are only relevant for physical retail stores'], answer: 0 },
+        { q: 'How does monitoring the US Dollar Index (DXY) assist your forex trading bias?', options: ['It reveals the broad strength or weakness of the world reserve currency across major pairs', 'It replaces chart analysis entirely', 'It is an unregulated crypto token', 'It guarantees 100% winning trades'], answer: 0 },
+      ],
+    },
+  ],
+
+  // 7. FOREX ADVANCED
   'forex-advanced': [
+    {
+      id: 'fa-0',
+      title: 'Intermediate Foundation',
+      lessons: [
+        lesson('fa-0-1', 'Everything covered in intermediate level'),
+      ],
+    },
     {
       id: 'fa-1',
       title: 'Market Structure & Institutional Orderflow',

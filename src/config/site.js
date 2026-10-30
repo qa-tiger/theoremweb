@@ -81,19 +81,25 @@ export const programs = [
   },
   {
     id: 'forex-intermediate',
-    comingSoon: true,
-    audience: 'Students who have finished Forex Basic, or who already place and size their own trades and want a more structured, reviewed process.', // placeholder copy: confirm with the academy
+    audience: 'Students who have finished Forex Basic, or who already place and size their own trades and want to understand macroeconomic drivers, news sentiment, and market bias.',
     title: 'Forex Intermediate',
     market: 'Forex',
     level: 'Intermediate',
-    duration: '6 weeks', // placeholder: confirm length
+    duration: '6 weeks',
     format: 'In person or online',
-    summary: 'The bridge between a beginner and an advanced trader: reading higher-timeframe structure, trading with a plan, and reviewing every trade.',
-    outcomes: ['Multi-timeframe chart reading', 'Building and following a trading plan', 'Common mistakes at this stage', 'Preparing for Forex Advanced'],
+    price: 34999,
+    priceAed: 1499,
+    summary: 'Fundamental analysis of the market, reading news and figuring out bias, and how to read the other economic data.',
+    outcomes: [
+      'Fundamental analysis of the market',
+      'Reading news and figuring out bias',
+      'How to read the other economic data',
+      'Multi-timeframe technical alignment & disciplined trade planning',
+    ],
   },
   {
     id: 'forex-advanced',
-    audience: 'Traders who already know the basics (or have finished Forex Basic) and want a repeatable, reviewed process. You should be able to place and size a trade on your own.', // placeholder copy: confirm with the academy
+    audience: 'Traders who already know the basics (or have finished Forex Basic & Intermediate) and want an institutional, repeatable edge. You should be able to place and size a trade on your own.',
     title: 'Forex Advanced',
     market: 'Forex',
     level: 'Advanced',
@@ -101,8 +107,14 @@ export const programs = [
     format: 'In person or online',
     price: 44999,
     priceAed: 1999,
-    summary: 'Market structure, liquidity dynamics and multi-timeframe analysis, with a live assignment review every week.',
-    outcomes: ['Market structure and liquidity', 'Multi-timeframe analysis', 'Assignment journaling and review', 'Prop-firm challenge preparation'],
+    summary: 'Everything covered in intermediate level plus advanced market structure, liquidity dynamics and institutional multi-timeframe analysis.',
+    outcomes: [
+      'Everything covered in intermediate level',
+      'Market structure and liquidity',
+      'Multi-timeframe analysis',
+      'Assignment journaling and review',
+      'Prop-firm challenge preparation',
+    ],
   },
   {
     id: 'crypto-basic',
