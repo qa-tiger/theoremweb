@@ -101,17 +101,19 @@ export function ProgramDetail() {
                       <span className="flap flap-amber [--flap-w:1.35rem]" aria-hidden="true">{i + 1}</span>
                       <h3 className="font-display text-base sm:text-lg font-bold text-white">{m.title}</h3>
                     </div>
-                    <ul className="mt-3 divide-y divide-white/10 text-xs">
+                    <ul className="mt-3 divide-y divide-white/10 text-xs sm:text-sm">
                       {m.lessons.map((l) => (
-                        <li key={l.id} className="flex justify-between gap-4 py-2 text-white/90">
+                        <li key={l.id} className="flex items-center gap-2.5 py-2 text-white/90">
+                          <span className="text-signal/80 text-[0.65rem]">•</span>
                           <span>{l.title}</span>
-                          <span className="whitespace-nowrap tabular-nums text-white/50">{l.minutes} min</span>
                         </li>
                       ))}
-                      <li className="flex justify-between gap-4 py-2 font-bold text-signal">
-                        <span>Module Knowledge Quiz & Journal Check</span>
-                        <span className="whitespace-nowrap">{m.quiz.length} questions</span>
-                      </li>
+                      {m.quiz && m.quiz.length > 0 && (
+                        <li className="flex items-center gap-2.5 py-2 font-bold text-signal">
+                          <span className="text-signal text-[0.65rem]">✓</span>
+                          <span>Module Knowledge Check & Practical Exercise</span>
+                        </li>
+                      )}
                     </ul>
                   </li>
                 ))}

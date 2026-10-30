@@ -163,8 +163,7 @@ export default function Course() {
                     <li key={l.id} className="flex items-center gap-3 py-3">
                       <input id={l.id} type="checkbox" checked={done} onChange={(e) => toggle(l.id, e.target.checked)} className="size-4 accent-ink" />
                       <label htmlFor={l.id} className={`flex-1 cursor-pointer ${done ? 'text-ink-soft line-through decoration-ink/30' : ''}`}>{l.title}</label>
-                      <span className="text-sm tabular-nums text-ink-soft">{l.minutes} min</span>
-                    </li>
+                      </li>
                   )
                 })}
               </ul>

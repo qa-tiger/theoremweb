@@ -76,8 +76,8 @@ export const programs = [
     price: 24999,
     priceAed: 1099,
     featured: true,
-    summary: 'Currency pairs, pips, lots and leverage: reading charts, understanding market mechanics, and applying position sizing.',
-    outcomes: ['How the forex market and brokers work', 'Candlesticks, support and resistance', 'Position sizing and risk boundaries', 'A written trading plan of your own'],
+    summary: 'Introduction to currency pairs, chart reading, candlestick anatomy, and disciplined risk management.',
+    outcomes: ['Introduction to forex & how currency pairs work', 'Chart reading & candlestick anatomy (Open, High, Low, Close)', 'Identifying trends, support & resistance levels', 'Position sizing, stop losses & capital protection rules'],
   },
   {
     id: 'forex-intermediate',
@@ -114,8 +114,8 @@ export const programs = [
     format: 'In person or online',
     price: 29999,
     priceAed: 1299,
-    summary: 'Spot and futures on the major exchanges, market cycles, wallets, and how to stay safe from scams.',
-    outcomes: ['Exchanges, wallets and security', 'Spot vs futures and funding rates', 'Reading crypto market cycles', 'Risk rules for a volatile market'],
+    summary: 'Introduction to digital assets, reading crypto charts, candlestick patterns, wallets and safe risk management.',
+    outcomes: ['Introduction to cryptocurrency, Bitcoin & major altcoins', 'Reading crypto charts & candlestick formations', 'Understanding market trends, volume & support levels', 'Wallet security, order types & capital preservation'],
   },
   {
     id: 'crypto-intermediate',
@@ -151,8 +151,8 @@ export const programs = [
     format: 'In person or online',
     price: 19999,
     priceAed: 899,
-    summary: 'Indian and US stock markets: reading fundamentals, swing trading setups, and building a watchlist.',
-    outcomes: ['How stock exchanges work', 'Reading financial statements', 'Swing trading setups', 'Building and managing a watchlist'],
+    summary: 'Introduction to stock markets, reading price charts, candlesticks, and disciplined equity trading basics.',
+    outcomes: ['Introduction to stock exchanges (NSE/BSE & US markets)', 'Reading stock charts & candlestick price action', 'Understanding market trends, support & resistance', 'Placing orders, position sizing & risk discipline'],
   },
   {
     id: 'equity-intermediate',
@@ -180,15 +180,16 @@ export const programs = [
   },
   {
     id: 'indices-basic',
-    comingSoon: true,
-    audience: 'Beginners who want to trade global benchmarks like the S&P 500, Nasdaq and Nifty 50 instead of picking individual stocks.', // placeholder copy: confirm with the academy
+    audience: 'Beginners who want to trade global benchmarks like the S&P 500, Nasdaq and Nifty 50 instead of picking individual stocks.',
     title: 'Indices Basic',
     market: 'Indices',
     level: 'Basic',
-    duration: '6 weeks', // placeholder: confirm length
+    duration: '6 weeks',
     format: 'In person or online',
-    summary: 'Reading major global indices, how they are weighted, and trading benchmark moves with a clear, risk-managed approach.',
-    outcomes: ['How indices are constructed and weighted', 'Reading index futures and CFDs', 'Correlating indices with macro events', 'Position sizing for benchmark trades'],
+    price: 24999,
+    priceAed: 1099,
+    summary: 'Introduction to global benchmark indices, reading charts, candlestick dynamics, and risk-controlled index trading.',
+    outcomes: ['What are indices (S&P 500, Nasdaq, Nifty 50) & how they move', 'Reading index charts & candlestick signals', 'Identifying broad market trends & key price levels', 'Risk management and trade sizing for benchmark moves'],
   },
   {
     id: 'indices-intermediate',
@@ -216,15 +217,16 @@ export const programs = [
   },
   {
     id: 'commodities-basic',
-    comingSoon: true,
-    audience: 'Beginners who want to trade gold, silver, oil and other commodities with a structured, risk-managed approach.', // placeholder copy: confirm with the academy
+    audience: 'Beginners who want to trade gold, silver, oil and other commodities with a structured, risk-managed approach.',
     title: 'Commodities Basic',
     market: 'Commodities',
     level: 'Basic',
-    duration: '6 weeks', // placeholder: confirm length
+    duration: '6 weeks',
     format: 'In person or online',
-    summary: 'Gold, silver, oil and other major commodities: supply and demand drivers, seasonality, and position sizing.',
-    outcomes: ['Supply and demand drivers for key commodities', 'Reading commodity futures and CFDs', 'Seasonality and macro correlation', 'Position sizing for commodity trades'],
+    price: 24999,
+    priceAed: 1099,
+    summary: 'Introduction to global commodities, reading gold and oil charts, candlestick basics, and capital protection.',
+    outcomes: ['Introduction to commodities (Gold, Silver, Crude Oil)', 'Reading commodity charts & candlestick dynamics', 'Key support, resistance & market trend identification', 'Volatility control, position sizing & stop loss discipline'],
   },
   {
     id: 'commodities-intermediate',
