@@ -78,11 +78,11 @@ export default function CampusShowcase({ activeId = 'offline', onSelect }) {
             key={activeLocation.id}
             src={activeLocation.image}
             alt={activeLocation.title}
-            className="photo-fade h-full w-full object-cover brightness-115 contrast-105 saturate-105 transition-transform duration-700 ease-out hover:scale-105"
+            className="photo-fade h-full w-full object-cover brightness-105 contrast-102 transition-transform duration-700 ease-out hover:scale-105"
             loading="eager"
           />
-          {/* Gentle Bottom-Only Shadow Gradient (Keeps upper & middle image bright and clear) */}
-          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#101016]/85 via-[#101016]/25 to-transparent pointer-events-none" />
+          {/* Subtle Balanced Contrast Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#101016]/85 via-transparent to-black/20 pointer-events-none" />
 
           {/* Bottom Title on Image */}
           <div className="absolute bottom-3 left-4 right-4">
