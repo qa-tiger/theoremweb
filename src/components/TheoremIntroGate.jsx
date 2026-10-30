@@ -209,11 +209,11 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       ORBIT_ASSETS.forEach((a) => renderAsset(a, false))
 
       // 4. 3D Rotating Chrome Coin Medallion in Center (steady rotation, zero mouse reaction)
-      const coinRadius = mob ? 56 : 78
+      const coinRadius = mob ? 68 : 96
       const coinAngle = time * 1.4
       const cosAngle = Math.cos(coinAngle)
       const sinAngle = Math.sin(coinAngle)
-      const coinThickness = (mob ? 6 : 9) * Math.abs(sinAngle)
+      const coinThickness = (mob ? 8 : 12) * Math.abs(sinAngle)
 
       ctx.save()
       ctx.translate(cx, cy)
@@ -260,7 +260,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         ctx.scale(cosAngle, 1)
 
         const aspect = logoImg.naturalWidth / logoImg.naturalHeight
-        const drawH = coinRadius * (mob ? 1.05 : 1.15)
+        const drawH = coinRadius * (mob ? 1.15 : 1.25)
         const drawW = drawH * aspect
 
         ctx.shadowColor = 'rgba(20, 22, 26, 0.55)'
@@ -277,7 +277,7 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         ctx.save()
         ctx.scale(Math.abs(cosAngle), 1)
 
-        const fontSize = Math.round(coinRadius * 0.175)
+        const fontSize = Math.round(coinRadius * 0.24)
         const letterSpacingPx = fontSize * 0.1
         ctx.font = `800 ${fontSize}px "Sofia Sans Extra Condensed", "Arial Narrow", sans-serif`
         ctx.textAlign = 'center'
