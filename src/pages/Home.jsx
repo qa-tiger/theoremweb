@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import HeroVisualBackground from '../components/HeroVisualBackground'
 import CampusShowcase from '../components/CampusShowcase'
+import LearningRoadmap from '../components/LearningRoadmap'
+import SEO from '../components/SEO'
 import {
-  Approach,
   Faq,
   FinalCta,
   HybridExperience,
@@ -120,20 +121,21 @@ export default function Home() {
   usePageTitle(null)
   return (
     <>
+      <SEO
+        title="Institutional Financial Trading Academy | Dubai & Mumbai"
+        description="Theorem Academy is the premier institutional financial trading academy with real trading floors in Dubai and Mumbai. Learn institutional order flow, smart money concepts, prop firm challenge prep, forex, crypto, and equities."
+        keywords="institutional trading academy, forex trading course dubai, trading courses mumbai, smart money concepts, prop firm prep, crypto trading course, stock market academy, order flow trading, theorem academy"
+      />
       {/* 1. Executive Hero with Campus Showcase */}
       <Hero />
 
       {/* 2. Why Theorem Academy: 3 Clear Pillars (Clean Fundfloat-style simplicity) */}
       <HybridExperience />
 
-      {/* 4. The 4-Stage Teaching Method */}
-      <Approach
-        dark
-        action={<Link to="/about" className="link-line text-white">Our teaching philosophy →</Link>}
-      />
+      {/* 3. Visual Student Learning Roadmap: What You Will Get From This Course */}
+      <LearningRoadmap />
 
-
-      {/* 7. Student Testimonials */}
+      {/* 4. Student Testimonials */}
       <Stories limit={3} />
 
       {/* 8. Frequently Asked Questions */}

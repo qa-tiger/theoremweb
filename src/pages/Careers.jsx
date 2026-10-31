@@ -1,3 +1,4 @@
+import SEO from '../components/SEO'
 import { FinalCta, PageHeader, usePageTitle } from '../components/sections'
 import { Section } from '../components/ui'
 import { site } from '../config/site'
@@ -27,6 +28,11 @@ export default function Careers() {
 
   return (
     <>
+      <SEO
+        title="Careers & Teaching Opportunities"
+        description="Join the team at Theorem Academy. Explore open opportunities across financial trading faculty, mentor roles, student operations, and technical infrastructure."
+        keywords="trading academy careers, finance instructor jobs, forex mentor hiring, theorem academy jobs"
+      />
       <PageHeader
         title="Careers at Theorem Academy."
         intro="We are an educational institution dedicated to high-standard learning and student success. Discover inspiring career pathways across our academic, operations, and support teams."

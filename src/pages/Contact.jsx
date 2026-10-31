@@ -1,3 +1,4 @@
+import SEO from '../components/SEO'
 import { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { PageHeader, usePageTitle } from '../components/sections'
@@ -111,6 +112,11 @@ export default function Contact() {
   usePageTitle('Contact')
   return (
     <>
+      <SEO
+        title="Contact Admissions & Campus Visit"
+        description="Get in touch with Theorem Academy admissions. Visit our physical trading floors in Sharjah Media City (UAE) and Vasai West (Mumbai), or schedule a personalized online consultation."
+        keywords="contact theorem academy, trading floor dubai visit, trading classes mumbai admission, forex course enquiry"
+      />
       <PageHeader
         title="Talk to an advisor before you enrol."
         intro="Visit our training floor in person, message on WhatsApp, or send an enquiry. An advisor will guide your batch selection."

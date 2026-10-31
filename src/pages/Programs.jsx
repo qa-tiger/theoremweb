@@ -1,4 +1,5 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
+import SEO from '../components/SEO'
 import { FinalCta, Offer, PageHeader, usePageTitle } from '../components/sections'
 import { ProgramCards, ProgramMatrix, Section, Ticket } from '../components/ui'
 import { curriculum } from '../config/curriculum'
@@ -31,41 +32,40 @@ function BundleBanner() {
 
 export function Programs() {
   usePageTitle('Programs')
-  return (
+    return (
     <>
-      <PageHeader
-        title="Structured programs. Choose your market."
-        intro="Each program runs in our in-person classrooms and interactive live online, with seasoned mentors and weekly assignment reviews."
+      <SEO
+        title={`${program.title} Course`}
+        description="Explore Theorem Academy's structured trading programs in Forex, Crypto, Equities, Indices, and Commodities. Master institutional order flow with physical trading floor access and live online batches."
+        keywords="trading programs, forex curriculum, crypto trading course, stock market courses, prop firm trading training, institutional finance courses"
       />
-      <Section tight className="pt-6 sm:pt-8 lg:pt-10">
-        <ProgramCards />
-      </Section>
-      <BundleBanner />
-      <Offer className="border-t border-white/10" />
-      <FinalCta title="Not sure which program fits your schedule?" body="Tell us what you trade now, or that you have never traded. An advisor will recommend a program and a batch in person or online." />
-    </>
-  )
-}
-
-export function ProgramDetail() {
-  const { programId } = useParams()
-  const program = programs.find((p) => p.id === programId)
-  usePageTitle(program?.title)
-  if (!program) return <Navigate to="/programs" replace />
-
-  const modules = curriculum[program.id] || []
-  const mentor = mentorFor(program)
-  const others = programs.filter((p) => p.id !== program.id)
-  const facts = [
-    ['Market', program.market],
-    ['Level', program.level],
-    ['Duration', program.duration],
-    ['Format', program.format],
-    ['On completion', 'Certificate'],
-  ]
-
-  return (
-    <>
+      <SEO
+        title={`${program.title} Course`}
+        description={`${program.summary} Master ${program.market} with institutional mentor-led training, risk frameworks, and prop firm preparation.`}
+        keywords={`${program.title}, ${program.market} course, institutional trading, learn ${program.market}, theorem academy`}
+        jsonLd={{
+          '@context': 'https://schema.org',
+          '@type': 'Course',
+          name: `${program.title} - Theorem Academy`,
+          description: program.summary,
+          provider: {
+            '@type': 'Organization',
+            name: 'Theorem Academy',
+            sameAs: 'https://theoreminstitute.com',
+          },
+          educationalCredentialAwarded: 'Certificate of Completion',
+          hasCourseInstance: {
+            '@type': 'CourseInstance',
+            courseMode: ['In-Person', 'Online'],
+            duration: program.duration,
+          },
+        }}
+      />
+      <SEO
+        title={`${program.title} Course`}
+        description="Explore Theorem Academy's structured trading programs in Forex, Crypto, Equities, Indices, and Commodities. Master institutional order flow with physical trading floor access and live online batches."
+        keywords="trading programs, forex curriculum, crypto trading course, stock market courses, prop firm trading training, institutional finance courses"
+      />
       <PageHeader back={{ to: '/programs', label: 'All programs' }} title={program.title} intro={program.summary} />
 
       <div className="wrap grid-12 gap-8 lg:gap-10 py-8 sm:py-12 lg:py-14">

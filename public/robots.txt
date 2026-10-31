@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /portal/
+Disallow: /checkout/
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://theoreminstitute.com/sitemap.xml
+
