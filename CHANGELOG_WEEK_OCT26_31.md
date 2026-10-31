@@ -28,7 +28,14 @@
 
 ---
 
-### 4. Student Portal & Payment Gateway
+### 4. Student Onboarding, Global KYC & Registration
+- **International KYC Verification:** Extended the registration flow to dynamically support foreign students by accepting National ID and Passport uploads, alongside India's Aadhaar and PAN flow.
+- **Navigation Simplification:** Removed the "Our Team" page and links from the main navigation header and footer to streamline conversion directly into Programs and Registration.
+- **Conversion-Driven CTAs:** Shifted primary header and hero calls-to-action directly to the admissions and student registration gateway.
+
+---
+
+### 5. Student Portal & Payment Gateway
 - **Institutional Fee Payment Flow:** Built a regional pay fees interface with automatic geo-detection (INR / AED / USD) and official banking coordinates.
 - **UPI & QR Integration:** Embedded official brand SVGs for Google Pay, PhonePe, and BHIM UPI with an interactive 30-second security auto-hide QR code.
 - **Geo-Location Detection Fix:** Prioritized IST timezone detection to eliminate false UAE fallbacks for domestic Indian students.
@@ -37,14 +44,14 @@
 
 ---
 
-### 5. Knowledge Toolkit & Institutional Pages
+### 6. Knowledge Toolkit & Institutional Pages
+- **New Dedicated Careers Page:** Built the `/careers` page featuring academic, market mentor, operational, and student advisory openings with direct application routing.
 - **Free Trading E-Book Library:** Created a dedicated knowledge resource page with category filters, keyword search, and modal lead capture.
-- **Careers Page:** Added a dedicated careers portal outlining teaching, research, operational, and student advisory opportunities.
-- **Multi-Campus Campus Addresses:** Updated official verified address coordinates for Sharjah Media City (UAE) and Vasai West, Mumbai (India).
+- **Multi-Campus Physical Addresses:** Updated official verified address coordinates for Sharjah Media City (UAE) and Vasai West, Mumbai (India).
 
 ---
 
-### 6. Code Optimization & Google SEO (October 31)
+### 7. Code Optimization & Google SEO (October 31)
 - **Route Code Splitting:** Implemented `React.lazy()` with luxury `<Suspense>` loaders, slashing entry JavaScript payload from ~780 kB to **35.2 kB** (9.9 kB gzipped).
 - **Vite Bundler Optimization:** Configured Rolldown vendor chunk splitting isolating `vendor-react` and `vendor-supabase` for enhanced mobile caching and INP/LCP scores.
 - **Dynamic SEO Component (`SEO.jsx`):** Automated per-route titles, meta descriptions, target keywords, canonical links, OpenGraph cards, and Twitter Cards across all pages.
