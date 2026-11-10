@@ -360,7 +360,12 @@ export function FacultyProfile({ person, reverse = false }) {
 export function Testimonial({ story, size = 'large' }) {
   const large = size === 'large'
   return (
-    <figure className="card-rich p-5 sm:p-6 border-l-4 border-l-signal">
+    <figure className="card-rich flex h-full flex-col p-5 sm:p-6 border-l-4 border-l-signal">
+      {story.sample && (
+        <span className="mb-3 inline-block w-fit rounded-full border border-white/15 bg-white/5 px-2 py-0.5 text-[0.62rem] font-bold uppercase tracking-wider text-white/50">
+          Illustrative example
+        </span>
+      )}
       <blockquote className={large ? 'font-display text-base sm:text-lg font-medium leading-relaxed text-white' : 'text-xs sm:text-sm leading-relaxed text-white/90'}>
         <p>“{story.quote}”</p>
       </blockquote>

@@ -83,8 +83,9 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       { symbol: '₿', name: 'BTC', color: '#f7931a', radiusX: 300 * scaleFactor, radiusY: 100 * scaleFactor, speed: -0.32, offset: 1.2, size: isMobile ? 22 : 28, label: 'Learn Crypto' },
       { symbol: '₮', name: 'USDT', color: '#26a17b', radiusX: 250 * scaleFactor, radiusY: 80 * scaleFactor, speed: 0.38, offset: 3.8, size: isMobile ? 21 : 27, label: 'Learn Commodities' },
       { symbol: '€', name: 'EUR', color: '#60a5fa', radiusX: 220 * scaleFactor, radiusY: 72 * scaleFactor, speed: 0.45, offset: 5.2, size: isMobile ? 18 : 24, label: 'Learn Forex' },
-      { symbol: 'AED', name: 'AED', color: '#10b981', radiusX: 330 * scaleFactor, radiusY: 108 * scaleFactor, speed: -0.25, offset: 2.6, size: isMobile ? 18 : 22, label: 'Learn Equity' },
+      { symbol: 'د.إ', name: 'AED', color: '#d4af37', radiusX: 330 * scaleFactor, radiusY: 108 * scaleFactor, speed: -0.25, offset: 2.6, size: isMobile ? 18 : 22, label: 'Learn Equity' },
       { symbol: '£', name: 'GBP', color: '#c084fc', radiusX: 275 * scaleFactor, radiusY: 88 * scaleFactor, speed: 0.33, offset: 0.4, size: isMobile ? 18 : 24, label: 'Learn Indices' },
+      { symbol: '$', name: 'USD', color: '#22c55e', radiusX: 300 * scaleFactor, radiusY: 100 * scaleFactor, speed: 0.28, offset: 6.0, size: isMobile ? 19 : 25 },
     ]
 
     // Floating Golden Dust Sparkles (optimized: 16 on mobile, 32 on desktop, zero heavy shadowBlur)
@@ -269,10 +270,6 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         ctx.textBaseline = 'middle'
         try { ctx.letterSpacing = `${letterSpacingPx}px` } catch { /* unsupported in this browser */ }
 
-        // Measure the actual rendered width (incl. letter-spacing) so the rule below
-        // always lines up with the glyphs instead of a guessed multiplier.
-        const textWidth = ctx.measureText('THEOREM').width
-
         // Soft recessed shadow pooling beneath the lettering
         ctx.shadowColor = 'rgba(8, 9, 11, 0.55)'
         ctx.shadowBlur = fontSize * 0.12
@@ -297,14 +294,6 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
         // Crisp top-edge highlight where the light catches the raised letterforms
         ctx.fillStyle = 'rgba(255, 255, 255, 0.5)'
         ctx.fillText('THEOREM', -fontSize * 0.02, -fontSize * 0.05)
-
-        // Thin signature rule beneath the wordmark, sized to the measured text width
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)'
-        ctx.lineWidth = Math.max(0.5, fontSize * 0.03)
-        ctx.beginPath()
-        ctx.moveTo(-textWidth / 2, fontSize * 0.68)
-        ctx.lineTo(textWidth / 2, fontSize * 0.68)
-        ctx.stroke()
 
         try { ctx.letterSpacing = '0px' } catch { /* unsupported in this browser */ }
         ctx.restore()

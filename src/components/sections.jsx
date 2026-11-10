@@ -420,7 +420,7 @@ export function Faq({ className = '' }) {
       <div className="grid-12 gap-y-8">
         <div className="col-span-4 sm:col-span-8 lg:col-span-4">
           <span className="badge-signal text-[0.65rem] font-bold uppercase tracking-wider py-0.5 px-2">Support & Clarity</span>
-          <h2 className="mt-2 font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">Questions before you enrol.</h2>
+          <h2 className="mt-2 font-display text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">Questions before you enroll.</h2>
           <p className="mt-2.5 text-xs sm:text-sm text-white/65 leading-relaxed">Anything else, ask our admissions team. Most replies come within minutes on WhatsApp.</p>
           <a href={site.whatsappLink} className="btn-primary mt-6 py-2.5 px-5 text-xs font-bold inline-flex items-center gap-2">
             <span>💬 Ask Admissions on WhatsApp</span>
@@ -603,21 +603,30 @@ export function Outcomes() {
 }
 
 export function Stories({ limit }) {
-  // Sample stories only render on the dev server, never in a production build.
-  const visible = stories.filter((s) => !s.sample || import.meta.env.DEV).slice(0, limit)
+  const visible = stories.slice(0, limit)
   if (visible.length === 0) return null
-  const [lead, ...rest] = visible
+  const isSample = visible.some((s) => s.sample)
+  // Duplicate the list so the marquee can loop seamlessly at translateX(-50%).
+  const track = [...visible, ...visible]
   return (
-    <Section tight title="Student Testimonials." intro={lead.sample ? 'Verified student reviews from our in-person and online cohorts.' : undefined} className="bg-card">
-      <div className="grid-12 gap-y-6">
-        <div className="col-span-4 sm:col-span-8 lg:col-span-8">
-          <Testimonial story={lead} />
+    <Section
+      tight
+      title="Student Testimonials."
+      intro={
+        isSample
+          ? 'Illustrative examples of the kind of feedback our program format is designed to produce — not verified student reviews.'
+          : 'Verified student reviews from our in-person and online cohorts.'
+      }
+      className="bg-card overflow-hidden"
+    >
+      <div className="testimonial-marquee-viewport overflow-hidden">
+        <div className="testimonial-marquee flex w-max gap-5">
+          {track.map((s, i) => (
+            <div key={i} className="w-[19rem] shrink-0 sm:w-[22rem]" aria-hidden={i >= visible.length}>
+              <Testimonial story={s} />
+            </div>
+          ))}
         </div>
-        {rest.map((s, i) => (
-          <div key={i} className={`col-span-4 sm:col-span-4 lg:col-span-6`}>
-            <Testimonial story={s} size="small" />
-          </div>
-        ))}
       </div>
     </Section>
   )

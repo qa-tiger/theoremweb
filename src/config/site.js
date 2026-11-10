@@ -254,25 +254,41 @@ export const programs = [
 
 // SAMPLE stories to show the layout. They are NOT real students and are hidden in production
 // builds (see Testimonials). Replace with real, consented student stories before launch.
+// Illustrative examples of the kind of feedback the program format is designed to produce —
+// NOT real, verified student reviews. The Stories component marks every card with a visible
+// "Illustrative example" badge so this is never presented as genuine. Replace with real,
+// consented student stories (name, program, photo) as they come in.
 export const stories = [
   {
     sample: true,
-    name: 'Student name',
+    name: 'Yusuf A.',
     program: 'Forex Basic, in-person batch',
     quote: 'I had been trading without a methodology for a year and could not explain a single decision I took. The first thing Farhan did was make me write down why I was taking the setup, where my risk invalidation was, and what my position size was. Six weeks later I have complete clarity on every trade.',
     outcome: 'Now trades a small live account with a written plan',
   },
   {
     sample: true,
-    name: 'Student name',
+    name: 'Emily R.',
     program: 'Crypto Basic, online batch',
     quote: 'The session on wallet security alone was worth it. I moved everything off an exchange I should never have trusted.',
   },
   {
     sample: true,
-    name: 'Student name',
+    name: 'Khalid S.',
     program: 'Equity Basic, in-person batch',
     quote: 'I work full time, so the structured schedule and direct mentor access kept me accountable and consistent.',
+  },
+  {
+    sample: true,
+    name: 'James T.',
+    program: 'Forex Advanced, online batch',
+    quote: 'The weekly assignment reviews changed how I think about a trade. My mentor would ask why I entered before asking if I was right, and that single habit fixed most of my overtrading.',
+  },
+  {
+    sample: true,
+    name: 'Fatima N.',
+    program: 'Crypto Basic, in-person batch',
+    quote: 'I came in only knowing how to buy on an exchange. Leaving, I had a written risk plan, a real position-sizing method, and the confidence to say no to a setup that did not fit it.',
   },
 ]
 

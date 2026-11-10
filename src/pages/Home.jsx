@@ -173,7 +173,7 @@ export default function Home() {
       <MentorsPreview />
 
       {/* 7. Student Testimonials */}
-      <Stories limit={3} />
+      <Stories limit={5} />
 
       {/* 8. Frequently Asked Questions */}
       <Faq className="bg-card" />

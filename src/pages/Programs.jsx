@@ -121,7 +121,7 @@ export function ProgramDetail() {
             <section className="rounded-xl border border-white/10 bg-[#1a1a20] text-white p-5 sm:p-6 shadow-sm">
               <span className="badge-outline text-xs font-bold uppercase tracking-wider py-0.5 px-2.5">Coming soon</span>
               <h2 className="mt-2 font-display text-2xl sm:text-3xl font-extrabold text-white">Curriculum</h2>
-              <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">The module-by-module syllabus for this program is being finalised. Contact us and an advisor will tell you what's confirmed so far and when it opens for enrolment.</p>
+              <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">The module-by-module syllabus for this program is being finalised. Contact us and an advisor will tell you what's confirmed so far and when it opens for enrollment.</p>
             </section>
           ) : null}
         </div>

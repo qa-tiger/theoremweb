@@ -4,13 +4,17 @@ import { PageHeader, usePageTitle } from '../components/sections'
 import { bundlePackage, locations, programs, site } from '../config/site'
 import { createEnquiry } from '../lib/api'
 
-// Links into this form can arrive with ?program=, ?package=all-programs-bundle, or
-// ?ebook=<id> (see the program cards, the bundle banner, and the Knowledge Toolkit page).
-// This turns whichever one is present into a sensible starting program choice and message.
+// Links into this form can arrive with ?program=, ?package=all-programs-bundle, ?ebook=<id>,
+// or ?topic=partnership (see the program cards, the bundle banner, the Knowledge Toolkit
+// page, and the broker partnerships page). This turns whichever one is present into a
+// sensible starting program choice and message.
 function initialForm(params) {
   const ebook = params.get('ebook')
   if (ebook) {
     return { name: '', contact: '', program: 'not-sure', location: 'Online', message: `I'd like to receive the free e-book: ${ebook.replace(/-/g, ' ')}.` }
+  }
+  if (params.get('topic') === 'partnership') {
+    return { name: '', contact: '', program: 'not-sure', location: 'Online', message: "I'm a forex broker interested in a white-label or referral partnership." }
   }
   const program = params.get('package') === bundlePackage.id ? bundlePackage.id : params.get('program') || 'not-sure'
   return { name: '', contact: '', program, location: 'Online', message: '' }
@@ -50,11 +54,11 @@ function EnquiryForm() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="label text-xs font-bold text-white/90" htmlFor="name">Your name</label>
+          <label className="label text-xs font-bold text-white/90" htmlFor="name">Your name <span className="text-signal">*</span></label>
           <input id="name" required autoComplete="name" className="field py-2 text-xs sm:text-sm" value={form.name} onChange={set('name')} />
         </div>
         <div>
-          <label className="label text-xs font-bold text-white/90" htmlFor="contact">WhatsApp number or email</label>
+          <label className="label text-xs font-bold text-white/90" htmlFor="contact">WhatsApp number or email <span className="text-signal">*</span></label>
           <input id="contact" required className="field py-2 text-xs sm:text-sm" value={form.contact} onChange={set('contact')} />
         </div>
         <div>
@@ -75,7 +79,8 @@ function EnquiryForm() {
       </div>
       <div>
         <label className="label text-xs font-bold text-white/90" htmlFor="message">Trading experience & goals <span className="font-normal text-white/50">(optional)</span></label>
-        <textarea id="message" rows={3} className="field py-2 text-xs sm:text-sm" value={form.message} onChange={set('message')} />
+        <textarea id="message" rows={3} maxLength={1000} className="field py-2 text-xs sm:text-sm" value={form.message} onChange={set('message')} />
+        <p className="mt-1 text-right text-[0.68rem] text-white/40">{form.message.length}/1000</p>
       </div>
 
       <div className="pt-1">
@@ -103,6 +108,7 @@ function EnquiryForm() {
       <button className="btn-brand py-2.5 px-5 text-xs sm:text-sm font-bold shadow-md" disabled={status === 'sending'}>
         {status === 'sending' ? 'Sending enquiry…' : 'Submit Enquiry'}
       </button>
+      <p className="text-[0.68rem] text-white/45"><span className="text-signal">*</span> Required fields</p>
     </form>
   )
 }
@@ -112,7 +118,7 @@ export default function Contact() {
   return (
     <>
       <PageHeader
-        title="Talk to an advisor before you enrol."
+        title="Talk to an advisor before you enroll."
         intro="Visit our training floor in person, message on WhatsApp, or send an enquiry. An advisor will guide your batch selection."
       />
 

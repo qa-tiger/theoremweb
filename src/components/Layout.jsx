@@ -24,16 +24,22 @@ export function Wordmark({ className = '', onClick, compact = false }) {
   return (
     <Link to={isPortal ? '/portal' : '/'} onClick={handleClick} className={`flex items-center gap-2.5 ${className}`}>
       <img src="/theorem-icon.png" alt="" aria-hidden="true" className="mark-in h-10 w-auto object-contain" />
-      <span className="flex flex-col leading-none">
-        <span className="font-display text-2xl font-extrabold tracking-wide text-white">THEOREM</span>
-        <span
-          className={`hidden sm:block font-sans text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-white ${
-            compact ? 'max-w-[12rem] leading-snug' : 'whitespace-nowrap'
-          }`}
-        >
-          Theorems we decode, markets you conquer
+      {compact ? (
+        <span className="flex flex-col leading-none">
+          <span className="font-display text-2xl font-extrabold tracking-wide text-white">THEOREM</span>
+          <span className="hidden sm:block font-sans text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-white max-w-[12rem] leading-snug">
+            Theorems we decode, markets you conquer
+          </span>
         </span>
-      </span>
+      ) : (
+        <span className="flex items-center gap-3">
+          <span className="font-display text-2xl font-extrabold tracking-wide text-white leading-none">THEOREM</span>
+          <span className="hidden h-4 w-px bg-white/20 sm:block" aria-hidden="true" />
+          <span className="hidden sm:block whitespace-nowrap font-sans text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-white">
+            Theorems we decode, markets you conquer
+          </span>
+        </span>
+      )}
     </Link>
   )
 }
@@ -439,6 +445,7 @@ export function Footer() {
             <li><Link to="/programs" className="hover:text-signal">Courses</Link></li>
             <li><Link to="/ebooks" className="hover:text-signal">Free E-books</Link></li>
             {NAV_LINKS.map(([label, to]) => <li key={to}><Link to={to} className="hover:text-signal">{label}</Link></li>)}
+            <li><Link to="/partners" className="hover:text-signal">For Forex Brokers</Link></li>
             <li><Link to="/login" className="hover:text-signal">Student log in</Link></li>
           </FooterColumn>
         </div>

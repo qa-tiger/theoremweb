@@ -111,8 +111,8 @@ export default function Course() {
     return (
       <div>
         <h1 className="text-[3.2rem] sm:text-5xl">{program.title} is locked.</h1>
-        <p className="mt-4 max-w-[34rem] text-lg text-ink-soft">Enrol to unlock the lessons, notes and quizzes.</p>
-        <Link to={`/checkout/${programId}`} className="btn-brand mt-8">Enrol in {program.title}</Link>
+        <p className="mt-4 max-w-[34rem] text-lg text-ink-soft">Enroll to unlock the lessons, notes and quizzes.</p>
+        <Link to={`/checkout/${programId}`} className="btn-brand mt-8">Enroll in {program.title}</Link>
       </div>
     )
   }

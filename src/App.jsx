@@ -9,6 +9,7 @@ import Contact from './pages/Contact'
 import Home from './pages/Home'
 import Mentors from './pages/Mentors'
 import NotFound from './pages/NotFound'
+import Partners from './pages/Partners'
 import { ProgramDetail, Programs } from './pages/Programs'
 import Technology from './pages/Technology'
 import Privacy from './pages/Privacy'
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="ebooks" element={<Technology />} />
             <Route path="free-ebooks" element={<Technology />} />
             <Route path="about" element={<About />} />
+            <Route path="partners" element={<Partners />} />
             <Route path="mentors" element={<Mentors />} />
             <Route path="contact" element={<Contact />} />
             <Route path="privacy" element={<Privacy />} />
