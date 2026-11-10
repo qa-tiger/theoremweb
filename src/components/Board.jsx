@@ -85,6 +85,10 @@ function sessionStatus(date, timeZone) {
   return { open: false, change }
 }
 
+export function localTime(now, timeZone) {
+  return now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone })
+}
+
 export function useNow(intervalMs = 20_000) {
   const [now, setNow] = useState(() => new Date())
   useEffect(() => {

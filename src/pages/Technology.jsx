@@ -331,6 +331,7 @@ export default function Technology() {
                     id="lead-name"
                     type="text"
                     required
+                    maxLength={80}
                     placeholder="e.g. Rahul Sharma"
                     className="field py-2 text-xs sm:text-sm mt-1"
                     value={leadForm.name}
@@ -346,6 +347,7 @@ export default function Technology() {
                     id="lead-email"
                     type="email"
                     required
+                    maxLength={100}
                     placeholder="e.g. rahul@example.com"
                     className="field py-2 text-xs sm:text-sm mt-1"
                     value={leadForm.email}
@@ -361,6 +363,7 @@ export default function Technology() {
                     id="lead-phone"
                     type="tel"
                     required
+                    maxLength={20}
                     placeholder="Phone number"
                     className="field py-2 text-xs sm:text-sm mt-1"
                     value={leadForm.phone}

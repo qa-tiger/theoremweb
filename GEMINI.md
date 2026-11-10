@@ -4,28 +4,26 @@
 
 ---
 
-## 1. Token Optimization Rules (Save Tokens Per Prompt)
+## 1. Operating & Development Guidelines (Balanced Mode)
 
-1. **Direct Path Navigation (No Recursive Scanning):**
-   - NEVER run blanket directory searches (`Get-ChildItem -Recurse` across `src/`) to find code.
-   - Consult the **Codebase File Index** below to identify the exact file and line ranges before calling read or edit tools.
+1. **Smart Navigation & Code Search:**
+   - Use the **Codebase File Index** and lookup matrix below as the primary reference to quickly locate relevant files.
+   - Targeted grep/string searches (`Select-String` or find) across `src/` are fully permitted whenever tracing symbols, hooks, routes, or dependencies.
 
-2. **Bounded File Reads Only:**
-   - NEVER read entire large files (>80 lines) at once.
-   - Always supply explicit `StartLine` and `EndLine` ranges (max 40–80 lines) centered on the function or JSX block being investigated.
+2. **Context-Aware File Reads:**
+   - Prefer bounded reads (e.g. 50–150 lines) when inspecting specific functions or sections.
+   - Reading larger sections or complete files is permitted whenever necessary to understand full component architectures, cross-file imports, or complex bug investigations.
 
-3. **Surgical Edits via `edit_file`:**
-   - Avoid `write_file` overwriting entire components for small changes.
-   - Use precise, minimal single-line or small contiguous block replacements.
-   - Keep line endings consistent (`CRLF` on Windows).
+3. **Pragmatic Editing:**
+   - Use surgical `edit_file` for targeted single-block replacements.
+   - Use `write_file` freely when replacing entire components, restructuring files, or when line-ending/whitespace mismatches hinder precision edits.
 
-4. **Concise Communication:**
-   - Do not echo back full file contents or reprint unchanged boilerplate in chat responses.
-   - State findings, actions taken, and verification results in compact bullet points.
+4. **Clear & Helpful Communication:**
+   - Provide clear, direct explanations with code links and concise summaries. Detailed context can be provided when diagnosing non-trivial bugs.
 
 5. **Single Source of Truth & Git Repositories:**
-   - **Primary Git Repository:** `c:\Users\ABC\Desktop\theoremacademy-main` (`origin https://github.com/qa-tiger/theoremweb.git`, branch `main`).
-   - **Workspace Mirror:** `c:\Users\ABC\Desktop\theoremweb-main-git` (must be kept in sync when switching).
+   - **Primary Repository:** `c:\Users\ABC\Desktop\theoremweb-main-git` (`origin https://github.com/qa-tiger/theoremweb.git`, branch `main`).
+   - **Active Development Rule:** All edits and active development are conducted exclusively in `theoremweb-main-git`. Do not make edits in other mirrors.
 
 ---
 

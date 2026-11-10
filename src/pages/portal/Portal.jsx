@@ -105,6 +105,7 @@ export function PortalLayout() {
             <span>My courses</span>
           </NavLink>
 
+          {/* Temporarily hidden from UI until payment gateway deployment
           <NavLink
             to="/portal/fees"
             className={({ isActive }) =>
@@ -120,6 +121,7 @@ export function PortalLayout() {
             </svg>
             <span>Pay fees</span>
           </NavLink>
+          */}
 
           <NavLink
             to="/portal/certificates"

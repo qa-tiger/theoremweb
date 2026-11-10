@@ -1,5 +1,5 @@
 import SEO from '../components/SEO'
-import { Experience, FinalCta, MarketPhilosophy, Outcomes, PageHeader, Stories, Story, usePageTitle } from '../components/sections'
+import { Experience, FinalCta, MarketPhilosophy, Outcomes, PageHeader, Story, usePageTitle } from '../components/sections'
 
 export default function About() {
   usePageTitle('About')
@@ -18,7 +18,6 @@ export default function About() {
       <Experience />
       <Story />
       <Outcomes />
-      <Stories />
       <FinalCta />
     </>
   )

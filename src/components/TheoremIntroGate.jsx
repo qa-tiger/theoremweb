@@ -57,9 +57,9 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
     let animId
     let time = 0
 
-    // Theorem chrome mark drawn on the center coin (replaces the dollar sign)
+    // Theorem chrome emblem extracted cleanly from the official logo canvas
     const logoImg = new Image()
-    logoImg.src = '/theorem-icon.png'
+    logoImg.src = '/logo-theorem.png'
 
     const isMobile = window.innerWidth < 768
     // Cap DPR to 1.0 on mobile and 1.5 on desktop for high-speed 60fps across all devices
@@ -257,20 +257,24 @@ export default function TheoremIntroGate({ forceOpen = false, onEnter, onClose }
       ctx.lineWidth = 1.5
       ctx.stroke()
 
-      // Center Embossed Theorem Mark on Coin
+      // Center Embossed Theorem Mark on Coin (cropped dynamically from the full PNG lockup)
       if (cosAngle > 0.15 && logoImg.complete && logoImg.naturalWidth) {
         ctx.save()
         ctx.scale(cosAngle, 1)
 
-        const aspect = logoImg.naturalWidth / logoImg.naturalHeight
-        const drawH = coinRadius * (mob ? 1.15 : 1.25)
+        const sx = logoImg.naturalWidth * 0.055
+        const sy = logoImg.naturalHeight * 0.24
+        const sw = logoImg.naturalWidth * 0.34
+        const sh = logoImg.naturalHeight * 0.50
+        const aspect = sw / sh
+        const drawH = coinRadius * (mob ? 1.18 : 1.28)
         const drawW = drawH * aspect
 
         ctx.shadowColor = 'rgba(20, 22, 26, 0.55)'
         ctx.shadowBlur = 5
         ctx.shadowOffsetX = 1.5
         ctx.shadowOffsetY = 2.5
-        ctx.drawImage(logoImg, -drawW / 2, -drawH / 2, drawW, drawH)
+        ctx.drawImage(logoImg, sx, sy, sw, sh, -drawW / 2, -drawH / 2, drawW, drawH)
 
         ctx.restore()
       } else if (cosAngle <= -0.15) {

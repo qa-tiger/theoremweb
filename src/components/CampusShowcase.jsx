@@ -17,7 +17,7 @@ const LOCATIONS = [
   {
     id: 'online',
     title: 'Online',
-    image: '/campus/online-study-student.jpg',
+    image: '/campus/online-live-connect.jpg',
     hours: 'Evening & Weekend Batches (GST / IST)',
     perks: [
       'Live interactive screen-sharing & chart markups',
@@ -78,7 +78,7 @@ export default function CampusShowcase({ activeId = 'offline', onSelect }) {
             key={activeLocation.id}
             src={activeLocation.image}
             alt={activeLocation.title}
-            className="photo-fade h-full w-full object-cover brightness-105 contrast-102 transition-transform duration-700 ease-out hover:scale-105"
+            className="photo-fade h-full w-full object-cover object-center brightness-105 contrast-102 transition-transform duration-700 ease-out hover:scale-105"
             loading="eager"
           />
           {/* Subtle Balanced Contrast Gradient */}

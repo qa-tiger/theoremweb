@@ -32,7 +32,7 @@ function ErrorText({ children }) {
 }
 
 // Password input with a show/hide toggle, so people can check what they typed before submitting.
-function PasswordField({ id, label, value, onChange, autoComplete, minLength, hint }) {
+function PasswordField({ id, label, value, onChange, autoComplete, minLength, maxLength = 72, hint }) {
   const [visible, setVisible] = useState(false)
   return (
     <div>
@@ -43,6 +43,7 @@ function PasswordField({ id, label, value, onChange, autoComplete, minLength, hi
           type={visible ? 'text' : 'password'}
           required
           minLength={minLength}
+          maxLength={maxLength}
           autoComplete={autoComplete}
           className="field py-2 pr-10 text-xs sm:text-sm"
           value={value}
@@ -179,6 +180,7 @@ export function Login() {
               type="email"
               required
               autoComplete="email"
+              maxLength={100}
               className="field py-2 text-xs sm:text-sm"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -220,6 +222,7 @@ export function Login() {
                   type="email"
                   required
                   placeholder="name@example.com"
+                  maxLength={100}
                   className="field py-1.5 text-xs flex-1"
                   value={forgotEmail}
                   onChange={(e) => setForgotEmail(e.target.value)}
@@ -556,7 +559,7 @@ export function Register() {
         <form onSubmit={createAccount} className="space-y-4 card-rich text-white p-5 sm:p-6">
           <div>
             <label className="label text-xs font-bold text-white/90" htmlFor="name">Full name</label>
-            <input id="name" required autoComplete="name" className="field py-2 text-xs sm:text-sm" value={account.name} onChange={(e) => setAccount({ ...account, name: e.target.value })} />
+            <input id="name" required autoComplete="name" maxLength={80} className="field py-2 text-xs sm:text-sm" value={account.name} onChange={(e) => setAccount({ ...account, name: e.target.value })} />
             <p className="mt-1 text-[0.7rem] text-white/50">As you want it printed on your certificate of course completion.</p>
           </div>
 
@@ -602,11 +605,11 @@ export function Register() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="label text-xs font-bold text-white/90" htmlFor="email">Email</label>
-              <input id="email" type="email" required autoComplete="email" className="field py-2 text-xs sm:text-sm" value={account.email} onChange={(e) => setAccount({ ...account, email: e.target.value })} />
+              <input id="email" type="email" required autoComplete="email" maxLength={100} className="field py-2 text-xs sm:text-sm" value={account.email} onChange={(e) => setAccount({ ...account, email: e.target.value })} />
             </div>
             <div>
               <label className="label text-xs font-bold text-white/90" htmlFor="phone">WhatsApp number</label>
-              <input id="phone" type="tel" required autoComplete="tel" placeholder="Phone number" className="field py-2 text-xs sm:text-sm" value={account.phone} onChange={(e) => setAccount({ ...account, phone: e.target.value })} />
+              <input id="phone" type="tel" required autoComplete="tel" placeholder="Phone number" maxLength={20} className="field py-2 text-xs sm:text-sm" value={account.phone} onChange={(e) => setAccount({ ...account, phone: e.target.value })} />
             </div>
           </div>
 

@@ -17,7 +17,7 @@ const Privacy = lazy(() => import('./pages/Privacy'))
 const Terms = lazy(() => import('./pages/Terms'))
 const Login = lazy(() => import('./pages/Auth').then((m) => ({ default: m.Login })))
 const Register = lazy(() => import('./pages/Auth').then((m) => ({ default: m.Register })))
-const Checkout = lazy(() => import('./pages/Checkout'))
+// const Checkout = lazy(() => import('./pages/Checkout'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 // Private Student Portal (Code-Split)
@@ -26,7 +26,8 @@ const Dashboard = lazy(() => import('./pages/portal/Portal').then((m) => ({ defa
 const Course = lazy(() => import('./pages/portal/Course'))
 const Certificates = lazy(() => import('./pages/portal/Certificates'))
 const Support = lazy(() => import('./pages/portal/Support'))
-const PayFees = lazy(() => import('./pages/portal/PayFees'))
+// Payment page temporarily disabled from UI and production bundle
+// const PayFees = lazy(() => import('./pages/portal/PayFees'))
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation()
@@ -77,12 +78,16 @@ export default function App() {
               <Route path="user-agreement" element={<Terms />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
+              {/* Temporarily disabled payment & checkout routes from UI and prod deployment
               <Route path="checkout/:programId" element={<RequireAuth><Checkout /></RequireAuth>} />
+              */}
               <Route path="portal" element={<RequireAuth><PortalLayout /></RequireAuth>}>
                 <Route index element={<Dashboard />} />
                 <Route path="course/:programId" element={<Course />} />
+                {/*
                 <Route path="fees" element={<PayFees />} />
                 <Route path="pay-fees" element={<PayFees />} />
+                */}
                 <Route path="certificates" element={<Certificates />} />
                 <Route path="support" element={<Support />} />
               </Route>

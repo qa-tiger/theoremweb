@@ -32,13 +32,46 @@ function BundleBanner() {
 
 export function Programs() {
   usePageTitle('Programs')
-    return (
+  return (
     <>
       <SEO
-        title={`${program.title} Course`}
+        title="Structured Trading Programs | Forex, Crypto, Equities, Indices"
         description="Explore Theorem Academy's structured trading programs in Forex, Crypto, Equities, Indices, and Commodities. Master institutional order flow with physical trading floor access and live online batches."
         keywords="trading programs, forex curriculum, crypto trading course, stock market courses, prop firm trading training, institutional finance courses"
       />
+      <PageHeader
+        title="Structured programs. Choose your market."
+        intro="Each program runs in our in-person classrooms and interactive live online, with seasoned mentors and weekly assignment reviews."
+      />
+      <Section tight className="pt-6 sm:pt-8 lg:pt-10">
+        <ProgramCards />
+      </Section>
+      <BundleBanner />
+      <Offer className="border-t border-white/10" />
+      <FinalCta title="Not sure which program fits your schedule?" body="Tell us what you trade now, or that you have never traded. An advisor will recommend a program and a batch in person or online." />
+    </>
+  )
+}
+
+export function ProgramDetail() {
+  const { programId } = useParams()
+  const program = programs.find((p) => p.id === programId)
+  usePageTitle(program?.title)
+  if (!program) return <Navigate to="/programs" replace />
+
+  const modules = curriculum[program.id] || []
+  const mentor = mentorFor(program)
+  const others = programs.filter((p) => p.id !== program.id)
+  const facts = [
+    ['Market', program.market],
+    ['Level', program.level],
+    ['Duration', program.duration],
+    ['Format', program.format],
+    ['On completion', 'Certificate'],
+  ]
+
+  return (
+    <>
       <SEO
         title={`${program.title} Course`}
         description={`${program.summary} Master ${program.market} with institutional mentor-led training, risk frameworks, and prop firm preparation.`}
@@ -60,11 +93,6 @@ export function Programs() {
             duration: program.duration,
           },
         }}
-      />
-      <SEO
-        title={`${program.title} Course`}
-        description="Explore Theorem Academy's structured trading programs in Forex, Crypto, Equities, Indices, and Commodities. Master institutional order flow with physical trading floor access and live online batches."
-        keywords="trading programs, forex curriculum, crypto trading course, stock market courses, prop firm trading training, institutional finance courses"
       />
       <PageHeader back={{ to: '/programs', label: 'All programs' }} title={program.title} intro={program.summary} />
 
@@ -123,7 +151,7 @@ export function Programs() {
             <section className="rounded-xl border border-white/10 bg-[#1a1a20] text-white p-5 sm:p-6 shadow-sm">
               <span className="badge-outline text-xs font-bold uppercase tracking-wider py-0.5 px-2.5">Coming soon</span>
               <h2 className="mt-2 font-display text-2xl sm:text-3xl font-extrabold text-white">Curriculum</h2>
-              <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">The module-by-module syllabus for this program is being finalised. Contact us and an advisor will tell you what's confirmed so far and when it opens for enrollment.</p>
+              <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">The module-by-module syllabus for this program is being finalised. Contact us and an advisor will tell you what's confirmed so far and when it opens for enrolment.</p>
             </section>
           ) : null}
         </div>

@@ -57,11 +57,16 @@ export default function Course() {
           {program.title}
         </h1>
         <p className="text-xs sm:text-sm text-white/70">
-          You are not currently enrolled in this program. Contact admissions or complete fee settlement to unlock full access.
+          You are not currently enrolled in this program. Contact admissions to complete enrollment and unlock full access.
         </p>
         <div className="pt-2 flex items-center gap-3">
+          {/* Payment link temporarily hidden from UI
           <Link to="/portal/fees" className="btn-brand py-2 px-4 text-xs font-bold">
             Pay Course Fees
+          </Link>
+          */}
+          <Link to={`/contact?program=${program.id}`} className="btn-brand py-2 px-4 text-xs font-bold">
+            Contact Admissions
           </Link>
           <Link to="/portal" className="btn-outline-light py-2 px-4 text-xs font-semibold">
             Back to Portal

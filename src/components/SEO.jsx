@@ -8,7 +8,7 @@ const DEFAULT_DESC =
 const DEFAULT_KEYWORDS =
   'institutional trading academy, forex trading course dubai, trading courses mumbai, smart money concepts, prop firm challenge training, crypto trading course, stock market academy, order flow trading, theorem academy'
 const SITE_URL = 'https://theoreminstitute.com'
-const DEFAULT_IMAGE = `${SITE_URL}/theorem-logo.png`
+const DEFAULT_IMAGE = `${SITE_URL}/logo-theorem.png`
 
 function setMetaTag(selector, attribute, value) {
   let element = document.querySelector(selector)

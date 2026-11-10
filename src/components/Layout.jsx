@@ -5,9 +5,8 @@ import { useAuth } from '../lib/auth'
 import TheoremIntroGate from './TheoremIntroGate'
 import { ScrollProgressBar } from './ui'
 
-// Wordmark: the chrome mark plus live "THEOREM" + tagline text. Rendered as real text
-// (not baked into the logo image) so the tagline stays legible at header size, unlike
-// the old raster lockup where it shrank to a few illegible pixels.
+// Wordmark: official Theorem metallic logo lockup (`/logo-theorem.png`) with punchline below.
+// Excess vertical transparent margin in the PNG is trimmed via CSS framing without modifying the file.
 // When inside My Portal, clicking the logo refreshes the page instead of leaving the portal.
 export function Wordmark({ className = '', onClick, compact = false }) {
   const { pathname } = useLocation()
@@ -23,30 +22,40 @@ export function Wordmark({ className = '', onClick, compact = false }) {
   }
 
   return (
-    <Link to={isPortal ? '/portal' : '/'} onClick={handleClick} className={`flex items-center gap-2.5 min-w-0 ${className}`}>
-      <img src="/theorem-icon.png" alt="" aria-hidden="true" className="mark-in h-9 w-auto object-contain shrink-0" />
-      {isCompact ? (
-        <span className="flex flex-col leading-tight min-w-0">
-          <span className="font-display text-xl sm:text-2xl font-extrabold tracking-wide text-white">THEOREM</span>
-          <span className="hidden sm:block max-w-[11.5rem] break-words font-sans text-[0.55rem] font-semibold uppercase leading-tight tracking-normal text-white/70">
-            Theorems we decode, markets you conquer
-          </span>
-        </span>
-      ) : (
-        <span className="flex items-center gap-3">
-          <span className="font-display text-2xl font-extrabold tracking-wide text-white leading-none">THEOREM</span>
-          <span className="hidden h-4 w-px bg-white/20 sm:block" aria-hidden="true" />
-          <span className="hidden sm:block whitespace-nowrap font-sans text-[0.6rem] font-semibold uppercase tracking-[0.1em] text-white">
-            Theorems we decode, markets you conquer
-          </span>
-        </span>
-      )}
+    <Link
+      to={isPortal ? '/portal' : '/'}
+      onClick={handleClick}
+      className={`group flex flex-col items-start justify-center min-w-0 ${className}`}
+      aria-label="Theorem Academy - Theorems we decode, markets you conquer"
+    >
+      <span
+        className={`mark-in relative block aspect-[2.68/1] overflow-hidden shrink-0 -ml-0.5 sm:-ml-[3px] ${
+          isCompact ? 'h-11 sm:h-[52px]' : 'h-12 sm:h-[58px]'
+        }`}
+      >
+        <img
+          src="/logo-theorem.png"
+          alt="Theorem Academy"
+          className="absolute max-w-none h-auto brightness-110 transition-opacity duration-200 group-hover:opacity-90"
+          style={{ width: '108%', left: '-4.2%', top: '50%', transform: 'translateY(-48.87%)' }}
+        />
+      </span>
+      <span
+        className={`font-sans font-semibold uppercase leading-none text-white/75 whitespace-nowrap ${
+          isCompact
+            ? 'mt-1.5 text-[0.48rem] sm:text-[0.55rem] tracking-[0.06em] sm:tracking-[0.08em]'
+            : 'mt-1.5 text-[0.46rem] sm:text-[0.54rem] tracking-[0.06em] sm:tracking-[0.09em]'
+        }`}
+      >
+        Theorems we decode, markets you conquer
+      </span>
     </Link>
   )
 }
 
 const NAV_LINKS = [
   ['About', '/about'],
+  ['Partner with us', '/partners'],
   ['Careers', '/careers'],
   ['Contact', '/contact'],
 ]
@@ -58,7 +67,7 @@ const programsByMarket = (list) => MARKETS.map((market) => [market, list.filter(
 
 // Current page: an amber bar along the bottom edge of the header, like a selected tab.
 const desktopLink = ({ isActive }) =>
-  `relative flex h-full items-center transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:origin-left after:transition-transform after:duration-300 after:ease-out ${
+  `relative flex h-full items-center whitespace-nowrap transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:origin-left after:transition-transform after:duration-300 after:ease-out ${
     isActive
       ? 'text-white font-bold after:scale-x-100 after:bg-signal'
       : 'text-white/75 hover:text-signal after:scale-x-0 after:bg-signal/50 hover:after:scale-x-100'
@@ -142,9 +151,13 @@ function DesktopConciergePill() {
 export function Nav({ isHidden = false, animateIn = false }) {
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
-  const [mobileCoursesOpen, setMobileCoursesOpen] = useState(true)
+  const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false)
   const [mobileTechOpen, setMobileTechOpen] = useState(false)
-  const close = () => setOpen(false)
+  const close = () => {
+    setOpen(false)
+    setMobileCoursesOpen(false)
+    setMobileTechOpen(false)
+  }
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
@@ -154,13 +167,13 @@ export function Nav({ isHidden = false, animateIn = false }) {
 
   return (
     <header className={`site-header sticky top-0 z-50 border-b border-white/10 text-white shadow-md bg-[#09090b]/95 backdrop-blur-md ${animateIn ? 'nav-entrance' : ''}`}>
-      <div className="wrap flex h-16 items-center justify-between">
+      <div className="wrap flex h-[76px] sm:h-[88px] items-center justify-between">
         <div className={animateIn ? 'nav-item-animated' : ''} style={animateIn ? { animationDelay: '120ms' } : undefined}>
           <Wordmark onClick={close} />
         </div>
         
         {/* Desktop Navigation */}
-        <nav aria-label="Main" className="hidden h-full items-stretch gap-7 text-xs sm:text-sm font-semibold lg:flex">
+        <nav aria-label="Main" className="hidden h-full items-stretch gap-5 xl:gap-7 text-xs sm:text-sm font-semibold tracking-[0.01em] [word-spacing:0.12em] lg:flex">
           
           {/* 1. Courses Dropdown */}
           <div
@@ -170,7 +183,7 @@ export function Nav({ isHidden = false, animateIn = false }) {
             <NavLink
               to="/programs"
               className={({ isActive }) =>
-                `relative flex h-full items-center gap-1.5 transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:origin-left after:transition-transform after:duration-300 after:ease-out ${
+                `relative flex h-full items-center gap-1.5 whitespace-nowrap transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:origin-left after:transition-transform after:duration-300 after:ease-out ${
                   isActive
                     ? 'text-white font-bold after:scale-x-100 after:bg-signal'
                     : 'text-white/75 hover:text-signal after:scale-x-0 after:bg-signal/50 hover:after:scale-x-100'
@@ -229,7 +242,7 @@ export function Nav({ isHidden = false, animateIn = false }) {
             <NavLink
               to="/technology"
               className={({ isActive }) =>
-                `relative flex h-full items-center gap-1.5 transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:origin-left after:transition-transform after:duration-300 after:ease-out ${
+                `relative flex h-full items-center gap-1.5 whitespace-nowrap transition-colors after:absolute after:inset-x-0 after:bottom-0 after:h-[3px] after:origin-left after:transition-transform after:duration-300 after:ease-out ${
                   isActive
                     ? 'text-white font-bold after:scale-x-100 after:bg-signal'
                     : 'text-white/75 hover:text-signal after:scale-x-0 after:bg-signal/50 hover:after:scale-x-100'
@@ -303,7 +316,7 @@ export function Nav({ isHidden = false, animateIn = false }) {
 
       {/* Mobile Drawer */}
       {open && (
-        <nav id="mobile-nav" aria-label="Main" className="mobile-nav-drawer fixed inset-x-0 top-16 bottom-0 z-50 flex flex-col text-white px-6 pt-4 pb-8 sm:px-8 overflow-y-auto bg-[#0a0a0f] lg:hidden">
+        <nav id="mobile-nav" aria-label="Main" className="mobile-nav-drawer fixed inset-x-0 top-[76px] sm:top-[88px] bottom-0 z-50 flex flex-col text-white px-6 pt-4 pb-8 sm:px-8 overflow-y-auto bg-[#0a0a0f] lg:hidden">
           <div className="space-y-4">
             
             {/* Mobile Courses Accordion */}
@@ -378,7 +391,7 @@ export function Nav({ isHidden = false, animateIn = false }) {
                 <NavLink
                   to={to}
                   onClick={close}
-                  className="flex items-center justify-between py-2 font-display text-2xl font-extrabold text-white hover:text-signal transition-colors"
+                  className="flex items-center justify-between py-2 font-display text-2xl font-extrabold tracking-[0.02em] [word-spacing:0.14em] text-white hover:text-signal transition-colors"
                 >
                   {({ isActive }) => (
                     <>
@@ -429,7 +442,7 @@ function FooterColumn({ title, children }) {
   return (
     <div>
       <h2 className="font-sans text-sm font-semibold text-white/50">{title}</h2>
-      <ul className="mt-4 space-y-2.5 text-sm">{children}</ul>
+      <ul className="mt-4 space-y-2.5 text-sm tracking-[0.01em] [word-spacing:0.1em]">{children}</ul>
     </div>
   )
 }
@@ -447,7 +460,6 @@ export function Footer() {
             <li><Link to="/programs" className="hover:text-signal">Courses</Link></li>
             <li><Link to="/ebooks" className="hover:text-signal">Free E-books</Link></li>
             {NAV_LINKS.map(([label, to]) => <li key={to}><Link to={to} className="hover:text-signal">{label}</Link></li>)}
-            <li><Link to="/partners" className="hover:text-signal">For Forex Brokers</Link></li>
             <li><Link to="/login" className="hover:text-signal">Student log in</Link></li>
           </FooterColumn>
         </div>

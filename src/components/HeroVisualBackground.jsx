@@ -15,7 +15,7 @@ export const HERO_SCENES = [
     name: 'Online',
     location: 'Interactive Live Classrooms',
     flag: '🌐',
-    image: '/campus/online-study-student.jpg',
+    image: '/campus/online-live-connect.jpg',
     tagline: 'Interactive Screen Sharing & 1-on-1 Reviews',
     session: '24/7 Global Orderflow',
     badge: 'Live Online Cohort',
