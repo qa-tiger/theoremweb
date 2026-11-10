@@ -424,3 +424,116 @@ export async function createEnquiry(enquiry) {
 
   return saved
 }
+
+// ---------- Careers & Job Openings ----------
+
+export function formatJobFromDb(row) {
+  if (!row) return null
+  const normalizeList = (val) => {
+    if (!val) return []
+    if (Array.isArray(val)) return val.filter(Boolean)
+    if (typeof val === 'string') {
+      try {
+        const parsed = JSON.parse(val)
+        if (Array.isArray(parsed)) return parsed.filter(Boolean)
+      } catch {}
+      return val
+        .split('\n')
+        .map((s) => s.replace(/^[•\-\*]\s*/, '').trim())
+        .filter(Boolean)
+    }
+    return []
+  }
+
+  return {
+    id: row.id,
+    title: row.title || 'Untitled Position',
+    department: row.department || 'General',
+    location: row.location || 'Sharjah / Mumbai / Remote',
+    workplaceType: row.workplace_type || 'On-site',
+    employmentType: row.employment_type || 'Full-time',
+    experienceLevel: row.experience_level || 'Mid-Senior Level',
+    currency: row.currency || 'AED',
+    minSalary: Number(row.min_salary || 0),
+    maxSalary: Number(row.max_salary || 0),
+    salaryFrequency: row.salary_frequency || 'monthly',
+    isSalaryDisclosed: row.is_salary_disclosed ?? (Number(row.min_salary || 0) > 0),
+    applicationDeadline: row.application_deadline
+      ? new Date(row.application_deadline).toISOString().split('T')[0]
+      : '',
+    hiringContactEmail: row.hiring_contact_email || 'careers@theoreminstitute.com',
+    overview: row.overview || '',
+    responsibilities: normalizeList(row.responsibilities),
+    requirements: normalizeList(row.requirements),
+    benefits: normalizeList(row.benefits),
+    status: row.status || 'Active',
+    isFeatured: Boolean(row.is_featured),
+    applicantsCount: Number(row.applicants_count || 0),
+    createdAt: row.created_at ? new Date(row.created_at).toISOString().split('T')[0] : '',
+    updatedAt: row.updated_at ? new Date(row.updated_at).toISOString().split('T')[0] : '',
+  }
+}
+
+export async function fetchJobsFromDb() {
+  try {
+    if (isSupabaseConfigured() && supabase) {
+      const { data, error } = await supabase
+        .from('jobs')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.warn('Jobs query warning:', error.message)
+        return []
+      }
+      if (data && data.length > 0) {
+        return data
+          .map(formatJobFromDb)
+          .filter((j) => j && (j.status === 'Active' || j.status === 'active'))
+      }
+    }
+  } catch (err) {
+    console.warn('Error fetching jobs:', err)
+  }
+  return []
+}
+
+export async function submitJobApplication({ job, name, email, phone, cvLink, message }) {
+  const cleanEmail = (email || '').trim().toLowerCase()
+  const cleanPhone = (phone || '').trim()
+
+  const noteLines = [
+    `Candidate applied for: ${job.title} (ID: ${job.id})`,
+    `Department: ${job.department} | Location: ${job.location}`,
+    cvLink ? `Resume / Portfolio / Profile: ${cvLink.trim()}` : null,
+    message ? `Cover Note:\n${message.trim()}` : null,
+  ]
+    .filter(Boolean)
+    .join('\n')
+
+  await recordLead({
+    name,
+    email: cleanEmail,
+    phone: cleanPhone,
+    source: `Careers: ${job.title}`,
+    stage: 'New Inquiry',
+    city: job.location || '',
+    noteText: noteLines,
+  })
+
+  try {
+    if (isSupabaseConfigured() && supabase && job.id) {
+      await supabase
+        .from('jobs')
+        .update({
+          applicants_count: (Number(job.applicantsCount) || 0) + 1,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', job.id)
+    }
+  } catch {
+    // Non-fatal if RLS restricts direct update of jobs table from anon key
+  }
+
+  return { success: true }
+}
