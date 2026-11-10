@@ -18,19 +18,19 @@ export const site = {
 export const locations = [
   {
     id: 'training-floor-1',
-    label: 'Training Floor',
-    address: 'Office 000, Business Bay, Dubai', // placeholder
-    hours: 'Saturday to Thursday, 10:00 to 19:00',
+    label: 'Training Floor (UAE)',
+    address: 'Sharjah Media city, Sharjah UAE',
+    hours: 'Saturday to Thursday, 10:00 to 19:00 GST',
   },
   {
     id: 'training-floor-2',
-    label: 'Training Floor',
+    label: 'Training Floor (India)',
     address: '3rd Floor, Ambika Niwas, behind Tungareshwar Sweets, Gurunanak nagar, Vishal Nagar, Vasai West, Vasai-Virar, Maharashtra 401202',
     hours: 'Monday to Saturday, 10:00 to 19:00',
   },
   {
     id: 'online',
-    label: 'Online',
+    label: 'Online Campus',
     address: 'Live interactive classes on Zoom with dedicated mentors',
     hours: 'Weekday evening and weekend batches',
   },
@@ -53,8 +53,8 @@ export const teachers = [
     name: 'Sohail Ahmed',
     role: 'Mentor at Theorem',
     photo: '/mentors/sohail.jpg',
-    teaches: ['Crypto Basic', 'Crypto Intermediate', 'Crypto Advanced', 'Equity Basic', 'Equity Intermediate', 'Equity Advanced'],
-    focus: 'Cryptocurrency, blockchain technology, digital assets safety & equity markets',
+    teaches: ['Crypto Basic', 'Crypto Intermediate', 'Crypto Advanced', 'Equity Basic', 'Equity Intermediate', 'Equity Advanced', 'Indices Basic', 'Indices Intermediate', 'Indices Advanced', 'Commodity Basic', 'Commodity Intermediate', 'Commodity Advanced'],
+    focus: 'Cryptocurrency, blockchain technology, digital assets safety, equity & commodities markets',
     bio: 'Sohail brings over two decades of financial sector and banking training experience, including nearly a decade as a Training Specialist at Mashreq Bank alongside credentials from Princeton University and IG Academy. He mentors students across digital assets and equities with a focus on risk discipline, capital protection, and practical market understanding.',
     initials: 'SA',
   },
@@ -76,24 +76,30 @@ export const programs = [
     price: 24999,
     priceAed: 1099,
     featured: true,
-    summary: 'Currency pairs, pips, lots and leverage: reading charts, understanding market mechanics, and applying position sizing.',
-    outcomes: ['How the forex market and brokers work', 'Candlesticks, support and resistance', 'Position sizing and risk boundaries', 'A written trading plan of your own'],
+    summary: 'Introduction to currency pairs, chart reading, candlestick anatomy, and disciplined risk management.',
+    outcomes: ['Introduction to forex & how currency pairs work', 'Chart reading & candlestick anatomy (Open, High, Low, Close)', 'Identifying trends, support & resistance levels', 'Position sizing, stop losses & capital protection rules'],
   },
   {
     id: 'forex-intermediate',
-    comingSoon: true,
-    audience: 'Students who have finished Forex Basic, or who already place and size their own trades and want a more structured, reviewed process.', // placeholder copy: confirm with the academy
+    audience: 'Students who have finished Forex Basic, or who already place and size their own trades and want to master market structure basics, macroeconomic drivers, and directional bias.',
     title: 'Forex Intermediate',
     market: 'Forex',
     level: 'Intermediate',
-    duration: '6 weeks', // placeholder: confirm length
+    duration: '6 weeks',
     format: 'In person or online',
-    summary: 'The bridge between a beginner and an advanced trader: reading higher-timeframe structure, trading with a plan, and reviewing every trade.',
-    outcomes: ['Multi-timeframe chart reading', 'Building and following a trading plan', 'Common mistakes at this stage', 'Preparing for Forex Advanced'],
+    price: 34999,
+    priceAed: 1499,
+    summary: 'Fundamental analysis of the market, reading news and figuring out bias, how to read other economic data, and market structure basics.',
+    outcomes: [
+      'Fundamental analysis of the market',
+      'Reading news and figuring out bias',
+      'How to read the other economic data',
+      'Market structure basics (Swing Points, BOS, CHoCH & Premium/Discount)',
+    ],
   },
   {
     id: 'forex-advanced',
-    audience: 'Traders who already know the basics (or have finished Forex Basic) and want a repeatable, reviewed process. You should be able to place and size a trade on your own.', // placeholder copy: confirm with the academy
+    audience: 'Traders who have mastered intermediate fundamentals and want an institutional edge built around advanced liquidity concepts, liquidity pools, and proprietary orderflow delivery.',
     title: 'Forex Advanced',
     market: 'Forex',
     level: 'Advanced',
@@ -101,8 +107,14 @@ export const programs = [
     format: 'In person or online',
     price: 44999,
     priceAed: 1999,
-    summary: 'Market structure, liquidity dynamics and multi-timeframe analysis, with a live assignment review every week.',
-    outcomes: ['Market structure and liquidity', 'Multi-timeframe analysis', 'Assignment journaling and review', 'Prop-firm challenge preparation'],
+    summary: 'Everything covered in intermediate level, with in-depth mastery of liquidity concepts, liquidity pools, institutional orderflow, and multi-timeframe execution.',
+    outcomes: [
+      'Everything covered in intermediate level',
+      'Liquidity concepts & liquidity pools architecture (BSL, SSL, EQH, EQL)',
+      'Institutional orderflow, Fair Value Gaps (FVG) & Order Blocks',
+      'Multi-timeframe liquidity execution & higher-timeframe Draw on Liquidity',
+      'Assignment journaling, prop-firm rules & capital risk budgeting',
+    ],
   },
   {
     id: 'crypto-basic',
@@ -114,8 +126,8 @@ export const programs = [
     format: 'In person or online',
     price: 29999,
     priceAed: 1299,
-    summary: 'Spot and futures on the major exchanges, market cycles, wallets, and how to stay safe from scams.',
-    outcomes: ['Exchanges, wallets and security', 'Spot vs futures and funding rates', 'Reading crypto market cycles', 'Risk rules for a volatile market'],
+    summary: 'Introduction to digital assets, reading crypto charts, candlestick patterns, wallets and safe risk management.',
+    outcomes: ['Introduction to cryptocurrency, Bitcoin & major altcoins', 'Reading crypto charts & candlestick formations', 'Understanding market trends, volume & support levels', 'Wallet security, order types & capital preservation'],
   },
   {
     id: 'crypto-intermediate',
@@ -151,8 +163,8 @@ export const programs = [
     format: 'In person or online',
     price: 19999,
     priceAed: 899,
-    summary: 'Indian and US stock markets: reading fundamentals, swing trading setups, and building a watchlist.',
-    outcomes: ['How stock exchanges work', 'Reading financial statements', 'Swing trading setups', 'Building and managing a watchlist'],
+    summary: 'Introduction to stock markets, reading price charts, candlesticks, and disciplined equity trading basics.',
+    outcomes: ['Introduction to stock exchanges (NSE/BSE & US markets)', 'Reading stock charts & candlestick price action', 'Understanding market trends, support & resistance', 'Placing orders, position sizing & risk discipline'],
   },
   {
     id: 'equity-intermediate',
@@ -180,15 +192,16 @@ export const programs = [
   },
   {
     id: 'indices-basic',
-    comingSoon: true,
-    audience: 'Beginners who want to trade global benchmarks like the S&P 500, Nasdaq and Nifty 50 instead of picking individual stocks.', // placeholder copy: confirm with the academy
+    audience: 'Beginners who want to trade global benchmarks like the S&P 500, Nasdaq and Nifty 50 instead of picking individual stocks.',
     title: 'Indices Basic',
     market: 'Indices',
     level: 'Basic',
-    duration: '6 weeks', // placeholder: confirm length
+    duration: '6 weeks',
     format: 'In person or online',
-    summary: 'Reading major global indices, how they are weighted, and trading benchmark moves with a clear, risk-managed approach.',
-    outcomes: ['How indices are constructed and weighted', 'Reading index futures and CFDs', 'Correlating indices with macro events', 'Position sizing for benchmark trades'],
+    price: 24999,
+    priceAed: 1099,
+    summary: 'Introduction to global benchmark indices, reading charts, candlestick dynamics, and risk-controlled index trading.',
+    outcomes: ['What are indices (S&P 500, Nasdaq, Nifty 50) & how they move', 'Reading index charts & candlestick signals', 'Identifying broad market trends & key price levels', 'Risk management and trade sizing for benchmark moves'],
   },
   {
     id: 'indices-intermediate',
@@ -216,15 +229,16 @@ export const programs = [
   },
   {
     id: 'commodities-basic',
-    comingSoon: true,
-    audience: 'Beginners who want to trade gold, silver, oil and other commodities with a structured, risk-managed approach.', // placeholder copy: confirm with the academy
+    audience: 'Beginners who want to trade gold, silver, oil and other commodities with a structured, risk-managed approach.',
     title: 'Commodities Basic',
     market: 'Commodities',
     level: 'Basic',
-    duration: '6 weeks', // placeholder: confirm length
+    duration: '6 weeks',
     format: 'In person or online',
-    summary: 'Gold, silver, oil and other major commodities: supply and demand drivers, seasonality, and position sizing.',
-    outcomes: ['Supply and demand drivers for key commodities', 'Reading commodity futures and CFDs', 'Seasonality and macro correlation', 'Position sizing for commodity trades'],
+    price: 24999,
+    priceAed: 1099,
+    summary: 'Introduction to global commodities, reading gold and oil charts, candlestick basics, and capital protection.',
+    outcomes: ['Introduction to commodities (Gold, Silver, Crude Oil)', 'Reading commodity charts & candlestick dynamics', 'Key support, resistance & market trend identification', 'Volatility control, position sizing & stop loss discipline'],
   },
   {
     id: 'commodities-intermediate',
@@ -252,48 +266,39 @@ export const programs = [
   },
 ]
 
-// SAMPLE stories to show the layout. They are NOT real students and are hidden in production
-// builds (see Testimonials). Replace with real, consented student stories before launch.
-// Illustrative examples of the kind of feedback the program format is designed to produce —
-// NOT real, verified student reviews. The Stories component marks every card with a visible
-// "Illustrative example" badge so this is never presented as genuine. Replace with real,
-// consented student stories (name, program, photo) as they come in.
+// Real, verified Google Reviews from students. Add more as they come in — do not add
+// fabricated or illustrative entries here (see Testimonials / the Stories component).
 export const stories = [
   {
-    sample: true,
-    name: 'Yusuf A.',
-    program: 'Forex Basic, in-person batch',
-    quote: 'I had been trading without a methodology for a year and could not explain a single decision I took. The first thing Farhan did was make me write down why I was taking the setup, where my risk invalidation was, and what my position size was. Six weeks later I have complete clarity on every trade.',
-    outcome: 'Now trades a small live account with a written plan',
+    name: 'Aftab Ansari',
+    stars: 5,
+    date: '2 months ago',
+    source: 'Google Review',
+    program: 'Forex & Risk Management',
+    quote: 'I had zero knowledge before joining these classes but Farhan and Anas explained all the basics like candlesticks, risk management, and strategies in very simple language with the best examples and what I loved most is the live market practice sessions. Now I can place trades with confidence and actually understand charts. Highly recommend if you’re a beginner.',
+    outcome: 'Charts & Live Sessions',
   },
   {
-    sample: true,
-    name: 'Emily R.',
-    program: 'Crypto Basic, online batch',
-    quote: 'The session on wallet security alone was worth it. I moved everything off an exchange I should never have trusted.',
+    name: 'Narayan Bohara',
+    stars: 5,
+    date: '2 months ago',
+    source: 'Google Review',
+    program: 'Trading Foundations',
+    quote: 'This class was fantastic. The teacher explained hard ideas in a very simple way and made sure everyone understood before moving on. I learned a lot and feel much more confident now. I will suggest all my friends to join this class and learn more about trading.',
+    outcome: 'Recommends to Friends',
   },
   {
-    sample: true,
-    name: 'Khalid S.',
-    program: 'Equity Basic, in-person batch',
-    quote: 'I work full time, so the structured schedule and direct mentor access kept me accountable and consistent.',
-  },
-  {
-    sample: true,
-    name: 'James T.',
-    program: 'Forex Advanced, online batch',
-    quote: 'The weekly assignment reviews changed how I think about a trade. My mentor would ask why I entered before asking if I was right, and that single habit fixed most of my overtrading.',
-  },
-  {
-    sample: true,
-    name: 'Fatima N.',
-    program: 'Crypto Basic, in-person batch',
-    quote: 'I came in only knowing how to buy on an exchange. Leaving, I had a written risk plan, a real position-sizing method, and the confidence to say no to a setup that did not fit it.',
+    name: 'Aashu Yadav',
+    stars: 5,
+    date: '5 months ago',
+    source: 'Google Review',
+    program: 'Stock Market Trading',
+    quote: 'I attended a demo lecture for stock market trading. The session was informative and well-structured. The trainer explained the basics of trading, candlestick patterns, and market concepts in a simple and easy-to-understand manner. The environment was professional, and the way of teaching was beginner-friendly. They focused on practical knowledge and real market examples, which made the session interesting and engaging. Overall, it was a good learning experience, especially for someone who is new to trading and wants proper guidance to start in the stock market.',
+    outcome: 'Practical Guidance',
   },
 ]
 
 // The offer: what every program fee includes, and the refund terms.
-// placeholder: confirm every line with the academy before launch; these are promises to students.
 export const offer = {
   includes: [
     'Live classes with your mentor, in person or online',

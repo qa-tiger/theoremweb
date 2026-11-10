@@ -40,7 +40,7 @@ export default function Privacy() {
             </p>
             <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-1 text-xs">
               <p><strong className="text-white">Registered India Address:</strong> 3rd Floor, Ambika Niwas, behind Tungareshwar Sweets, Gurunanak nagar, Vishal Nagar, Vasai West, Vasai-Virar, Maharashtra 401202</p>
-              <p><strong className="text-white">Dubai Facility:</strong> Business Bay, Dubai, United Arab Emirates</p>
+              <p><strong className="text-white">UAE Facility:</strong> Sharjah Media city, Sharjah UAE</p>
               <p><strong className="text-white">Official Communications:</strong> <a href={`mailto:${site.email}`} className="text-signal underline">{site.email}</a></p>
               <p><strong className="text-white">Data Grievance Officer Email:</strong> <a href="mailto:privacy@theoremacademy.com" className="text-signal underline">privacy@theoremacademy.com</a></p>
             </div>

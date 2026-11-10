@@ -3,10 +3,10 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { Wordmark } from '../../components/Layout'
 import { usePageTitle } from '../../components/sections'
 import { programs } from '../../config/site'
-import { getEnrollments, getProgress } from '../../lib/api'
+import { getEnrollments } from '../../lib/api'
 import { useAuth } from '../../lib/auth'
 
-// Loads the signed-in student's enrollments with progress for each.
+// Loads the signed-in student's enrollments.
 export function useMyCourses() {
   const { user } = useAuth()
   const [courses, setCourses] = useState(null)
@@ -17,7 +17,7 @@ export function useMyCourses() {
       if (rawList.length === 0 && user?.programId) {
         rawList = [{ id: 'auto-' + user.programId, userId: user.id, programId: user.programId, enrolledAt: Date.now() }]
       }
-      const withProgress = await Promise.all(
+      const withProgram = await Promise.all(
         rawList.map(async (e) => ({
           ...e,
           program: programs.find((p) => p.id === e.programId) || {
@@ -26,14 +26,23 @@ export function useMyCourses() {
             level: 'Basic',
             duration: '6 weeks',
           },
-          progress: await getProgress(user.id, e.programId),
+          progress: { percent: 0, finished: false, quizzes: [], completedLessons: new Set() },
         })),
       )
-      if (live) setCourses(withProgress)
+      if (live) setCourses(withProgram)
     })
     return () => { live = false }
   }, [user.id, user?.programId])
   return courses
+}
+
+// Reusable Progress Bar Component
+export function ProgressBar({ percent = 0 }) {
+  return (
+    <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100}>
+      <div className="h-full bg-signal transition-[width] duration-500 rounded-full" style={{ width: `${percent}%` }} />
+    </div>
+  )
 }
 
 export function PortalLayout() {
@@ -43,10 +52,10 @@ export function PortalLayout() {
   return (
     <div className="wrap grid gap-8 py-8 sm:py-10 lg:grid-cols-[16rem_1fr] lg:gap-12 text-white">
       {/* Student Profile Sidebar */}
-      <aside className="space-y-6">
+      <aside className="space-y-6 lg:w-64 min-w-0">
         {/* Brand Header */}
-        <div className="pb-2">
-          <Wordmark />
+        <div className="pb-2 overflow-hidden">
+          <Wordmark compact />
         </div>
 
         {/* User Profile Card */}
@@ -90,8 +99,26 @@ export function PortalLayout() {
               }`
             }
           >
-            <span className="text-base">📚</span>
+            <svg className="size-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
             <span>My courses</span>
+          </NavLink>
+
+          <NavLink
+            to="/portal/fees"
+            className={({ isActive }) =>
+              `flex items-center gap-3 rounded-xl px-4 py-3 text-xs sm:text-sm font-semibold transition-all ${
+                isActive
+                  ? 'bg-signal text-black font-extrabold shadow-lg shadow-signal/10'
+                  : 'text-white/70 hover:bg-white/5 hover:text-white border border-transparent'
+              }`
+            }
+          >
+            <svg className="size-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+            <span>Pay fees</span>
           </NavLink>
 
           <NavLink
@@ -104,7 +131,9 @@ export function PortalLayout() {
               }`
             }
           >
-            <span className="text-base">🎓</span>
+            <svg className="size-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5" />
+            </svg>
             <span>Certificates</span>
           </NavLink>
 
@@ -118,7 +147,9 @@ export function PortalLayout() {
               }`
             }
           >
-            <span className="text-base">💬</span>
+            <svg className="size-4.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
             <span>Help and support</span>
           </NavLink>
         </nav>
@@ -136,18 +167,9 @@ export function PortalLayout() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1">
         <Outlet />
       </div>
-    </div>
-  )
-}
-
-// Progress Bar Component
-export function ProgressBar({ percent }) {
-  return (
-    <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden" role="progressbar" aria-valuenow={percent} aria-valuemin={0} aria-valuemax={100} aria-label="Course progress">
-      <div className="h-full bg-signal transition-[width] duration-500 rounded-full" style={{ width: `${percent}%` }} />
     </div>
   )
 }
@@ -182,11 +204,11 @@ export function Dashboard() {
           Welcome back, {user.name.split(' ')[0]}.
         </h1>
         <p className="mt-1 text-xs sm:text-sm text-white/70">
-          Track your course progress and view enrolled programs.
+          View your enrolled programs and cohort details.
         </p>
       </div>
 
-      {/* Quick Metrics Bar */}
+      {/* Quick Metrics Bar - Clean, no fake progress */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <div className="rounded-2xl border border-white/10 bg-[#121218] p-4 text-white">
           <span className="text-white/50 text-xs font-medium block">Enrolled Courses</span>
@@ -195,15 +217,15 @@ export function Dashboard() {
           </span>
         </div>
         <div className="rounded-2xl border border-white/10 bg-[#121218] p-4 text-white">
-          <span className="text-white/50 text-xs font-medium block">Certificates</span>
-          <span className="font-display text-2xl sm:text-3xl font-extrabold text-signal mt-1 block">
-            {courses.filter((c) => c.progress.finished).length}
+          <span className="text-white/50 text-xs font-medium block">Enrollment Status</span>
+          <span className="font-display text-base sm:text-lg font-bold text-bull mt-2 block">
+            Active
           </span>
         </div>
         <div className="rounded-2xl border border-white/10 bg-[#121218] p-4 text-white">
           <span className="text-white/50 text-xs font-medium block">Attendance Mode</span>
           <span className="font-display text-sm sm:text-base font-bold text-white mt-2 block truncate">
-            {user.mode || 'Online (Zoom)'}
+            {user.campus || user.mode || 'Online (Zoom)'}
           </span>
         </div>
         <div className="rounded-2xl border border-white/10 bg-[#121218] p-4 text-white">
@@ -214,11 +236,11 @@ export function Dashboard() {
         </div>
       </div>
 
-      {/* Active Enrolled Courses (if student has enrolled courses) */}
+      {/* Active Enrolled Courses - Simple and Clear */}
       {courses.length > 0 && (
         <section className="space-y-4">
           <h2 className="font-display text-xl sm:text-2xl font-extrabold text-white">
-            Your Active Courses ({courses.length})
+            Your Enrolled Courses ({courses.length})
           </h2>
           <div className="grid gap-4 sm:gap-5">
             {courses.map((c) => (
@@ -227,48 +249,32 @@ export function Dashboard() {
                 className="card-hover-glow rounded-2xl border border-white/15 bg-gradient-to-br from-[#161620] to-[#0f0f14] p-5 sm:p-6 text-white flex flex-col md:flex-row md:items-center justify-between gap-6"
               >
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <span className="badge-signal text-[0.65rem] font-bold uppercase py-0.5 px-2">
                       {c.program.market}
+                    </span>
+                    <span className="badge-outline text-[0.62rem] font-bold text-bull border-bull/40 py-0.5 px-2">
+                      Active Enrollment
                     </span>
                     <span className="text-xs text-white/50">
                       {c.program.level} • {c.program.duration}
                     </span>
                   </div>
-                  <h3 className="mt-2 font-display text-xl sm:text-2xl font-bold text-white truncate">
+                  <h3 className="mt-2.5 font-display text-xl sm:text-2xl font-bold text-white truncate">
                     {c.program.title}
                   </h3>
 
-                  <div className="mt-4 max-w-md">
-                    <div className="flex items-center justify-between text-xs text-white/70 mb-1.5">
-                      <span>Curriculum Progress</span>
-                      <span className="font-bold text-signal tabular-nums">{c.progress.percent}%</span>
-                    </div>
-                    <ProgressBar percent={c.progress.percent} />
-                  </div>
-
-                  {c.progress.finished && (
-                    <p className="mt-3 text-xs text-bull font-semibold flex items-center gap-1.5">
-                      <span>✓</span> Course complete!{' '}
-                      <Link to="/portal/certificates" className="link-line text-signal font-bold">
-                        Download certificate
-                      </Link>
-                    </p>
-                  )}
+                  <p className="mt-2 text-xs text-white/70 max-w-lg leading-relaxed">
+                    Access your course modules, lesson outlines, and reference study notes.
+                  </p>
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
                   <Link
                     to={`/portal/course/${c.programId}`}
-                    className={`py-2.5 px-5 text-xs sm:text-sm font-bold shadow-md rounded-xl ${
-                      c.progress.finished ? 'btn-ghost' : 'btn-brand'
-                    }`}
+                    className="btn-brand py-2.5 px-5 text-xs sm:text-sm font-bold shadow-md rounded-xl"
                   >
-                    {c.progress.percent === 0
-                      ? 'Start Course →'
-                      : c.progress.finished
-                      ? 'Review Lessons'
-                      : 'Continue Learning →'}
+                    View Curriculum →
                   </Link>
                 </div>
               </div>
@@ -358,7 +364,6 @@ export function Dashboard() {
                     >
                       View Syllabus
                     </Link>
-                    {/* The single, dedicated contact option inside the portal */}
                     <Link
                       to={`/contact?program=${selectedProgram.id}`}
                       className="btn-brand py-2 px-4 text-xs font-bold shadow-md"

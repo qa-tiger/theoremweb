@@ -234,20 +234,7 @@ function PillarCard({ item, index }) {
           {item.desc}
         </p>
 
-        {/* Checkpoint Bullets */}
-        <ul
-          className={`mt-6 space-y-2.5 border-t border-white/10 pt-5 text-xs sm:text-sm text-white/90 transition-all duration-700 ease-out ${
-            inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-          }`}
-          style={{ transitionDelay: `${index * 130 + 360}ms` }}
-        >
-          {item.points.map((pt) => (
-            <li key={pt} className="flex items-center gap-2.5">
-              <span className="size-4.5 rounded-full bg-signal/20 text-signal flex items-center justify-center font-bold text-xs shrink-0">✓</span>
-              <span>{pt}</span>
-            </li>
-          ))}
-        </ul>
+        
       </div>
     </div>
   )
@@ -605,18 +592,13 @@ export function Outcomes() {
 export function Stories({ limit }) {
   const visible = stories.slice(0, limit)
   if (visible.length === 0) return null
-  const isSample = visible.some((s) => s.sample)
   // Duplicate the list so the marquee can loop seamlessly at translateX(-50%).
   const track = [...visible, ...visible]
   return (
     <Section
       tight
       title="Student Testimonials."
-      intro={
-        isSample
-          ? 'Illustrative examples of the kind of feedback our program format is designed to produce — not verified student reviews.'
-          : 'Verified student reviews from our in-person and online cohorts.'
-      }
+      intro="Verified Google Reviews from students across our offline and live online cohorts."
       className="bg-card overflow-hidden"
     >
       <div className="testimonial-marquee-viewport overflow-hidden">

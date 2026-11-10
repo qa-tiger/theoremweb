@@ -4,7 +4,7 @@ export const HERO_SCENES = [
     name: 'Offline',
     location: 'In-Person Trading Floors',
     flag: '🏛️',
-    image: '/campus/terminal-lab.jpeg',
+    image: '/campus/offline-classroom-session.jpg',
     tagline: 'Structured Trading Labs • In-Person Terminal Desks',
     session: 'Live Market Session (Active)',
     badge: 'Offline Cohort',
@@ -15,7 +15,7 @@ export const HERO_SCENES = [
     name: 'Online',
     location: 'Interactive Live Classrooms',
     flag: '🌐',
-    image: '/campus/online-teaching-desk.png',
+    image: '/campus/online-study-student.jpg',
     tagline: 'Interactive Screen Sharing & 1-on-1 Reviews',
     session: '24/7 Global Orderflow',
     badge: 'Live Online Cohort',
@@ -43,15 +43,6 @@ export default function HeroVisualBackground({ activeScene = 'offline' }) {
       {/* Directional Contrast Gradient: Solid obsidian on left for crystal-clear text readability */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#07070a]/95 via-[#07070a]/75 to-[#07070a]/25" />
       <div className="absolute inset-0 bg-gradient-to-b from-[#07070a]/60 via-transparent to-[#09090b]" />
-
-      {/* Subtle Micro-Grid Accent */}
-      <div
-        className="absolute inset-0 opacity-[0.05]"
-        style={{
-          backgroundImage: `radial-gradient(rgba(199,205,214,0.5) 1px, transparent 1px)`,
-          backgroundSize: '32px 32px',
-        }}
-      />
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import SEO from '../components/SEO'
 import { FinalCta, PageHeader, Stories, usePageTitle } from '../components/sections'
 import { FacultyProfile } from '../components/ui'
 import { teachers } from '../config/site'
@@ -6,6 +7,11 @@ export default function Mentors() {
   usePageTitle('Our Team')
   return (
     <>
+      <SEO
+        title="Lead Mentors & Trading Faculty"
+        description="Meet the seasoned institutional traders and mentors behind Theorem Academy. Decades of combined proprietary trading experience across FX, digital assets, and equities."
+        keywords="trading mentors, institutional traders, forex mentors dubai, stock market faculty, theorem academy team"
+      />
       <PageHeader
         title="The people behind Theorem."
         intro="Dedicated mentors guiding your cohort curriculum, supported by our technology and engineering team."
